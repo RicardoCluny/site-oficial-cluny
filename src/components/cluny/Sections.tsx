@@ -601,6 +601,10 @@ export function Planos() {
             cta="Quero a Controladoria" interesse="Controladoria"
           />
         </div>
+        <div className="mt-4 px-4 py-3 flex flex-wrap items-center justify-between gap-3 bg-[#f4f1ec] border-t border-[#e8e4db]">
+          <span className="label-mono text-[#6e7b7c]">· CONTRATO MÍNIMO · 12 MESES · REVISÃO TRIMESTRAL</span>
+          <a href="#calculadora" className="label-mono text-[#005a54] hover:underline">VER QUADRO COMPARATIVO COMPLETO →</a>
+        </div>
         <div className="mt-6 p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 transition-all hover:scale-[1.01] cursor-pointer" style={{ background: "#c48b30", color: "#1F3D2E" }}>
           <div className="label-mono">· COMBO 01+02 · BPO + Controladoria em pacote integrado · 15% de desconto</div>
           <a href="#calculadora" className="btn-primary" style={{ background: "#1F3D2E", color: "#f4f1ec", borderColor: "#1F3D2E" }}>Conhecer o combo →</a>
