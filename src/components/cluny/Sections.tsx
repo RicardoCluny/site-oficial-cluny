@@ -67,6 +67,10 @@ export function Nav() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState<string>("");
+  const [megaOpen, setMegaOpen] = useState<string | null>(null);
+  const [mobileSub, setMobileSub] = useState<string | null>(null);
+  const openTimer = useRef<number | null>(null);
+  const closeTimer = useRef<number | null>(null);
 
   useEffect(() => {
     const onScroll = () => {
@@ -84,12 +88,19 @@ export function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Navbar sobre o hero (não-scrolled): fundo #f4f1ec, texto #1A1A1A
-  // Navbar com scroll: fundo verde escuro, texto papel
   const onLight = !scrolled;
   const txtColor = onLight ? "#1A1A1A" : "#f4f1ec";
   const inactiveOpacity = onLight ? "opacity-70" : "opacity-75";
   const logoColor = onLight ? "#1A1A1A" : "#f4f1ec";
+
+  const handleEnter = (label: string) => {
+    if (closeTimer.current) window.clearTimeout(closeTimer.current);
+    openTimer.current = window.setTimeout(() => setMegaOpen(label), 150);
+  };
+  const handleLeave = () => {
+    if (openTimer.current) window.clearTimeout(openTimer.current);
+    closeTimer.current = window.setTimeout(() => setMegaOpen(null), 100);
+  };
 
   return (
     <header
@@ -99,7 +110,6 @@ export function Nav() {
           : "bg-[#f4f1ec] border-b border-[rgba(26,26,26,0.08)]"
       }`}
     >
-      {/* Barra técnica superior */}
       <div className="bg-[#1A1A1A] border-b border-[rgba(255,255,255,0.06)]">
         <div className="max-w-[1320px] mx-auto px-6 lg:px-10 h-7 flex items-center justify-between gap-6">
           <span className="label-tech text-[#6e7b7c] truncate">
@@ -116,19 +126,66 @@ export function Nav() {
         <nav className="hidden lg:flex items-center gap-1">
           {NAV.map((n) => {
             const isActive = active === n.href.replace("#", "");
+            const hasMega = !!n.mega;
             return (
-              <a
+              <div
                 key={n.href}
-                href={n.href}
-                style={{ color: txtColor }}
-                className={`relative px-4 py-2 text-[13.5px] font-medium transition-all duration-200 border-b-2 ${
-                  isActive
-                    ? "border-[#c48b30] opacity-100"
-                    : `border-transparent ${inactiveOpacity} hover:opacity-100`
-                }`}
+                className="relative"
+                onMouseEnter={hasMega ? () => handleEnter(n.label) : undefined}
+                onMouseLeave={hasMega ? handleLeave : undefined}
               >
-                {n.label}
-              </a>
+                <a
+                  href={n.href}
+                  style={{ color: txtColor }}
+                  className={`relative inline-flex items-center gap-1 px-4 py-2 text-[13.5px] font-medium transition-all duration-200 border-b-2 ${
+                    isActive
+                      ? "border-[#005a54] opacity-100"
+                      : `border-transparent ${inactiveOpacity} hover:opacity-100`
+                  }`}
+                >
+                  {n.label}
+                  {hasMega && <span className="text-[9px] opacity-60">▾</span>}
+                </a>
+                {hasMega && megaOpen === n.label && (
+                  <div
+                    className="mega-in absolute left-0 top-full mt-0 z-50 bg-white rounded-[4px] p-6 min-w-[520px]"
+                    style={{ boxShadow: "0 8px 40px rgba(0,0,0,0.12)", borderTop: "3px solid #005a54" }}
+                    onMouseEnter={() => { if (closeTimer.current) window.clearTimeout(closeTimer.current); }}
+                    onMouseLeave={handleLeave}
+                  >
+                    <div className="grid grid-cols-2 gap-2">
+                      {n.mega!.map((m) => (
+                        <a
+                          key={m.n}
+                          href="#atuacao"
+                          onClick={() => setMegaOpen(null)}
+                          className="group/item flex items-start gap-3 p-3 rounded-[2px] hover:bg-[#f4f1ec] transition-colors"
+                        >
+                          <span
+                            className="flex-shrink-0 w-8 h-8 rounded-[4px] flex items-center justify-center font-mono-tech text-[12px] font-medium"
+                            style={{ background: "rgba(0,90,84,0.10)", color: "#005a54" }}
+                          >
+                            {m.n.replace("BU-", "")}
+                          </span>
+                          <div className="flex-1 min-w-0">
+                            <div className="font-display font-semibold text-[15px] text-[#1A1A1A] flex items-center gap-2">
+                              {m.t}
+                              <span className="text-[12px] text-[#005a54] opacity-0 group-hover/item:opacity-100 transition-all group-hover/item:translate-x-0.5">→</span>
+                            </div>
+                            <div className="text-[12px] text-[#6e7b7c] leading-snug mt-0.5">{m.sub}</div>
+                          </div>
+                        </a>
+                      ))}
+                    </div>
+                    <div className="mt-2 pt-4 border-t border-[#e8e4db] flex justify-between items-center">
+                      <a href="#atuacao" onClick={() => setMegaOpen(null)} className="text-[12px] font-bold text-[#005a54] tracking-wide">
+                        Ver todas as frentes →
+                      </a>
+                      <span className="text-[11px] text-[#6e7b7c]">· Diagnóstico gratuito em 60s</span>
+                    </div>
+                  </div>
+                )}
+              </div>
             );
           })}
         </nav>
@@ -158,14 +215,33 @@ export function Nav() {
       {open && (
         <div className="lg:hidden border-t border-[rgba(255,255,255,0.08)] px-6 py-6 flex flex-col gap-1 bg-[#1F3D2E] animate-fade-in">
           {NAV.map((n) => (
-            <a
-              key={n.href}
-              href={n.href}
-              onClick={() => setOpen(false)}
-              className="text-[15px] py-3 px-3 rounded-md hover:bg-[rgba(255,255,255,0.06)] text-[#f4f1ec]"
-            >
-              {n.label}
-            </a>
+            <div key={n.href}>
+              {n.mega ? (
+                <>
+                  <button
+                    onClick={() => setMobileSub(mobileSub === n.label ? null : n.label)}
+                    className="w-full flex justify-between items-center text-[15px] py-3 px-3 rounded-md hover:bg-[rgba(255,255,255,0.06)] text-[#f4f1ec]"
+                  >
+                    <span>{n.label}</span>
+                    <span className={`transition-transform ${mobileSub === n.label ? "rotate-180" : ""}`}>▾</span>
+                  </button>
+                  {mobileSub === n.label && (
+                    <div className="pl-4 pb-2 flex flex-col gap-1">
+                      {n.mega.map((m) => (
+                        <a key={m.n} href="#atuacao" onClick={() => setOpen(false)} className="flex items-center gap-3 py-2 px-3 text-[13px] text-[#cec9b8] hover:bg-[rgba(255,255,255,0.06)] rounded-md">
+                          <span className="font-mono-tech text-[#c48b30] text-[11px]">{m.n.replace("BU-", "")}</span>
+                          <span>{m.t}</span>
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </>
+              ) : (
+                <a href={n.href} onClick={() => setOpen(false)} className="block text-[15px] py-3 px-3 rounded-md hover:bg-[rgba(255,255,255,0.06)] text-[#f4f1ec]">
+                  {n.label}
+                </a>
+              )}
+            </div>
           ))}
           <a href="#cadastro" onClick={() => setOpen(false)} className="btn-primary mt-3 justify-center">
             Cadastre-se →
