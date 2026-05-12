@@ -40,13 +40,21 @@ export function Nav() {
     <header
       className={`sticky top-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-[#f4f1ec]/95 backdrop-blur-md border-b border-[rgba(26,26,26,0.08)] shadow-[0_1px_0_rgba(26,26,26,0.04)]"
-          : "bg-[#f4f1ec]/80 backdrop-blur border-b border-transparent"
+          ? "bg-[#1F3D2E] border-b border-[rgba(255,255,255,0.08)]"
+          : "bg-transparent border-b border-transparent"
       }`}
     >
+      {/* Barra técnica superior */}
+      <div className="bg-[#1A1A1A] border-b border-[rgba(255,255,255,0.06)]">
+        <div className="max-w-[1320px] mx-auto px-6 lg:px-10 h-7 flex items-center justify-between gap-6">
+          <span className="label-tech text-[#6e7b7c]">CRC-SP 2SP-000000 · OPERANDO DESDE 2013</span>
+          <span className="label-tech text-[#6e7b7c] hidden md:block">SÃO PAULO · BRASIL</span>
+        </div>
+      </div>
+
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10 h-[68px] flex items-center justify-between gap-6">
         <a href="#" className="flex items-center gap-2 group">
-          <Logo size={28} />
+          <Logo size={28} color="#f4f1ec" />
         </a>
 
         <nav className="hidden lg:flex items-center gap-1">
@@ -56,10 +64,10 @@ export function Nav() {
               <a
                 key={n.href}
                 href={n.href}
-                className={`relative px-4 py-2 text-[13.5px] font-medium rounded-full transition-all duration-200 ${
+                className={`relative px-4 py-2 text-[13.5px] font-medium transition-all duration-200 border-b-2 ${
                   isActive
-                    ? "text-[#005a54] bg-[rgba(0,90,84,0.08)]"
-                    : "text-[#1A1A1A]/70 hover:text-[#005a54] hover:bg-[rgba(0,90,84,0.05)]"
+                    ? "text-[#f4f1ec] border-[#c48b30] opacity-100"
+                    : "text-[#f4f1ec] border-transparent opacity-75 hover:opacity-100 hover:border-[#f4f1ec]"
                 }`}
               >
                 {n.label}
@@ -69,12 +77,12 @@ export function Nav() {
         </nav>
 
         <div className="hidden lg:flex items-center gap-3">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[rgba(0,90,84,0.06)]">
-            <span className="pulse-dot" />
-            <span className="label-mono text-[#005a54]">OPERANDO</span>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-[4px] bg-[#005a54]">
+            <span className="pulse-dot-light" />
+            <span className="label-mono text-[#f4f1ec]">STATUS · OPERANDO</span>
           </div>
           <a href="#cadastro" className="btn-primary btn-primary-sm group">
-            Solicite uma proposta
+            Cadastre-se
             <span className="transition-transform group-hover:translate-x-0.5">→</span>
           </a>
         </div>
@@ -84,42 +92,26 @@ export function Nav() {
           onClick={() => setOpen(!open)}
           aria-label="Menu"
         >
-          <span
-            className={`block w-6 h-[2px] bg-[#1F3D2E] transition-transform ${
-              open ? "translate-y-[7px] rotate-45" : ""
-            }`}
-          />
-          <span
-            className={`block w-6 h-[2px] bg-[#1F3D2E] transition-opacity ${
-              open ? "opacity-0" : ""
-            }`}
-          />
-          <span
-            className={`block w-6 h-[2px] bg-[#1F3D2E] transition-transform ${
-              open ? "-translate-y-[7px] -rotate-45" : ""
-            }`}
-          />
+          <span className={`block w-6 h-[2px] bg-[#f4f1ec] transition-transform ${open ? "translate-y-[7px] rotate-45" : ""}`} />
+          <span className={`block w-6 h-[2px] bg-[#f4f1ec] transition-opacity ${open ? "opacity-0" : ""}`} />
+          <span className={`block w-6 h-[2px] bg-[#f4f1ec] transition-transform ${open ? "-translate-y-[7px] -rotate-45" : ""}`} />
         </button>
       </div>
 
       {open && (
-        <div className="lg:hidden border-t border-[rgba(26,26,26,0.08)] px-6 py-6 flex flex-col gap-1 bg-[#f4f1ec] animate-fade-in">
+        <div className="lg:hidden border-t border-[rgba(255,255,255,0.08)] px-6 py-6 flex flex-col gap-1 bg-[#1F3D2E] animate-fade-in">
           {NAV.map((n) => (
             <a
               key={n.href}
               href={n.href}
               onClick={() => setOpen(false)}
-              className="text-[15px] py-3 px-3 rounded-md hover:bg-[rgba(0,90,84,0.06)] text-[#1F3D2E]"
+              className="text-[15px] py-3 px-3 rounded-md hover:bg-[rgba(255,255,255,0.06)] text-[#f4f1ec]"
             >
               {n.label}
             </a>
           ))}
-          <a
-            href="#cadastro"
-            onClick={() => setOpen(false)}
-            className="btn-primary mt-3 justify-center"
-          >
-            Solicite uma proposta →
+          <a href="#cadastro" onClick={() => setOpen(false)} className="btn-primary mt-3 justify-center">
+            Cadastre-se →
           </a>
         </div>
       )}
@@ -129,16 +121,18 @@ export function Nav() {
 
 export function Hero() {
   return (
-    <section className="bg-[#f4f1ec] border-b border-[rgba(26,26,26,0.1)]">
+    <section className="bg-[#1F3D2E] text-[#f4f1ec]">
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 py-16 lg:py-24 min-h-[640px] items-center">
           <div className="lg:col-span-7 flex flex-col justify-center">
-            <span className="label-mono text-[#005a54] mb-6">[ Cluny Gestão Empresarial · v.2026 ]</span>
-            <h1 className="font-display text-[44px] sm:text-[64px] lg:text-[88px] leading-[0.96] text-[#1F3D2E]">
+            <span className="label-mono text-[#6e7b7c] border border-[#6e7b7c] px-2 py-1 self-start mb-8">
+              [ CLUNY GESTÃO EMPRESARIAL · V.2026 ]
+            </span>
+            <h1 className="font-display font-semibold text-[40px] sm:text-[56px] lg:text-[72px] leading-[1] text-[#f4f1ec]">
               Controladoria<br />
-              financeira <span className="italic text-[#005a54]">operada como sistema.</span>
+              financeira <span className="italic font-normal text-[#f4f1ec]">operada como sistema.</span>
             </h1>
-            <p className="mt-8 text-[18px] max-w-[620px] text-[#1A1A1A]/80 leading-relaxed">
+            <p className="mt-8 text-[16px] max-w-[560px] text-[#f4f1ec]/80 leading-relaxed">
               BPO Financeiro e Controladoria conduzidos com método técnico. Tiro o sócio da operação, devolvo leitura para a decisão.
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
@@ -150,17 +144,17 @@ export function Hero() {
             </div>
           </div>
           <div className="lg:col-span-5 relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-[rgba(0,90,84,0.08)] to-[rgba(196,139,48,0.05)] rounded-[4px] blur-2xl" />
+            <div className="absolute inset-0 bg-gradient-to-br from-[rgba(196,139,48,0.15)] to-[rgba(0,90,84,0.1)] rounded-[4px] blur-2xl" />
             <img
               src={heroImg}
               alt="Painel de controladoria financeira: gráficos, KPIs e indicadores conduzidos com método Cluny"
               width={1024}
               height={1024}
-              className="relative w-full h-auto rounded-[4px] shadow-[0_30px_80px_-30px_rgba(31,61,46,0.3)]"
+              className="relative w-full h-auto rounded-[4px] shadow-[0_30px_80px_-30px_rgba(0,0,0,0.5)] border border-[rgba(255,255,255,0.06)]"
             />
-            <div className="absolute -bottom-3 -left-3 bg-[#1F3D2E] text-[#f4f1ec] px-4 py-3 rounded-[2px] hidden md:flex items-center gap-3">
-              <span className="pulse-dot" />
-              <span className="label-mono text-[#cec9b8]">DASHBOARD AO VIVO · 320 EMPRESAS</span>
+            <div className="absolute -bottom-3 -left-3 bg-[#1A1A1A] text-[#f4f1ec] px-4 py-3 rounded-[2px] hidden md:flex items-center gap-3 border border-[rgba(255,255,255,0.08)]">
+              <span className="pulse-dot-light" />
+              <span className="label-mono text-[#6e7b7c]">DASHBOARD AO VIVO · 320 EMPRESAS</span>
             </div>
           </div>
         </div>
@@ -438,7 +432,7 @@ export function Planos() {
   const PlanCard = ({ dark, tag, camada, price, tagline, escopo, items, indicado, nota, cta }: any) => (
     <div
       className={`group relative p-8 lg:p-10 flex flex-col transition-all duration-500 cursor-pointer rounded-[4px]
-        ${dark ? "bg-[#1F3D2E] text-[#f4f1ec]" : "bg-[#f4f1ec] text-[#1A1A1A]"}
+        ${dark ? "bg-[#1F3D2E] text-[#f4f1ec]" : "bg-[#ffffff] text-[#1A1A1A]"}
         border border-[rgba(26,26,26,0.1)]
         hover:scale-[1.02] hover:shadow-[0_30px_80px_-30px_rgba(31,61,46,0.4)]
         hover:border-[#c48b30]
@@ -481,7 +475,7 @@ export function Planos() {
   );
 
   return (
-    <section id="planos" className="py-24 lg:py-32 bg-[#ece7dc] border-b border-[rgba(26,26,26,0.1)]">
+    <section id="planos" className="py-24 lg:py-32 bg-[#f4f1ec] border-b border-[rgba(26,26,26,0.1)]">
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
         <div className="flex justify-between items-end mb-16 flex-wrap gap-6">
           <h2 className="font-display text-[40px] lg:text-[56px] leading-[1.05] text-[#1F3D2E] max-w-2xl">
@@ -522,41 +516,42 @@ export function Planos() {
 
 export function Manifesto() {
   return (
-    <section className="border-b border-[rgba(26,26,26,0.1)]">
-      <div className="max-w-[1320px] mx-auto px-6 lg:px-10 grid grid-cols-1 lg:grid-cols-12 gap-0 border-tech my-24">
-        <div className="lg:col-span-5 bg-[#1F3D2E] text-[#f4f1ec] p-10 lg:p-14 min-h-[520px] flex flex-col">
-          <span className="label-mono text-[#c48b30]">· Sobre · /02</span>
-          <h2 className="font-display text-[44px] lg:text-[56px] leading-[1.05] mt-8 text-[#f4f1ec] flex-1">
-            Há 12 anos<br /><span className="italic text-[#cec9b8]">lendo empresas.</span>
+    <section className="bg-[#1F3D2E] text-[#f4f1ec]">
+      <div className="max-w-[1320px] mx-auto px-6 lg:px-10 grid grid-cols-1 lg:grid-cols-12 gap-0 py-24">
+        <div className="lg:col-span-5 bg-[#1A1A1A] text-[#f4f1ec] p-10 lg:p-14 min-h-[520px] flex flex-col rounded-l-[4px]">
+          <span className="label-mono text-[#6e7b7c]">· SOBRE · /02</span>
+          <h2 className="font-display font-semibold text-[36px] lg:text-[40px] leading-[1.1] mt-8 text-[#f4f1ec] flex-1">
+            Há 12 anos<br /><span className="italic font-normal text-[#c48b30]">lendo empresas.</span>
           </h2>
-          <div className="grid grid-cols-2 gap-6 pt-8 border-t border-[rgba(244,241,236,0.18)]">
+          <div className="grid grid-cols-2 gap-6 pt-8 border-t border-[rgba(255,255,255,0.1)]">
             <div>
-              <div className="label-mono text-[#cec9b8] mb-2">FUNDAÇÃO</div>
-              <div className="font-mono-tech text-[20px]">2013</div>
+              <div className="label-mono text-[#6e7b7c] mb-2">FUNDAÇÃO</div>
+              <div className="font-mono-tech text-[20px] text-[#f4f1ec]">2013</div>
             </div>
             <div>
-              <div className="label-mono text-[#cec9b8] mb-2">EQUIPE</div>
-              <div className="font-mono-tech text-[20px]">34 profissionais</div>
+              <div className="label-mono text-[#6e7b7c] mb-2">EQUIPE</div>
+              <div className="font-mono-tech text-[20px] text-[#f4f1ec]">34 profissionais</div>
             </div>
           </div>
         </div>
-        <div className="lg:col-span-7 bg-[#f4f1ec] p-10 lg:p-14">
-          <span className="label-mono text-[#005a54]">· Manifesto</span>
-          <p className="font-display text-[24px] lg:text-[28px] text-[#1F3D2E] leading-snug mt-6">
-            A Cluny nasceu de uma <em className="italic">insatisfação técnica</em>: contadores que entregavam guia de imposto, mas nunca explicavam o que os números diziam. Decidi inverter a ordem.
+        <div className="lg:col-span-7 p-10 lg:p-14 border border-[rgba(255,255,255,0.06)] rounded-r-[4px]">
+          <span className="label-mono text-[#6e7b7c]">· MANIFESTO</span>
+          <p className="text-[16px] text-[#f4f1ec]/85 leading-[1.7] mt-6">
+            A Cluny nasceu de uma <em className="font-display italic text-[#c48b30]">insatisfação técnica</em>: contadores que entregavam guia de imposto, mas nunca explicavam o que os números diziam. Decidi inverter a ordem.
           </p>
-          <p className="text-[15.5px] text-[#1A1A1A]/85 mt-6 leading-relaxed">
-            Em vez de processar obrigação fiscal, comecei pela leitura técnica do negócio. O que a empresa faz, como cobra, onde sangra margem, qual decisão depende de qual número.
+          <p className="text-[16px] text-[#f4f1ec]/85 mt-6 leading-[1.7]">
+            Em vez de processar obrigação fiscal, comecei pela <em className="font-display italic text-[#c48b30]">leitura técnica do negócio</em>. O que a empresa faz, como cobra, onde sangra margem, qual decisão depende de qual número.
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 mt-10 border-tech">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 mt-10 border-t border-[rgba(255,255,255,0.1)]">
             {[
               ["01", "Critério", "Decisão técnica antes de comercial."],
               ["02", "Clareza", "Linguagem que o sócio entende."],
               ["03", "Continuidade", "Operação que sobrevive ao mês."],
             ].map(([n, t, d]) => (
-              <div key={n} className="p-5 border-r border-b md:border-b-0 border-[rgba(26,26,26,0.1)] last:border-r-0">
-                <div className="label-mono text-[#005a54] mb-2">{n} · {t}</div>
-                <div className="text-[13px] text-[#1A1A1A]/80">{d}</div>
+              <div key={n} className="p-5 border-r border-b md:border-b-0 border-[rgba(255,255,255,0.1)] last:border-r-0">
+                <div className="label-mono text-[#6e7b7c] mb-2">{n}</div>
+                <div className="font-display font-semibold text-[16px] text-[#f4f1ec] mb-2">{t}</div>
+                <div className="text-[13px] text-[#cec9b8]">{d}</div>
               </div>
             ))}
           </div>
@@ -700,7 +695,7 @@ export function Calculadora() {
   ];
 
   return (
-    <section id="calculadora" className="py-24 lg:py-32 border-b border-[rgba(26,26,26,0.1)] bg-[#f4f1ec]">
+    <section id="calculadora" className="py-24 lg:py-32 border-b border-[rgba(26,26,26,0.1)] bg-[#cec9b8]">
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
         <div className="mb-16 max-w-3xl">
           <span className="label-mono text-[#005a54]">· Comparativo · CLT vs BPO Financeiro</span>
@@ -856,7 +851,7 @@ export function Conteudo() {
     { ed: "ED. 040", cat: "SOCIETÁRIO", min: "9 min", date: "17.ABR.2026", t: "Holding patrimonial: três armadilhas comuns na constituição", img: blogHolding },
   ];
   return (
-    <section id="conteudo" className="py-24 lg:py-32 bg-[#ece7dc] border-b border-[rgba(26,26,26,0.1)]">
+    <section id="conteudo" className="py-24 lg:py-32 bg-[#f4f1ec] border-b border-[rgba(26,26,26,0.1)]">
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
         <div className="flex justify-between items-end mb-12">
           <h2 className="font-display text-[40px] lg:text-[56px] text-[#1F3D2E]">
@@ -908,7 +903,7 @@ const FAQS = [
 export function FAQ() {
   const [open, setOpen] = useState<number | null>(0);
   return (
-    <section id="faq" className="py-24 lg:py-32 border-b border-[rgba(26,26,26,0.1)] bg-[#f4f1ec]">
+    <section id="faq" className="py-24 lg:py-32 border-b border-[rgba(26,26,26,0.1)] bg-[#ffffff]">
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
           {/* Coluna esquerda: título + ilustração */}
@@ -982,37 +977,52 @@ export function FAQ() {
 export function Cadastro() {
   const [sent, setSent] = useState(false);
   return (
-    <section id="cadastro" className="py-24 lg:py-32 bg-[#cec9b8]">
+    <section id="cadastro" className="py-24 lg:py-32 bg-[#1F3D2E] text-[#f4f1ec]">
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 bg-[#f4f1ec] border-tech">
-          <div className="p-10 lg:p-14 border-b lg:border-b-0 lg:border-r border-[rgba(26,26,26,0.1)]">
-            <span className="label-mono text-[#005a54]">· Solicite uma proposta</span>
-            <h2 className="font-display text-[40px] lg:text-[52px] leading-[1.05] mt-6 text-[#1F3D2E]">
-              Inicie pela <em className="italic text-[#005a54]">conversa.</em>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
+          <div>
+            <span className="label-mono text-[#6e7b7c]">· SOLICITE UMA PROPOSTA</span>
+            <h2 className="font-display font-semibold text-[40px] lg:text-[48px] leading-[1.05] mt-6 text-[#f4f1ec]">
+              Inicie pela <em className="italic font-normal text-[#f4f1ec]">conversa.</em>
             </h2>
-            <p className="text-[15.5px] text-[#1A1A1A]/80 mt-6 leading-relaxed">
+            <p className="text-[15px] text-[#f4f1ec]/80 mt-6 leading-relaxed max-w-md">
               Respondo pessoalmente, por escrito, em até 1 dia útil. Sem funil de qualificação. Sem SDR. Apenas leitura técnica inicial.
             </p>
-            <div className="mt-10 grid grid-cols-1 gap-0 border-tech font-mono-tech text-[12px]">
+
+            <div className="mt-10 space-y-3">
+              {[
+                "Resposta em até 1 dia útil, por escrito",
+                "Conversa direta com o sócio responsável",
+                "Diagnóstico técnico inicial sem custo",
+              ].map((b) => (
+                <div key={b} className="flex gap-3 text-[14px] text-[#f4f1ec]">
+                  <span className="text-[#c48b30] font-bold">→</span>
+                  <span>{b}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-10 grid grid-cols-1 gap-0">
               {[
                 ["CONTATO","contato@cluny.com.br"],
                 ["TELEFONE","+55 11 4000-0000"],
                 ["ENDEREÇO","Av. Faria Lima, 0000 · São Paulo / SP"],
                 ["HORÁRIO","Seg-Sex · 09h às 18h"],
               ].map(([k,v]) => (
-                <div key={k} className="grid grid-cols-[120px_1fr] p-4 border-b border-[rgba(26,26,26,0.1)] last:border-b-0">
-                  <span className="text-[#6e7b7c]">{k}</span>
-                  <span className="text-[#1A1A1A]">{v}</span>
+                <div key={k} className="grid grid-cols-[120px_1fr] py-4 border-b border-[rgba(255,255,255,0.1)] last:border-b-0">
+                  <span className="label-mono text-[#6e7b7c]">{k}</span>
+                  <span className="text-[14px] text-[#f4f1ec]">{v}</span>
                 </div>
               ))}
             </div>
           </div>
-          <div className="p-10 lg:p-14">
+
+          <div className="bg-[#1A1A1A] rounded-[4px] p-8 lg:p-10 border border-[rgba(255,255,255,0.06)]">
             {sent ? (
-              <div className="h-full flex flex-col justify-center items-start gap-4">
-                <div className="w-12 h-12 rounded-full flex items-center justify-center text-[#f4f1ec]" style={{ background: "#005a54" }}>✓</div>
-                <h3 className="font-display text-[32px] text-[#1F3D2E]">Mensagem registrada.</h3>
-                <p className="text-[15px] text-[#1A1A1A]/80 max-w-md">Recebi sua solicitação. Respondo pessoalmente em até 1 dia útil, por escrito.</p>
+              <div className="h-full flex flex-col justify-center items-start gap-4 min-h-[400px]">
+                <div className="w-12 h-12 rounded-full flex items-center justify-center text-[#f4f1ec] bg-[#005a54]">✓</div>
+                <h3 className="font-display text-[32px] text-[#f4f1ec]">Mensagem registrada.</h3>
+                <p className="text-[15px] text-[#f4f1ec]/80 max-w-md">Recebi sua solicitação. Respondo pessoalmente em até 1 dia útil, por escrito.</p>
               </div>
             ) : (
               <form onSubmit={(e)=>{e.preventDefault(); setSent(true);}} className="space-y-6">
@@ -1024,20 +1034,22 @@ export function Cadastro() {
                 ].map((f) => (
                   <div key={f.n}>
                     <label className="label-mono text-[#6e7b7c] block mb-2">{f.l}</label>
-                    <input required type={f.t || "text"} name={f.n} className="w-full bg-transparent border-b border-[rgba(26,26,26,0.2)] py-2 outline-none focus:border-[#005a54] text-[15px]" />
+                    <input required type={f.t || "text"} name={f.n} placeholder=" " className="w-full bg-transparent border-b border-[rgba(255,255,255,0.2)] py-2 outline-none focus:border-[#c48b30] text-[15px] text-[#f4f1ec] placeholder:text-[#6e7b7c] transition-colors" />
                   </div>
                 ))}
                 <div>
                   <label className="label-mono text-[#6e7b7c] block mb-2">Interesse principal</label>
-                  <select required className="w-full bg-transparent border-b border-[rgba(26,26,26,0.2)] py-2 outline-none focus:border-[#005a54] text-[15px]">
-                    <option value="">Selecione...</option>
-                    <option>BPO Financeiro</option>
-                    <option>Controladoria</option>
-                    <option>BPO + Controladoria (Combo)</option>
+                  <select required className="w-full bg-transparent border-b border-[rgba(255,255,255,0.2)] py-2 outline-none focus:border-[#c48b30] text-[15px] text-[#f4f1ec]">
+                    <option value="" className="bg-[#1A1A1A]">Selecione...</option>
+                    <option className="bg-[#1A1A1A]">BPO Financeiro</option>
+                    <option className="bg-[#1A1A1A]">Controladoria</option>
+                    <option className="bg-[#1A1A1A]">BPO + Controladoria (Combo)</option>
                   </select>
                 </div>
-                <button type="submit" className="btn-primary w-full justify-center mt-4">Solicite uma proposta →</button>
-                <p className="text-[12px] text-[#6e7b7c]">Resposta em até 1 dia útil. Seus dados não são compartilhados.</p>
+                <button type="submit" className="btn-primary w-full justify-center mt-4" style={{ height: 52 }}>
+                  Solicite uma proposta →
+                </button>
+                <p className="text-[11px] text-[#6e7b7c]">Resposta em até 1 dia útil. Seus dados não são compartilhados.</p>
               </form>
             )}
           </div>
@@ -1048,12 +1060,50 @@ export function Cadastro() {
 }
 
 export function Footer() {
+  const COLS = [
+    { t: "SERVIÇOS", l: [["BPO Financeiro","#planos"],["Controladoria","#planos"],["Combo Cluny","#calculadora"]] },
+    { t: "MÉTODO", l: [["As 5 etapas","#metodo"],["Diagnóstico 60s","#diagnostico"],["Cases","#cases"]] },
+    { t: "RECURSOS", l: [["Conteúdo","#conteudo"],["FAQ","#faq"],["Comparativo CLT","#calculadora"]] },
+  ];
   return (
-    <footer className="bg-[#f4f1ec] py-8 border-t border-[rgba(26,26,26,0.1)]">
-      <div className="max-w-[1320px] mx-auto px-6 lg:px-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <Logo size={22} color="#6e7b7c" />
-        <span className="font-mono-tech text-[11px] text-[#6e7b7c]">© 2026 · CLUNY GESTÃO EMPRESARIAL · CRC-SP 2SP-000000</span>
-        <span className="font-mono-tech text-[11px] text-[#6e7b7c]">v.2026.05 · BUILD 0511</span>
+    <footer className="bg-[#1A1A1A] text-[#f4f1ec]">
+      <div className="max-w-[1320px] mx-auto px-6 lg:px-10 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-[rgba(255,255,255,0.06)]">
+          <div className="md:col-span-4">
+            <Logo size={26} color="#f4f1ec" />
+            <p className="text-[13px] text-[#6e7b7c] mt-5 leading-relaxed max-w-xs">
+              Controladoria financeira e BPO operados como sistema. Conduzo a gestão técnica de empresas brasileiras desde 2013.
+            </p>
+            <div className="mt-6 flex items-center gap-2">
+              <span className="pulse-dot" />
+              <span className="label-mono text-[#6e7b7c]">STATUS · OPERANDO</span>
+            </div>
+          </div>
+          {COLS.map((c) => (
+            <div key={c.t} className="md:col-span-2">
+              <div className="label-mono text-[#6e7b7c] mb-4">{c.t}</div>
+              <ul className="space-y-2.5">
+                {c.l.map(([label, href]) => (
+                  <li key={label}>
+                    <a href={href} className="text-[13px] text-[#cec9b8] hover:text-[#f4f1ec] transition-colors">{label}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+          <div className="md:col-span-2">
+            <div className="label-mono text-[#6e7b7c] mb-4">CONTATO</div>
+            <ul className="space-y-2.5">
+              <li><a href="mailto:contato@cluny.com.br" className="text-[13px] text-[#cec9b8] hover:text-[#f4f1ec]">contato@cluny.com.br</a></li>
+              <li className="text-[13px] text-[#cec9b8]">+55 11 4000-0000</li>
+              <li><a href="#cadastro" className="text-[13px] text-[#c48b30] hover:text-[#f4f1ec]">Solicite uma proposta →</a></li>
+            </ul>
+          </div>
+        </div>
+        <div className="pt-6 flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <span className="font-mono-tech text-[10px] text-[#6e7b7c] uppercase tracking-[0.1em]">© 2026 · CLUNY GESTÃO EMPRESARIAL · CRC-SP 2SP-000000</span>
+          <span className="font-mono-tech text-[10px] text-[#6e7b7c] uppercase tracking-[0.1em]">v.2026.05 · BUILD 0511 · SÃO PAULO</span>
+        </div>
       </div>
     </footer>
   );
