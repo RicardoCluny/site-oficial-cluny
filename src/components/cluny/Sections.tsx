@@ -976,37 +976,52 @@ export function FAQ() {
 export function Cadastro() {
   const [sent, setSent] = useState(false);
   return (
-    <section id="cadastro" className="py-24 lg:py-32 bg-[#cec9b8]">
+    <section id="cadastro" className="py-24 lg:py-32 bg-[#1F3D2E] text-[#f4f1ec]">
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 bg-[#f4f1ec] border-tech">
-          <div className="p-10 lg:p-14 border-b lg:border-b-0 lg:border-r border-[rgba(26,26,26,0.1)]">
-            <span className="label-mono text-[#005a54]">· Solicite uma proposta</span>
-            <h2 className="font-display text-[40px] lg:text-[52px] leading-[1.05] mt-6 text-[#1F3D2E]">
-              Inicie pela <em className="italic text-[#005a54]">conversa.</em>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
+          <div>
+            <span className="label-mono text-[#6e7b7c]">· SOLICITE UMA PROPOSTA</span>
+            <h2 className="font-display font-semibold text-[40px] lg:text-[48px] leading-[1.05] mt-6 text-[#f4f1ec]">
+              Inicie pela <em className="italic font-normal text-[#f4f1ec]">conversa.</em>
             </h2>
-            <p className="text-[15.5px] text-[#1A1A1A]/80 mt-6 leading-relaxed">
+            <p className="text-[15px] text-[#f4f1ec]/80 mt-6 leading-relaxed max-w-md">
               Respondo pessoalmente, por escrito, em até 1 dia útil. Sem funil de qualificação. Sem SDR. Apenas leitura técnica inicial.
             </p>
-            <div className="mt-10 grid grid-cols-1 gap-0 border-tech font-mono-tech text-[12px]">
+
+            <div className="mt-10 space-y-3">
+              {[
+                "Resposta em até 1 dia útil, por escrito",
+                "Conversa direta com o sócio responsável",
+                "Diagnóstico técnico inicial sem custo",
+              ].map((b) => (
+                <div key={b} className="flex gap-3 text-[14px] text-[#f4f1ec]">
+                  <span className="text-[#c48b30] font-bold">→</span>
+                  <span>{b}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-10 grid grid-cols-1 gap-0">
               {[
                 ["CONTATO","contato@cluny.com.br"],
                 ["TELEFONE","+55 11 4000-0000"],
                 ["ENDEREÇO","Av. Faria Lima, 0000 · São Paulo / SP"],
                 ["HORÁRIO","Seg-Sex · 09h às 18h"],
               ].map(([k,v]) => (
-                <div key={k} className="grid grid-cols-[120px_1fr] p-4 border-b border-[rgba(26,26,26,0.1)] last:border-b-0">
-                  <span className="text-[#6e7b7c]">{k}</span>
-                  <span className="text-[#1A1A1A]">{v}</span>
+                <div key={k} className="grid grid-cols-[120px_1fr] py-4 border-b border-[rgba(255,255,255,0.1)] last:border-b-0">
+                  <span className="label-mono text-[#6e7b7c]">{k}</span>
+                  <span className="text-[14px] text-[#f4f1ec]">{v}</span>
                 </div>
               ))}
             </div>
           </div>
-          <div className="p-10 lg:p-14">
+
+          <div className="bg-[#1A1A1A] rounded-[4px] p-8 lg:p-10 border border-[rgba(255,255,255,0.06)]">
             {sent ? (
-              <div className="h-full flex flex-col justify-center items-start gap-4">
-                <div className="w-12 h-12 rounded-full flex items-center justify-center text-[#f4f1ec]" style={{ background: "#005a54" }}>✓</div>
-                <h3 className="font-display text-[32px] text-[#1F3D2E]">Mensagem registrada.</h3>
-                <p className="text-[15px] text-[#1A1A1A]/80 max-w-md">Recebi sua solicitação. Respondo pessoalmente em até 1 dia útil, por escrito.</p>
+              <div className="h-full flex flex-col justify-center items-start gap-4 min-h-[400px]">
+                <div className="w-12 h-12 rounded-full flex items-center justify-center text-[#f4f1ec] bg-[#005a54]">✓</div>
+                <h3 className="font-display text-[32px] text-[#f4f1ec]">Mensagem registrada.</h3>
+                <p className="text-[15px] text-[#f4f1ec]/80 max-w-md">Recebi sua solicitação. Respondo pessoalmente em até 1 dia útil, por escrito.</p>
               </div>
             ) : (
               <form onSubmit={(e)=>{e.preventDefault(); setSent(true);}} className="space-y-6">
@@ -1018,20 +1033,22 @@ export function Cadastro() {
                 ].map((f) => (
                   <div key={f.n}>
                     <label className="label-mono text-[#6e7b7c] block mb-2">{f.l}</label>
-                    <input required type={f.t || "text"} name={f.n} className="w-full bg-transparent border-b border-[rgba(26,26,26,0.2)] py-2 outline-none focus:border-[#005a54] text-[15px]" />
+                    <input required type={f.t || "text"} name={f.n} placeholder=" " className="w-full bg-transparent border-b border-[rgba(255,255,255,0.2)] py-2 outline-none focus:border-[#c48b30] text-[15px] text-[#f4f1ec] placeholder:text-[#6e7b7c] transition-colors" />
                   </div>
                 ))}
                 <div>
                   <label className="label-mono text-[#6e7b7c] block mb-2">Interesse principal</label>
-                  <select required className="w-full bg-transparent border-b border-[rgba(26,26,26,0.2)] py-2 outline-none focus:border-[#005a54] text-[15px]">
-                    <option value="">Selecione...</option>
-                    <option>BPO Financeiro</option>
-                    <option>Controladoria</option>
-                    <option>BPO + Controladoria (Combo)</option>
+                  <select required className="w-full bg-transparent border-b border-[rgba(255,255,255,0.2)] py-2 outline-none focus:border-[#c48b30] text-[15px] text-[#f4f1ec]">
+                    <option value="" className="bg-[#1A1A1A]">Selecione...</option>
+                    <option className="bg-[#1A1A1A]">BPO Financeiro</option>
+                    <option className="bg-[#1A1A1A]">Controladoria</option>
+                    <option className="bg-[#1A1A1A]">BPO + Controladoria (Combo)</option>
                   </select>
                 </div>
-                <button type="submit" className="btn-primary w-full justify-center mt-4">Solicite uma proposta →</button>
-                <p className="text-[12px] text-[#6e7b7c]">Resposta em até 1 dia útil. Seus dados não são compartilhados.</p>
+                <button type="submit" className="btn-primary w-full justify-center mt-4" style={{ height: 52 }}>
+                  Solicite uma proposta →
+                </button>
+                <p className="text-[11px] text-[#6e7b7c]">Resposta em até 1 dia útil. Seus dados não são compartilhados.</p>
               </form>
             )}
           </div>
