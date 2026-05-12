@@ -14,7 +14,7 @@ function Index() {
       <Nav />
       <main>
         <Hero />
-        <Atuacao />
+        
         <Diagnostico />
         <Metodo />
         <Planos />
