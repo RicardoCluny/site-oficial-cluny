@@ -402,12 +402,183 @@ export function Atuacao() {
             </article>
           ))}
         </div>
+
+        {/* BLOCO A — Pills de entregáveis */}
+        <div className="mt-16 rounded-[8px] px-8 py-10 lg:px-12 lg:py-12" style={{ background: "#1F3D2E" }}>
+          <h3 className="font-display font-semibold text-[24px] lg:text-[28px] text-[#f4f1ec] text-center">
+            O que eu entrego em cada operação.
+          </h3>
+          <p className="mt-3 text-[15px] text-center max-w-[640px] mx-auto" style={{ color: "rgba(244,241,236,0.7)" }}>
+            Entregáveis técnicos das quatro frentes — sem pacotes genéricos.
+          </p>
+          <div className="flex flex-wrap justify-center gap-3 mt-8">
+            {[
+              "DRE Gerencial Mensal","Painel de KPIs","Plano Orçamentário",
+              "Fluxo de Caixa Projetado","Apuração Fiscal Completa","Planejamento Tributário",
+              "Suporte Direto ao Sócio","Abertura de Empresa","Alterações Contratuais",
+              "Registro de Marca","Mentorias para Sócios","Trilhas de Educação Financeira",
+            ].map((p) => (
+              <span
+                key={p}
+                className="px-5 py-2 text-[13px] font-medium text-[#f4f1ec] rounded-full transition-all duration-150 cursor-default hover:bg-[#005a54] hover:border-[#005a54]"
+                style={{ border: "1px solid rgba(255,255,255,0.18)" }}
+              >
+                {p}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* BLOCO B — Métricas em 3 colunas */}
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-3">
+          {[
+            { v: 12, fmt: (n: number) => `+${Math.round(n)}`, small: "anos", d: "de mercado consolidado" },
+            { v: 320, fmt: (n: number) => `${Math.round(n)}`, small: "empresas", d: "atendidas em todo o país" },
+            { v: 98, fmt: (n: number) => `${Math.round(n)}%`, small: "", d: "de retenção de clientes" },
+          ].map((m, i) => (
+            <div key={i} className={`py-12 px-6 text-center ${i < 2 ? "md:border-r border-[#e8e4db]" : ""} ${i < 2 ? "border-b md:border-b-0" : ""} border-[#e8e4db]`}>
+              <div className="flex items-baseline justify-center gap-2">
+                <span className="font-mono-tech text-[48px] text-[#005a54] leading-none">
+                  <CounterMetric value={m.v} format={m.fmt} />
+                </span>
+                {m.small && <span className="text-[14px] font-bold text-[#005a54] tracking-wide">{m.small}</span>}
+              </div>
+              <p className="text-[15px] text-[#1A1A1A] max-w-[200px] mx-auto mt-3 leading-snug">{m.d}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
 }
 
-const QUESTIONS = [
+/* ============= COMO FUNCIONA / FEATURES ALTERNADAS ============= */
+const FEATURES = [
+  {
+    badge: "BU-01 · FINANÇAS",
+    title: <>Pare de decidir <em className="italic font-normal">por intuição.</em></>,
+    sub: "Estruturo o fluxo de caixa, custos e indicadores até que cada decisão sua passe a depender do que você lê — não do que você sente.",
+    bullets: ["DRE gerencial mensal comentado", "Painel de KPIs sob medida", "Plano orçamentário revisado trimestralmente"],
+    cta: "Conhecer a frente Finanças →",
+    bg: "#f4f1ec",
+    mockupKind: "dashboard" as const,
+  },
+  {
+    badge: "BU-02 · CONTABILIDADE",
+    title: <>Contabilidade que <em className="italic font-normal">explica.</em></>,
+    sub: "Conduzo a apuração mensal, o planejamento tributário e o suporte direto ao sócio. O relatório que entrego precisa ser lido — não apenas arquivado.",
+    bullets: ["Apuração federal, estadual e municipal", "Planejamento tributário anual", "Reunião técnica mensal com o sócio"],
+    cta: "Conhecer a frente Contabilidade →",
+    bg: "#ffffff",
+    mockupKind: "sand" as const,
+  },
+  {
+    badge: "BU-03 · LEGALIZAÇÃO",
+    title: <>Estrutura societária <em className="italic font-normal">sem improviso.</em></>,
+    sub: "Abro, regularizo e ajusto o seu negócio com o rigor que o crescimento exige. Da abertura ao registro de marca.",
+    bullets: ["Abertura e alterações contratuais", "Licenças e alvarás", "Registro de marcas no INPI"],
+    cta: "Conhecer a frente Legalização →",
+    bg: "#f4f1ec",
+    mockupKind: "dark" as const,
+  },
+];
+
+function FeatureMockup({ kind }: { kind: "dashboard" | "sand" | "dark" }) {
+  if (kind === "dashboard") {
+    return (
+      <div className="w-full" style={{ filter: "drop-shadow(0 16px 48px rgba(0,0,0,0.08))" }}>
+        <FloatingDashboard compact />
+      </div>
+    );
+  }
+  if (kind === "sand") {
+    return (
+      <div className="w-full max-w-[480px] aspect-[4/3] rounded-[8px] flex items-center justify-center shadow-[0_16px_48px_rgba(0,0,0,0.08)]" style={{ background: "#cec9b8" }}>
+        <span className="label-mono text-[#1F3D2E]">Mockup · Contabilidade</span>
+      </div>
+    );
+  }
+  return (
+    <div className="w-full max-w-[480px] aspect-[4/3] rounded-[8px] flex items-center justify-center shadow-[0_16px_48px_rgba(0,0,0,0.08)]" style={{ background: "#1F3D2E" }}>
+      <span className="text-[14px] text-[#f4f1ec]">Mockup · Legalização</span>
+    </div>
+  );
+}
+
+function FeatureBlock({ f, idx }: { f: typeof FEATURES[number]; idx: number }) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) setVisible(true); });
+    }, { threshold: 0.2 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  const reverse = idx % 2 === 1;
+  return (
+    <div ref={ref} className="py-20" style={{ background: f.bg }}>
+      <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
+        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center ${reverse ? "lg:[&>*:first-child]:order-2" : ""}`}>
+          <div
+            className="transition-all duration-500"
+            style={{
+              opacity: visible ? 1 : 0,
+              transform: visible ? "translateX(0)" : `translateX(${reverse ? 30 : -30}px)`,
+            }}
+          >
+            <span className="label-mono text-[#005a54]">{f.badge}</span>
+            <h3 className="font-display font-semibold text-[28px] lg:text-[32px] text-[#1A1A1A] mt-4 leading-tight">
+              {f.title}
+            </h3>
+            <p className="text-[16px] mt-4 leading-relaxed" style={{ color: "rgba(26,26,26,0.8)" }}>{f.sub}</p>
+            <ul className="mt-6 space-y-2">
+              {f.bullets.map((b) => (
+                <li key={b} className="flex gap-3 text-[14px] text-[#1A1A1A]">
+                  <span className="text-[#005a54] font-bold">—</span>
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
+            <a href="#atuacao" className="inline-block mt-8 text-[14px] font-bold text-[#005a54] tracking-wide hover:translate-x-1 transition-transform">
+              {f.cta}
+            </a>
+          </div>
+          <div
+            className="flex justify-center transition-all duration-500"
+            style={{
+              opacity: visible ? 1 : 0,
+              transform: visible ? "translateX(0)" : `translateX(${reverse ? -30 : 30}px)`,
+            }}
+          >
+            <FeatureMockup kind={f.mockupKind} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function ComoFunciona() {
+  return (
+    <section id="como-funciona" className="border-b border-[rgba(26,26,26,0.1)]">
+      <div className="max-w-[1320px] mx-auto px-6 lg:px-10 pt-24 pb-8">
+        <span className="label-mono text-[#005a54]">· OPERAÇÃO / COMO FUNCIONA</span>
+        <h2 className="font-display text-[40px] lg:text-[56px] leading-[1.05] text-[#1F3D2E] mt-4 max-w-3xl">
+          Na prática, <span className="italic text-[#005a54]">é assim.</span>
+        </h2>
+        <p className="text-[16px] text-[#1A1A1A]/80 mt-6 max-w-2xl leading-relaxed">
+          Cada frente opera com método próprio, entregáveis definidos e reuniões técnicas recorrentes. Não há caixa-preta.
+        </p>
+      </div>
+      {FEATURES.map((f, i) => (
+        <FeatureBlock key={f.badge} f={f} idx={i} />
+      ))}
+    </section>
+  );
+}
   { q: "Qual o faturamento anual atual da sua empresa?", opts: ["Até R$ 2M", "Entre R$ 2M e R$ 8M", "Entre R$ 8M e R$ 30M", "Acima de R$ 30M"] },
   { q: "Quantos colaboradores CLT você tem hoje?", opts: ["Até 5 pessoas", "Entre 6 e 20 pessoas", "Entre 21 e 50 pessoas", "Acima de 50 pessoas"] },
   { q: "Você tem DRE gerencial atualizado todo mês?", opts: ["Sim, recebo e leio mensalmente", "Tenho, mas não entendo direito", "Não tenho DRE gerencial", "Não sei o que é DRE gerencial"] },
