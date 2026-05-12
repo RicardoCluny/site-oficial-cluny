@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Nav, FAQ, Cadastro, Footer, StickyBar } from "@/components/cluny/Sections";
 import { CalcControladoria } from "@/components/cluny/CalcControladoria";
 
-export const Route = createFileRoute("/planos/controladoria")({
+export const Route = createFileRoute("/planos_/controladoria")({
   head: () => ({
     meta: [
       { title: "Controladoria — Cluny" },

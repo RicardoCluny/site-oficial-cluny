@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Nav, FAQ, Cadastro, Footer, StickyBar } from "@/components/cluny/Sections";
 import { CalcContabilidade } from "@/components/cluny/CalcContabilidade";
 
-export const Route = createFileRoute("/planos/contabilidade")({
+export const Route = createFileRoute("/planos_/contabilidade")({
   head: () => ({
     meta: [
       { title: "Contabilidade Consultiva — Cluny" },

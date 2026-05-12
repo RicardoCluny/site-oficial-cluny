@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useEffect } from "react";
 import { Nav, Footer, Cadastro, FAQ } from "@/components/cluny/Sections";
 
-export const Route = createFileRoute("/planos/bpo")({
+export const Route = createFileRoute("/planos_/bpo")({
   head: () => ({
     meta: [
       { title: "BPO Financeiro — Cluny Gestão Empresarial" },
