@@ -169,6 +169,57 @@ export function Nav() {
   );
 }
 
+/* ============= Floating Dashboard Mockup (reutilizável) ============= */
+export function FloatingDashboard({ compact = false }: { compact?: boolean }) {
+  return (
+    <div className={`relative w-full ${compact ? "min-h-[360px]" : "min-h-[480px]"} flex items-center justify-center`}>
+      {/* Card principal */}
+      <div className="float-card-1 relative z-10 w-full max-w-[420px] bg-white rounded-[12px] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.15)]">
+        <div className="flex items-center justify-between pb-4 border-b border-[#f4f1ec]">
+          <span className="label-mono text-[#6e7b7c]">PAINEL CLUNY</span>
+          <span className="pulse-dot" />
+        </div>
+        <div className="mt-4 space-y-4">
+          <div className="flex items-center justify-between">
+            <span className="text-[12px] text-[#6e7b7c]">Resultado do mês</span>
+            <span className="font-mono-tech text-[22px] font-medium text-[#1A1A1A]">R$ 284.500</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-[12px] text-[#6e7b7c]">DRE Gerencial</span>
+            <span className="px-2 py-1 rounded-[2px] text-[9px] font-bold tracking-wider" style={{ background: "rgba(0,90,84,0.15)", color: "#005a54" }}>ATUALIZADO</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-[12px] text-[#6e7b7c]">Carga tributária</span>
+            <span className="font-mono-tech text-[18px] font-medium text-[#005a54]">−22%</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-[12px] text-[#6e7b7c]">Próxima reunião</span>
+            <span className="text-[14px] font-medium text-[#1A1A1A]">Qui, 15/05</span>
+          </div>
+          <div className="h-px bg-[#f4f1ec]" />
+          <div className="rounded-[6px] px-3 py-2 text-center" style={{ background: "#1F3D2E" }}>
+            <span className="text-[11px] font-bold text-[#f4f1ec] tracking-wide">Operação conduzida pela Cluny</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Card secundário (KPI) */}
+      <div className="float-card-2 hidden md:block absolute z-20 right-0 -top-2 lg:-top-4 w-[160px] p-4 rounded-[8px] shadow-[0_12px_32px_rgba(0,0,0,0.18)]" style={{ background: "#1F3D2E" }}>
+        <div className="label-mono text-[#6e7b7c]" style={{ fontSize: 9 }}>KPI · MAR</div>
+        <div className="font-mono-tech text-[32px] text-[#f4f1ec] leading-none mt-1">98%</div>
+        <div className="text-[11px] text-[#6e7b7c] mt-1">retenção</div>
+      </div>
+
+      {/* Card terciário (economia) */}
+      <div className="float-card-3 hidden md:block absolute z-20 left-0 -bottom-4 w-[180px] p-4 rounded-[8px] shadow-[0_12px_32px_rgba(0,0,0,0.18)]" style={{ background: "#c48b30" }}>
+        <div className="label-mono" style={{ fontSize: 9, color: "rgba(26,26,26,0.7)" }}>ECONOMIA 2024</div>
+        <div className="font-mono-tech text-[24px] text-[#1A1A1A] leading-none mt-1">R$ 1.2M</div>
+        <div className="text-[11px] mt-1" style={{ color: "rgba(26,26,26,0.7)" }}>em tributos</div>
+      </div>
+    </div>
+  );
+}
+
 export function Hero() {
   const METRICS = [
     { n: "01", value: 12, fmt: (v: number) => `+${Math.round(v)}`, small: "anos", d: "de mercado consolidado" },
@@ -179,8 +230,8 @@ export function Hero() {
   return (
     <section className="bg-[#f4f1ec] text-[#1A1A1A]">
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 py-16 lg:py-24 min-h-[640px] items-center">
-          <div className="lg:col-span-7 flex flex-col justify-center animate-fade-in">
+        <div className="grid grid-cols-1 lg:grid-cols-[55fr_45fr] gap-12 lg:gap-20 py-16 lg:py-24 min-h-[calc(100vh-100px)] items-center">
+          <div className="flex flex-col justify-center animate-fade-in">
             <span className="label-mono text-[#6e7b7c] border border-[#6e7b7c] px-2 py-1 self-start mb-8">
               [ CLUNY GESTÃO EMPRESARIAL · V.2026 ]
             </span>
@@ -213,22 +264,26 @@ export function Hero() {
               · Resposta em até 1 dia útil · Sem SDR · Sem funil de qualificação
             </p>
           </div>
-          <div className="lg:col-span-5">
-            <div className="grid grid-cols-2 gap-3">
-              {METRICS.map((m) => (
-                <div key={m.n} className="p-6 rounded-[4px] flex flex-col justify-between min-h-[180px] bg-[#1F3D2E] text-[#f4f1ec] border border-[rgba(255,255,255,0.06)]">
-                  <span className="label-mono text-[#c48b30]">MÉTRICA · {m.n}</span>
-                  <div>
-                    <div className="font-mono-tech text-[36px] leading-none text-[#f4f1ec]">
-                      <CounterMetric value={m.value} format={m.fmt} />
-                      {m.small && <span className="text-[14px] text-[#cec9b8] ml-1">{m.small}</span>}
-                    </div>
-                    <p className="text-[12px] text-[#cec9b8] mt-3 leading-snug">{m.d}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+          <div className="relative px-4 lg:px-8">
+            <FloatingDashboard />
           </div>
+        </div>
+
+        {/* Métricas em linha horizontal */}
+        <div className="border-t border-[#e8e4db] grid grid-cols-2 lg:grid-cols-4">
+          {METRICS.map((m, i) => (
+            <div
+              key={m.n}
+              className={`p-6 lg:p-8 ${i < METRICS.length - 1 ? "lg:border-r border-[#e8e4db]" : ""} ${i % 2 === 0 ? "border-r lg:border-r" : ""} ${i < 2 ? "border-b lg:border-b-0" : ""} border-[#e8e4db]`}
+            >
+              <span className="label-mono text-[#6e7b7c]">MÉTRICA · {m.n}</span>
+              <div className="font-mono-tech text-[36px] leading-none text-[#1F3D2E] mt-3">
+                <CounterMetric value={m.value} format={m.fmt} />
+                {m.small && <span className="text-[14px] text-[#6e7b7c] ml-1">{m.small}</span>}
+              </div>
+              <p className="text-[12px] text-[#1A1A1A]/70 mt-3 leading-snug">{m.d}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>
