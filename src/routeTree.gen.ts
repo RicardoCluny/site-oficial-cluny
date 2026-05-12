@@ -11,9 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PlanosRouteImport } from './routes/planos'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as PlanosControladoriaRouteImport } from './routes/planos.controladoria'
-import { Route as PlanosContabilidadeRouteImport } from './routes/planos.contabilidade'
-import { Route as PlanosBpoRouteImport } from './routes/planos.bpo'
+import { Route as PlanosControladoriaRouteImport } from './routes/planos_.controladoria'
+import { Route as PlanosContabilidadeRouteImport } from './routes/planos_.contabilidade'
+import { Route as PlanosBpoRouteImport } from './routes/planos_.bpo'
 
 const PlanosRoute = PlanosRouteImport.update({
   id: '/planos',
@@ -26,31 +26,31 @@ const IndexRoute = IndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const PlanosControladoriaRoute = PlanosControladoriaRouteImport.update({
-  id: '/controladoria',
-  path: '/controladoria',
-  getParentRoute: () => PlanosRoute,
+  id: '/planos_/controladoria',
+  path: '/planos/controladoria',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const PlanosContabilidadeRoute = PlanosContabilidadeRouteImport.update({
-  id: '/contabilidade',
-  path: '/contabilidade',
-  getParentRoute: () => PlanosRoute,
+  id: '/planos_/contabilidade',
+  path: '/planos/contabilidade',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const PlanosBpoRoute = PlanosBpoRouteImport.update({
-  id: '/bpo',
-  path: '/bpo',
-  getParentRoute: () => PlanosRoute,
+  id: '/planos_/bpo',
+  path: '/planos/bpo',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/planos': typeof PlanosRouteWithChildren
+  '/planos': typeof PlanosRoute
   '/planos/bpo': typeof PlanosBpoRoute
   '/planos/contabilidade': typeof PlanosContabilidadeRoute
   '/planos/controladoria': typeof PlanosControladoriaRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/planos': typeof PlanosRouteWithChildren
+  '/planos': typeof PlanosRoute
   '/planos/bpo': typeof PlanosBpoRoute
   '/planos/contabilidade': typeof PlanosContabilidadeRoute
   '/planos/controladoria': typeof PlanosControladoriaRoute
@@ -58,10 +58,10 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/planos': typeof PlanosRouteWithChildren
-  '/planos/bpo': typeof PlanosBpoRoute
-  '/planos/contabilidade': typeof PlanosContabilidadeRoute
-  '/planos/controladoria': typeof PlanosControladoriaRoute
+  '/planos': typeof PlanosRoute
+  '/planos_/bpo': typeof PlanosBpoRoute
+  '/planos_/contabilidade': typeof PlanosContabilidadeRoute
+  '/planos_/controladoria': typeof PlanosControladoriaRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -82,14 +82,17 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/planos'
-    | '/planos/bpo'
-    | '/planos/contabilidade'
-    | '/planos/controladoria'
+    | '/planos_/bpo'
+    | '/planos_/contabilidade'
+    | '/planos_/controladoria'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  PlanosRoute: typeof PlanosRouteWithChildren
+  PlanosRoute: typeof PlanosRoute
+  PlanosBpoRoute: typeof PlanosBpoRoute
+  PlanosContabilidadeRoute: typeof PlanosContabilidadeRoute
+  PlanosControladoriaRoute: typeof PlanosControladoriaRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -108,49 +111,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/planos/controladoria': {
-      id: '/planos/controladoria'
-      path: '/controladoria'
+    '/planos_/controladoria': {
+      id: '/planos_/controladoria'
+      path: '/planos/controladoria'
       fullPath: '/planos/controladoria'
       preLoaderRoute: typeof PlanosControladoriaRouteImport
-      parentRoute: typeof PlanosRoute
+      parentRoute: typeof rootRouteImport
     }
-    '/planos/contabilidade': {
-      id: '/planos/contabilidade'
-      path: '/contabilidade'
+    '/planos_/contabilidade': {
+      id: '/planos_/contabilidade'
+      path: '/planos/contabilidade'
       fullPath: '/planos/contabilidade'
       preLoaderRoute: typeof PlanosContabilidadeRouteImport
-      parentRoute: typeof PlanosRoute
+      parentRoute: typeof rootRouteImport
     }
-    '/planos/bpo': {
-      id: '/planos/bpo'
-      path: '/bpo'
+    '/planos_/bpo': {
+      id: '/planos_/bpo'
+      path: '/planos/bpo'
       fullPath: '/planos/bpo'
       preLoaderRoute: typeof PlanosBpoRouteImport
-      parentRoute: typeof PlanosRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
 
-interface PlanosRouteChildren {
-  PlanosBpoRoute: typeof PlanosBpoRoute
-  PlanosContabilidadeRoute: typeof PlanosContabilidadeRoute
-  PlanosControladoriaRoute: typeof PlanosControladoriaRoute
-}
-
-const PlanosRouteChildren: PlanosRouteChildren = {
+const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
+  PlanosRoute: PlanosRoute,
   PlanosBpoRoute: PlanosBpoRoute,
   PlanosContabilidadeRoute: PlanosContabilidadeRoute,
   PlanosControladoriaRoute: PlanosControladoriaRoute,
 }
-
-const PlanosRouteWithChildren =
-  PlanosRoute._addFileChildren(PlanosRouteChildren)
-
-const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  PlanosRoute: PlanosRouteWithChildren,
-}
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
