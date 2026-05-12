@@ -373,6 +373,68 @@ export function FloatingDashboard({ compact = false }: { compact?: boolean }) {
   );
 }
 
+/* ============ Hero Card único — Painel Cluny ============ */
+function HeroCard() {
+  return (
+    <div
+      className="float-card-1 w-full max-w-[420px] mx-auto bg-white rounded-[12px] p-7"
+      style={{ boxShadow: "0 24px 64px rgba(0,0,0,0.12)", minHeight: 320 }}
+    >
+      {/* Header */}
+      <div className="flex items-center gap-2">
+        <span className="pulse-dot" />
+        <span className="label-mono text-[#6e7b7c]">PAINEL CLUNY · AO VIVO</span>
+      </div>
+      <div className="h-px bg-[#f4f1ec] my-3" />
+
+      {/* Linhas */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <span className="text-[12px] text-[#6e7b7c]">Resultado do mês</span>
+          <span className="font-mono-tech text-[20px] font-medium text-[#1A1A1A]">R$ 284.500</span>
+        </div>
+        <div className="flex items-center justify-between">
+          <span className="text-[12px] text-[#6e7b7c]">DRE Gerencial</span>
+          <span className="px-2 py-0.5 rounded-[2px] text-[9px] font-bold tracking-wider"
+            style={{ background: "rgba(0,90,84,0.12)", color: "#005a54" }}>ATUALIZADO</span>
+        </div>
+        <div className="flex items-center justify-between">
+          <span className="text-[12px] text-[#6e7b7c]">Carga tributária</span>
+          <span className="font-mono-tech text-[18px] font-medium text-[#005a54]">−22%</span>
+        </div>
+        <div className="flex items-center justify-between">
+          <span className="text-[12px] text-[#6e7b7c]">Margem operacional</span>
+          <span className="font-mono-tech text-[18px] font-medium text-[#005a54]">+11pp</span>
+        </div>
+        <div className="flex items-center justify-between">
+          <span className="text-[12px] text-[#6e7b7c]">Próxima reunião técnica</span>
+          <span className="text-[13px] font-medium text-[#1A1A1A]">Qui, 15/05 · 14h</span>
+        </div>
+      </div>
+
+      <div className="h-px bg-[#f4f1ec] my-4" />
+
+      {/* Diagnóstico progress */}
+      <div>
+        <div className="flex items-center justify-between mb-1">
+          <span className="text-[11px] font-bold text-[#1A1A1A]">Diagnóstico técnico</span>
+          <span className="text-[11px] text-[#6e7b7c]">Fase 02 / 03</span>
+        </div>
+        <div className="text-[11px] text-[#6e7b7c] mb-2">Plano de execução</div>
+        <div className="h-1 w-full rounded-[2px] bg-[#f4f1ec] overflow-hidden">
+          <div className="h-full rounded-[2px]" style={{ width: "65%", background: "#005a54" }} />
+        </div>
+      </div>
+
+      {/* Badge inferior */}
+      <div className="mt-5 rounded-[6px] px-4 py-3" style={{ background: "#1F3D2E" }}>
+        <div className="text-[12px] font-bold text-[#f4f1ec] tracking-wide">Operação conduzida pela Cluny</div>
+        <div className="text-[10px] text-[#6e7b7c] mt-0.5">Desde 2013 · 320 empresas</div>
+      </div>
+    </div>
+  );
+}
+
 export function Hero() {
   const METRICS = [
     { n: "01", value: 12, fmt: (v: number) => `+${Math.round(v)}`, small: "anos", d: "de mercado consolidado" },
@@ -381,9 +443,9 @@ export function Hero() {
     { n: "04", value: 98, fmt: (v: number) => `${Math.round(v)}%`, small: "", d: "de retenção de clientes" },
   ];
   return (
-    <section className="bg-[#f4f1ec] text-[#1A1A1A]">
+    <section id="home" className="bg-[#f4f1ec] text-[#1A1A1A]">
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-[55fr_45fr] gap-12 lg:gap-20 py-16 lg:py-24 min-h-[calc(100vh-100px)] items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-[55fr_45fr] gap-12 lg:gap-20 py-20 items-center">
           <div className="flex flex-col justify-center animate-fade-in">
             <span className="label-mono text-[#6e7b7c] border border-[#6e7b7c] px-2 py-1 self-start mb-8">
               [ CLUNY GESTÃO EMPRESARIAL · V.2026 ]
@@ -417,17 +479,17 @@ export function Hero() {
               · Resposta em até 1 dia útil · Sem SDR · Sem funil de qualificação
             </p>
           </div>
-          <div className="relative px-4 lg:px-8">
-            <FloatingDashboard />
+          <div className="relative px-4 lg:px-8 flex justify-center">
+            <HeroCard />
           </div>
         </div>
 
         {/* Métricas em linha horizontal */}
-        <div className="border-t border-[#e8e4db] grid grid-cols-2 lg:grid-cols-4">
+        <div className="border-t border-[#e8e4db] grid grid-cols-2 lg:grid-cols-4 py-2">
           {METRICS.map((m, i) => (
             <div
               key={m.n}
-              className={`p-6 lg:p-8 ${i < METRICS.length - 1 ? "lg:border-r border-[#e8e4db]" : ""} ${i % 2 === 0 ? "border-r lg:border-r" : ""} ${i < 2 ? "border-b lg:border-b-0" : ""} border-[#e8e4db]`}
+              className={`p-6 lg:px-8 lg:py-8 ${i < METRICS.length - 1 ? "lg:border-r border-[#e8e4db]" : ""} ${i % 2 === 0 ? "border-r lg:border-r" : ""} ${i < 2 ? "border-b lg:border-b-0" : ""} border-[#e8e4db]`}
             >
               <span className="label-mono text-[#6e7b7c]">MÉTRICA · {m.n}</span>
               <div className="font-mono-tech text-[36px] leading-none text-[#1F3D2E] mt-3">
@@ -442,7 +504,6 @@ export function Hero() {
     </section>
   );
 }
-
 /* ============= ATUAÇÃO · 4 MÓDULOS ============= */
 const BUS = [
   { n: "BU-01", t: "Finanças", sub: "Gestão financeira sob método", d: "Estruturo o fluxo de caixa, custos e indicadores para que a sua decisão pare de depender da intuição." },
