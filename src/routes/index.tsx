@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
-  Nav, Hero, Atuacao, Diagnostico, Metodo, Planos,
+  Nav, Hero, Atuacao, ComoFunciona, Diagnostico, Metodo, Planos,
   Manifesto, Cases, Depoimentos, Calculadora, Conteudo, FAQ, Cadastro, Footer, StickyBar,
 } from "@/components/cluny/Sections";
 
@@ -15,6 +15,7 @@ function Index() {
       <main>
         <Hero />
         <Atuacao />
+        <ComoFunciona />
         <Diagnostico />
         <Metodo />
         <Planos />
