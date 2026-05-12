@@ -1,9 +1,52 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { Logo } from "@/components/cluny/Logo";
 import blogTrib from "@/assets/blog-tributario.jpg";
 import blogDre from "@/assets/blog-dre.jpg";
 import blogHolding from "@/assets/blog-holding.jpg";
 import faqIllu from "@/assets/faq-illustration.jpg";
+
+/* ============ Helpers CRO ============ */
+function useCounterUp(to: number, duration = 1200) {
+  const ref = useRef<HTMLSpanElement | null>(null);
+  const [val, setVal] = useState(0);
+  const started = useRef(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting && !started.current) {
+          started.current = true;
+          const start = performance.now();
+          const tick = (now: number) => {
+            const p = Math.min(1, (now - start) / duration);
+            const eased = 1 - Math.pow(1 - p, 3);
+            setVal(to * eased);
+            if (p < 1) requestAnimationFrame(tick);
+            else setVal(to);
+          };
+          requestAnimationFrame(tick);
+        }
+      });
+    }, { threshold: 0.4 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [to, duration]);
+  return { ref, val };
+}
+
+function requestCadastro(interesse: string) {
+  try {
+    window.dispatchEvent(new CustomEvent("cluny:prefill", { detail: { interesse } }));
+  } catch { /* noop */ }
+  const el = document.getElementById("cadastro");
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function CounterMetric({ value, format }: { value: number; format: (n: number) => string }) {
+  const { ref, val } = useCounterUp(value);
+  return <span ref={ref}>{format(val)}</span>;
+}
 
 const NAV = [
   { label: "Atuação", href: "#atuacao" },
@@ -128,16 +171,16 @@ export function Nav() {
 
 export function Hero() {
   const METRICS = [
-    { n: "01", v: "+12", small: "anos", d: "de mercado consolidado" },
-    { n: "02", v: "320", small: "empresas", d: "atendidas em todo o país" },
-    { n: "03", v: "R$ 1.2M", small: "", d: "economizados em tributos em 2024" },
-    { n: "04", v: "98%", small: "", d: "de retenção de clientes" },
+    { n: "01", value: 12, fmt: (v: number) => `+${Math.round(v)}`, small: "anos", d: "de mercado consolidado" },
+    { n: "02", value: 320, fmt: (v: number) => `${Math.round(v)}`, small: "empresas", d: "atendidas em todo o país" },
+    { n: "03", value: 1.2, fmt: (v: number) => `R$ ${v.toFixed(1)}M`, small: "", d: "economizados em tributos em 2024" },
+    { n: "04", value: 98, fmt: (v: number) => `${Math.round(v)}%`, small: "", d: "de retenção de clientes" },
   ];
   return (
     <section className="bg-[#f4f1ec] text-[#1A1A1A]">
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 py-16 lg:py-24 min-h-[640px] items-center">
-          <div className="lg:col-span-7 flex flex-col justify-center">
+          <div className="lg:col-span-7 flex flex-col justify-center animate-fade-in">
             <span className="label-mono text-[#6e7b7c] border border-[#6e7b7c] px-2 py-1 self-start mb-8">
               [ CLUNY GESTÃO EMPRESARIAL · V.2026 ]
             </span>
@@ -166,6 +209,9 @@ export function Hero() {
                 Diagnóstico em 60s ↓
               </a>
             </div>
+            <p className="mt-5 text-[11px] text-[#6e7b7c]">
+              · Resposta em até 1 dia útil · Sem SDR · Sem funil de qualificação
+            </p>
           </div>
           <div className="lg:col-span-5">
             <div className="grid grid-cols-2 gap-3">
@@ -174,7 +220,8 @@ export function Hero() {
                   <span className="label-mono text-[#c48b30]">MÉTRICA · {m.n}</span>
                   <div>
                     <div className="font-mono-tech text-[36px] leading-none text-[#f4f1ec]">
-                      {m.v}{m.small && <span className="text-[14px] text-[#cec9b8] ml-1">{m.small}</span>}
+                      <CounterMetric value={m.value} format={m.fmt} />
+                      {m.small && <span className="text-[14px] text-[#cec9b8] ml-1">{m.small}</span>}
                     </div>
                     <p className="text-[12px] text-[#cec9b8] mt-3 leading-snug">{m.d}</p>
                   </div>
@@ -468,7 +515,7 @@ export function Metodo() {
 }
 
 export function Planos() {
-  const PlanCard = ({ dark, tag, camada, price, title, tagline, escopo, items, indicado, nota, cta }: any) => (
+  const PlanCard = ({ dark, tag, camada, price, title, tagline, escopo, items, indicado, nota, cta, interesse }: any) => (
     <div
       className={`group relative p-8 lg:p-10 flex flex-col transition-all duration-500 cursor-pointer rounded-[4px]
         ${dark ? "bg-[#1F3D2E] text-[#f4f1ec]" : "bg-[#ffffff] text-[#1A1A1A]"}
@@ -507,6 +554,7 @@ export function Planos() {
         </div>
         <div className="text-[12px] italic opacity-60 mb-6">{nota}</div>
         <button
+          onClick={() => requestCadastro(interesse || title)}
           className="btn-primary mt-auto group/btn relative overflow-hidden transition-all duration-300 group-hover:scale-[1.03]"
           style={dark ? { background: "#c48b30", color: "#1F3D2E", borderColor: "#c48b30" } : {}}
         >
@@ -539,7 +587,7 @@ export function Planos() {
             items={["Contas a pagar e a receber (rotina diária)","Conciliação bancária e cartões","Emissão de NF e cobrança ativa","Fluxo de caixa diário e projetado 90 dias","Gestor de conta dedicado","Reunião quinzenal de operação (60 min)","Integração com ERP do cliente"]}
             indicado={["Faturamento R$ 2M – 15M","Sem analista financeiro dedicado","Sócio ainda na operação"]}
             nota="Não substitui Controladoria. Foco em execução, não em tese."
-            cta="Quero o BPO Financeiro"
+            cta="Quero o BPO Financeiro" interesse="BPO Financeiro"
           />
           <PlanCard dark
             tag="SERVIÇO 02" camada="CAMADA · TESE"
@@ -550,8 +598,12 @@ export function Planos() {
             items={["Painel de KPIs sob medida (gerencial)","DRE gerencial mensal comentado","Análise de margem por linha / cliente / projeto","Orçamento anual com revisão trimestral","Modelagem de cenários (3 horizontes)","Reunião mensal com o sócio (90 min)","Sessão trimestral de tese (3 horas)"]}
             indicado={["Faturamento R$ 8M+","Estrutura financeira já organizada","Sócio buscando tese, não relatório"]}
             nota="Não executa rotina financeira. Pressupõe operação saudável — ou contratação conjunta com BPO."
-            cta="Quero a Controladoria"
+            cta="Quero a Controladoria" interesse="Controladoria"
           />
+        </div>
+        <div className="mt-4 px-4 py-3 flex flex-wrap items-center justify-between gap-3 bg-[#f4f1ec] border-t border-[#e8e4db]">
+          <span className="label-mono text-[#6e7b7c]">· CONTRATO MÍNIMO · 12 MESES · REVISÃO TRIMESTRAL</span>
+          <a href="#calculadora" className="label-mono text-[#005a54] hover:underline">VER QUADRO COMPARATIVO COMPLETO →</a>
         </div>
         <div className="mt-6 p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 transition-all hover:scale-[1.01] cursor-pointer" style={{ background: "#c48b30", color: "#1F3D2E" }}>
           <div className="label-mono">· COMBO 01+02 · BPO + Controladoria em pacote integrado · 15% de desconto</div>
@@ -659,10 +711,16 @@ export function Cases() {
           </div>
         </div>
 
-        <div className="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 border-tech">
-          {["ESTÚDIO ÍMPAR","TAVARES ENG.","KHOURY PART.","NORDA & CIA","VEREDA TECH","MERIDIO LAB"].map((l) => (
-            <div key={l} className="font-display text-[14px] text-[#6e7b7c] text-center py-6 border-r border-b md:border-b-0 border-[rgba(26,26,26,0.1)] last:border-r-0">{l}</div>
-          ))}
+        <div className="mt-12 border-tech overflow-hidden" aria-label="Logos de clientes">
+          <div className="marquee-track py-6 whitespace-nowrap">
+            {[...Array(2)].map((_, dup) => (
+              <div key={dup} className="inline-flex">
+                {["ESTÚDIO ÍMPAR","TAVARES ENG.","KHOURY PART.","NORDA & CIA","VEREDA TECH","MERIDIO LAB"].map((l, i) => (
+                  <div key={`${dup}-${i}`} className="font-display text-[14px] text-[#6e7b7c] px-12">{l}</div>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -876,10 +934,10 @@ export function Calculadora() {
               Em 12 meses, você economiza <strong>{fmt(calc.economiaAno)}</strong> — sem rotatividade, sem passivo trabalhista, com time técnico completo.
             </p>
           </div>
-          <a href="#cadastro" className="btn-primary group" style={{ background: "#1F3D2E", color: "#f4f1ec", borderColor: "#1F3D2E" }}>
+          <button onClick={() => requestCadastro("BPO Financeiro")} className="btn-primary group" style={{ background: "#1F3D2E", color: "#f4f1ec", borderColor: "#1F3D2E" }}>
             QUERO ESTA PROPOSTA
             <span className="transition-transform group-hover:translate-x-1">→</span>
-          </a>
+          </button>
         </div>
       </div>
     </section>
@@ -1015,6 +1073,34 @@ export function FAQ() {
 
 export function Cadastro() {
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [interesse, setInteresse] = useState("");
+  const selectRef = useRef<HTMLSelectElement | null>(null);
+
+  useEffect(() => {
+    const onPrefill = (e: Event) => {
+      const det = (e as CustomEvent).detail as { interesse?: string };
+      const map: Record<string, string> = {
+        "BPO Financeiro": "Finanças / BPO",
+        "Controladoria": "Não sei ainda",
+        "BPO + Controladoria": "Finanças / BPO",
+        "Contabilidade": "Contabilidade",
+        "Legalização": "Legalização",
+        "Educação Corporativa": "Educação Corporativa",
+      };
+      const v = det?.interesse ? (map[det.interesse] || det.interesse) : "";
+      if (v) setInteresse(v);
+    };
+    window.addEventListener("cluny:prefill", onPrefill as EventListener);
+    return () => window.removeEventListener("cluny:prefill", onPrefill as EventListener);
+  }, []);
+
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setTimeout(() => { setLoading(false); setSent(true); }, 1500);
+  };
+
   return (
     <section id="cadastro" className="py-24 lg:py-32 bg-[#1F3D2E] text-[#f4f1ec]">
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
@@ -1065,7 +1151,7 @@ export function Cadastro() {
                 <p className="text-[15px] text-[#f4f1ec]/80 max-w-md">Recebi sua solicitação. Respondo pessoalmente em até 1 dia útil, por escrito.</p>
               </div>
             ) : (
-              <form onSubmit={(e)=>{e.preventDefault(); setSent(true);}} className="space-y-6">
+              <form onSubmit={submit} className="space-y-6">
                 {[
                   { n: "nome", l: "Nome completo" },
                   { n: "email", l: "E-mail corporativo", t: "email" },
@@ -1073,13 +1159,21 @@ export function Cadastro() {
                   { n: "tel", l: "Telefone" },
                 ].map((f) => (
                   <div key={f.n}>
-                    <label className="label-mono text-[#6e7b7c] block mb-2">{f.l}</label>
-                    <input required type={f.t || "text"} name={f.n} placeholder={f.l} className="w-full bg-transparent border-b border-[rgba(255,255,255,0.2)] py-2 outline-none focus:border-[#c48b30] text-[15px] text-[#f4f1ec] placeholder:text-[#6e7b7c] transition-colors" />
+                    <label htmlFor={f.n} className="label-mono text-[#6e7b7c] block mb-2">{f.l}</label>
+                    <input id={f.n} required aria-required="true" type={f.t || "text"} name={f.n} placeholder={f.l} className="w-full bg-transparent border-b border-[rgba(255,255,255,0.2)] py-2 outline-none focus:border-[#c48b30] text-[15px] text-[#f4f1ec] placeholder:text-[#6e7b7c] transition-colors" />
                   </div>
                 ))}
                 <div>
-                  <label className="label-mono text-[#6e7b7c] block mb-2">Interesse principal</label>
-                  <select required defaultValue="" className="w-full bg-transparent border-b border-[rgba(255,255,255,0.2)] py-2 outline-none focus:border-[#c48b30] text-[15px] text-[#f4f1ec]">
+                  <label htmlFor="interesse" className="label-mono text-[#6e7b7c] block mb-2">Interesse principal</label>
+                  <select
+                    id="interesse"
+                    ref={selectRef}
+                    required
+                    aria-required="true"
+                    value={interesse}
+                    onChange={(e) => setInteresse(e.target.value)}
+                    className="w-full bg-transparent border-b border-[rgba(255,255,255,0.2)] py-2 outline-none focus:border-[#c48b30] text-[15px] text-[#f4f1ec]"
+                  >
                     <option value="" className="bg-[#1A1A1A]">Selecione...</option>
                     <option className="bg-[#1A1A1A]">Finanças / BPO</option>
                     <option className="bg-[#1A1A1A]">Contabilidade</option>
@@ -1088,10 +1182,28 @@ export function Cadastro() {
                     <option className="bg-[#1A1A1A]">Não sei ainda</option>
                   </select>
                 </div>
-                <button type="submit" className="btn-primary w-full justify-center mt-4" style={{ height: 52 }}>
-                  Quero conversar com a Cluny →
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="btn-primary w-full justify-center mt-4 disabled:opacity-60 disabled:cursor-not-allowed"
+                  style={{ height: 52 }}
+                >
+                  {loading ? (
+                    <>
+                      <span>Enviando...</span>
+                      <span className="ml-2 inline-block w-4 h-4 border-2 border-[#f4f1ec] border-t-transparent rounded-full animate-spin" />
+                    </>
+                  ) : (
+                    <>Quero conversar com a Cluny →</>
+                  )}
                 </button>
-                <p className="text-[11px] text-[#6e7b7c]">Resposta da nossa equipe em até 1 dia útil. Seus dados não são compartilhados.</p>
+                <p className="text-[11px] text-[#6e7b7c] flex items-center gap-2">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#6e7b7c" strokeWidth="2" aria-hidden="true">
+                    <rect x="4" y="11" width="16" height="10" rx="1" />
+                    <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+                  </svg>
+                  Resposta em até 1 dia útil. Seus dados não são compartilhados.
+                </p>
               </form>
             )}
           </div>
@@ -1140,5 +1252,54 @@ export function Footer() {
         </div>
       </div>
     </footer>
+  );
+}
+
+/* ============ Sticky CTA Bar (desktop) ============ */
+export function StickyBar() {
+  const [show, setShow] = useState(false);
+  const [closed, setClosed] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (sessionStorage.getItem("cluny:sticky-closed") === "1") setClosed(true);
+    const onScroll = () => {
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = h > 0 ? window.scrollY / h : 0;
+      const cad = document.getElementById("cadastro");
+      const cadVisible = cad ? cad.getBoundingClientRect().top < window.innerHeight * 0.8 : false;
+      setShow(pct > 0.6 && !cadVisible);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  if (closed || !show) return null;
+  return (
+    <div
+      className="hidden md:flex fixed bottom-0 left-0 right-0 z-50 bg-[#1F3D2E] border-t border-[rgba(255,255,255,0.08)] items-center justify-between gap-4 px-6 lg:px-10"
+      style={{ height: 56, animation: "fade-in 0.3s ease-out" }}
+      role="region"
+      aria-label="Chamada para cadastro"
+    >
+      <span className="text-[14px] text-[#f4f1ec]">Pronto para organizar sua operação?</span>
+      <div className="flex items-center gap-4">
+        <button
+          onClick={() => requestCadastro("")}
+          className="text-[13px] font-bold text-[#f4f1ec]"
+          style={{ background: "#005a54", padding: "10px 20px", borderRadius: 2 }}
+        >
+          Cadastre-se →
+        </button>
+        <button
+          onClick={() => { setClosed(true); sessionStorage.setItem("cluny:sticky-closed", "1"); }}
+          aria-label="Fechar barra"
+          className="text-[#cec9b8] hover:text-[#f4f1ec] text-[20px] leading-none"
+        >
+          ×
+        </button>
+      </div>
+    </div>
   );
 }
