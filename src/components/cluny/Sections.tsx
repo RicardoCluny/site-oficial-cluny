@@ -598,7 +598,7 @@ export function Planos() {
             items={["Painel de KPIs sob medida (gerencial)","DRE gerencial mensal comentado","Análise de margem por linha / cliente / projeto","Orçamento anual com revisão trimestral","Modelagem de cenários (3 horizontes)","Reunião mensal com o sócio (90 min)","Sessão trimestral de tese (3 horas)"]}
             indicado={["Faturamento R$ 8M+","Estrutura financeira já organizada","Sócio buscando tese, não relatório"]}
             nota="Não executa rotina financeira. Pressupõe operação saudável — ou contratação conjunta com BPO."
-            cta="Quero a Controladoria"
+            cta="Quero a Controladoria" interesse="Controladoria"
           />
         </div>
         <div className="mt-6 p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 transition-all hover:scale-[1.01] cursor-pointer" style={{ background: "#c48b30", color: "#1F3D2E" }}>
