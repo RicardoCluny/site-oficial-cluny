@@ -1,4 +1,6 @@
+import * as React from "react";
 import { useState, useMemo, useEffect, useRef } from "react";
+import { Link } from "@tanstack/react-router";
 import { Logo } from "@/components/cluny/Logo";
 import blogTrib from "@/assets/blog-tributario.jpg";
 import blogDre from "@/assets/blog-dre.jpg";
@@ -48,19 +50,45 @@ function CounterMetric({ value, format }: { value: number; format: (n: number) =
   return <span ref={ref}>{format(val)}</span>;
 }
 
-type NavItem = { label: string; href: string; mega?: { n: string; t: string; sub: string }[] };
-const NAV_MEGA = [
+type MegaItem = { n: string; t: string; sub: string };
+type MaterialItem = { t: string; sub: string; icon: React.ReactNode };
+type NavItem = {
+  label: string;
+  href?: string;     // hash (cross-route via Link to="/" hash=...)
+  to?: string;       // route path
+  mega?: MegaItem[];
+  materiais?: MaterialItem[];
+};
+
+const NAV_MEGA_ATUACAO: MegaItem[] = [
   { n: "BU-01", t: "Finanças", sub: "Gestão financeira sob método" },
   { n: "BU-02", t: "Contabilidade", sub: "Contabilidade consultiva" },
   { n: "BU-03", t: "Legalização", sub: "Constituição e regularização" },
   { n: "BU-04", t: "Educação Corporativa", sub: "Capacitação técnica aplicada" },
 ];
+
+const IconStroke = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg width={32} height={32} viewBox="0 0 32 32" fill="none" stroke="#005a54" strokeWidth={1.4} strokeLinecap="round" strokeLinejoin="round" {...props} />
+);
+const NAV_MATERIAIS: MaterialItem[] = [
+  { t: "Aulas Financeiras", sub: "Trilhas técnicas em vídeo", icon: (
+    <IconStroke><polygon points="13,10 22,16 13,22" fill="#005a54" stroke="#005a54" /><rect x="4" y="6" width="24" height="20" rx="2" /></IconStroke>
+  ) },
+  { t: "Ferramentas", sub: "Planilhas e templates aplicáveis", icon: (
+    <IconStroke><path d="M14 4l-2 2 6 6 2-2-6-6z" /><path d="M6 26l8-8" /><path d="M20 12l6 6-4 4-6-6" /></IconStroke>
+  ) },
+  { t: "E-Book", sub: "Guias técnicos para download", icon: (
+    <IconStroke><path d="M6 5h14a4 4 0 0 1 4 4v18H10a4 4 0 0 1-4-4V5z" /><path d="M6 23a4 4 0 0 1 4-4h14" /></IconStroke>
+  ) },
+];
+
 const NAV: NavItem[] = [
-  { label: "Atuação", href: "#atuacao", mega: NAV_MEGA },
-  { label: "Planos", href: "#planos" },
-  { label: "Método", href: "#metodo" },
-  { label: "Diagnóstico", href: "#diagnostico" },
-  { label: "Cases", href: "#cases" },
+  { label: "Atuação", href: "atuacao", mega: NAV_MEGA_ATUACAO },
+  { label: "Método", href: "metodo" },
+  { label: "Diagnóstico", href: "diagnostico" },
+  { label: "Planos", to: "/planos" },
+  { label: "Blog", href: "blog" },
+  { label: "Materiais", materiais: NAV_MATERIAIS },
 ];
 
 export function Nav() {
@@ -75,7 +103,7 @@ export function Nav() {
   useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 12);
-      const ids = NAV.map((n) => n.href.replace("#", ""));
+      const ids = NAV.filter((n) => n.href).map((n) => n.href!);
       let current = "";
       for (const id of ids) {
         const el = document.getElementById(id);
@@ -102,6 +130,21 @@ export function Nav() {
     closeTimer.current = window.setTimeout(() => setMegaOpen(null), 100);
   };
 
+  const renderTrigger = (n: NavItem, isActive: boolean, hasDropdown: boolean) => {
+    const cls = `relative inline-flex items-center gap-1 px-4 py-2 text-[13.5px] font-medium transition-all duration-200 border-b-2 ${
+      isActive ? "border-[#005a54] opacity-100" : `border-transparent ${inactiveOpacity} hover:opacity-100`
+    }`;
+    const inner = (
+      <>
+        {n.label}
+        {hasDropdown && <span className="text-[9px] opacity-60">▾</span>}
+      </>
+    );
+    if (n.to) return <Link to={n.to} style={{ color: txtColor }} className={cls}>{inner}</Link>;
+    if (n.href) return <Link to="/" hash={n.href} style={{ color: txtColor }} className={cls}>{inner}</Link>;
+    return <span style={{ color: txtColor }} className={cls + " cursor-default"}>{inner}</span>;
+  };
+
   return (
     <header
       className={`sticky top-0 z-50 transition-all duration-300 ${
@@ -113,40 +156,30 @@ export function Nav() {
       <div className="bg-[#1A1A1A] border-b border-[rgba(255,255,255,0.06)]">
         <div className="max-w-[1320px] mx-auto px-6 lg:px-10 h-7 flex items-center justify-between gap-6">
           <span className="label-tech text-[#6e7b7c] truncate">
-            INDEX / HOME · REGISTRO CRC-SP 2SP-000000 · ATUALIZADO 11.MAI.2026 · LATITUDE -23.5505, -46.6333
+            CLUNY GESTÃO EMPRESARIAL · CRC-SP 2SP-000000 · OPERANDO DESDE 2013
           </span>
         </div>
       </div>
 
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10 h-[68px] flex items-center justify-between gap-6">
-        <a href="#" className="flex items-center gap-2 group">
+        <Link to="/" className="flex items-center gap-2 group">
           <Logo size={28} color={logoColor} />
-        </a>
+        </Link>
 
         <nav className="hidden lg:flex items-center gap-1">
           {NAV.map((n) => {
-            const isActive = active === n.href.replace("#", "");
-            const hasMega = !!n.mega;
+            const isActive = !!n.href && active === n.href;
+            const hasDropdown = !!(n.mega || n.materiais);
             return (
               <div
-                key={n.href}
+                key={n.label}
                 className="relative"
-                onMouseEnter={hasMega ? () => handleEnter(n.label) : undefined}
-                onMouseLeave={hasMega ? handleLeave : undefined}
+                onMouseEnter={hasDropdown ? () => handleEnter(n.label) : undefined}
+                onMouseLeave={hasDropdown ? handleLeave : undefined}
               >
-                <a
-                  href={n.href}
-                  style={{ color: txtColor }}
-                  className={`relative inline-flex items-center gap-1 px-4 py-2 text-[13.5px] font-medium transition-all duration-200 border-b-2 ${
-                    isActive
-                      ? "border-[#005a54] opacity-100"
-                      : `border-transparent ${inactiveOpacity} hover:opacity-100`
-                  }`}
-                >
-                  {n.label}
-                  {hasMega && <span className="text-[9px] opacity-60">▾</span>}
-                </a>
-                {hasMega && megaOpen === n.label && (
+                {renderTrigger(n, isActive, hasDropdown)}
+
+                {hasDropdown && megaOpen === n.label && n.mega && (
                   <div
                     className="mega-in absolute left-0 top-full mt-0 z-50 bg-white rounded-[4px] p-6 min-w-[520px]"
                     style={{ boxShadow: "0 8px 40px rgba(0,0,0,0.12)", borderTop: "3px solid #005a54" }}
@@ -154,10 +187,10 @@ export function Nav() {
                     onMouseLeave={handleLeave}
                   >
                     <div className="grid grid-cols-2 gap-2">
-                      {n.mega!.map((m) => (
-                        <a
+                      {n.mega.map((m) => (
+                        <Link
                           key={m.n}
-                          href="#atuacao"
+                          to="/planos"
                           onClick={() => setMegaOpen(null)}
                           className="group/item flex items-start gap-3 p-3 rounded-[2px] hover:bg-[#f4f1ec] transition-colors"
                         >
@@ -174,14 +207,43 @@ export function Nav() {
                             </div>
                             <div className="text-[12px] text-[#6e7b7c] leading-snug mt-0.5">{m.sub}</div>
                           </div>
-                        </a>
+                        </Link>
                       ))}
                     </div>
                     <div className="mt-2 pt-4 border-t border-[#e8e4db] flex justify-between items-center">
-                      <a href="#atuacao" onClick={() => setMegaOpen(null)} className="text-[12px] font-bold text-[#005a54] tracking-wide">
+                      <Link to="/planos" onClick={() => setMegaOpen(null)} className="text-[12px] font-bold text-[#005a54] tracking-wide">
                         Ver todas as frentes →
-                      </a>
+                      </Link>
                       <span className="text-[11px] text-[#6e7b7c]">· Diagnóstico gratuito em 60s</span>
+                    </div>
+                  </div>
+                )}
+
+                {hasDropdown && megaOpen === n.label && n.materiais && (
+                  <div
+                    className="mega-in absolute right-0 top-full mt-0 z-50 bg-white rounded-[4px] p-4 min-w-[320px]"
+                    style={{ boxShadow: "0 8px 40px rgba(0,0,0,0.12)", borderTop: "3px solid #005a54" }}
+                    onMouseEnter={() => { if (closeTimer.current) window.clearTimeout(closeTimer.current); }}
+                    onMouseLeave={handleLeave}
+                  >
+                    <div className="flex flex-col gap-1">
+                      {n.materiais.map((m) => (
+                        <a
+                          key={m.t}
+                          href="#"
+                          onClick={(e) => { e.preventDefault(); setMegaOpen(null); }}
+                          className="group/item flex items-start gap-3 p-3 rounded-[2px] hover:bg-[#f4f1ec] transition-colors"
+                        >
+                          <span className="flex-shrink-0">{m.icon}</span>
+                          <div className="flex-1 min-w-0">
+                            <div className="font-display font-semibold text-[15px] text-[#1A1A1A] flex items-center gap-2">
+                              {m.t}
+                              <span className="text-[12px] text-[#005a54] opacity-0 group-hover/item:opacity-100 transition-all group-hover/item:translate-x-0.5">→</span>
+                            </div>
+                            <div className="text-[12px] text-[#6e7b7c] leading-snug mt-0.5">{m.sub}</div>
+                          </div>
+                        </a>
+                      ))}
                     </div>
                   </div>
                 )}
@@ -191,10 +253,6 @@ export function Nav() {
         </nav>
 
         <div className="hidden lg:flex items-center gap-3">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-[4px] bg-[#005a54]">
-            <span className="pulse-dot-light" />
-            <span className="label-mono text-[#f4f1ec]">STATUS · OPERANDO</span>
-          </div>
           <a href="#cadastro" className="btn-primary btn-primary-sm group">
             Cadastre-se
             <span className="transition-transform group-hover:translate-x-0.5">→</span>
@@ -214,10 +272,11 @@ export function Nav() {
 
       {open && (
         <div className="lg:hidden border-t border-[rgba(255,255,255,0.08)] px-6 py-6 flex flex-col gap-1 bg-[#1F3D2E] animate-fade-in">
-          {NAV.map((n) => (
-            <div key={n.href}>
-              {n.mega ? (
-                <>
+          {NAV.map((n) => {
+            const hasDropdown = !!(n.mega || n.materiais);
+            if (hasDropdown) {
+              return (
+                <div key={n.label}>
                   <button
                     onClick={() => setMobileSub(mobileSub === n.label ? null : n.label)}
                     className="w-full flex justify-between items-center text-[15px] py-3 px-3 rounded-md hover:bg-[rgba(255,255,255,0.06)] text-[#f4f1ec]"
@@ -227,22 +286,33 @@ export function Nav() {
                   </button>
                   {mobileSub === n.label && (
                     <div className="pl-4 pb-2 flex flex-col gap-1">
-                      {n.mega.map((m) => (
-                        <a key={m.n} href="#atuacao" onClick={() => setOpen(false)} className="flex items-center gap-3 py-2 px-3 text-[13px] text-[#cec9b8] hover:bg-[rgba(255,255,255,0.06)] rounded-md">
+                      {n.mega && n.mega.map((m) => (
+                        <Link key={m.n} to="/planos" onClick={() => setOpen(false)} className="flex items-center gap-3 py-2 px-3 text-[13px] text-[#cec9b8] hover:bg-[rgba(255,255,255,0.06)] rounded-md">
                           <span className="font-mono-tech text-[#c48b30] text-[11px]">{m.n.replace("BU-", "")}</span>
                           <span>{m.t}</span>
+                        </Link>
+                      ))}
+                      {n.materiais && n.materiais.map((m) => (
+                        <a key={m.t} href="#" onClick={() => setOpen(false)} className="block py-2 px-3 text-[13px] text-[#cec9b8] hover:bg-[rgba(255,255,255,0.06)] rounded-md">
+                          {m.t}
                         </a>
                       ))}
                     </div>
                   )}
-                </>
-              ) : (
-                <a href={n.href} onClick={() => setOpen(false)} className="block text-[15px] py-3 px-3 rounded-md hover:bg-[rgba(255,255,255,0.06)] text-[#f4f1ec]">
-                  {n.label}
-                </a>
-              )}
-            </div>
-          ))}
+                </div>
+              );
+            }
+            if (n.to) return (
+              <Link key={n.label} to={n.to} onClick={() => setOpen(false)} className="block text-[15px] py-3 px-3 rounded-md hover:bg-[rgba(255,255,255,0.06)] text-[#f4f1ec]">
+                {n.label}
+              </Link>
+            );
+            return (
+              <Link key={n.label} to="/" hash={n.href!} onClick={() => setOpen(false)} className="block text-[15px] py-3 px-3 rounded-md hover:bg-[rgba(255,255,255,0.06)] text-[#f4f1ec]">
+                {n.label}
+              </Link>
+            );
+          })}
           <a href="#cadastro" onClick={() => setOpen(false)} className="btn-primary mt-3 justify-center">
             Cadastre-se →
           </a>
@@ -303,6 +373,68 @@ export function FloatingDashboard({ compact = false }: { compact?: boolean }) {
   );
 }
 
+/* ============ Hero Card único — Painel Cluny ============ */
+function HeroCard() {
+  return (
+    <div
+      className="float-card-1 w-full max-w-[420px] mx-auto bg-white rounded-[12px] p-7"
+      style={{ boxShadow: "0 24px 64px rgba(0,0,0,0.12)", minHeight: 320 }}
+    >
+      {/* Header */}
+      <div className="flex items-center gap-2">
+        <span className="pulse-dot" />
+        <span className="label-mono text-[#6e7b7c]">PAINEL CLUNY · AO VIVO</span>
+      </div>
+      <div className="h-px bg-[#f4f1ec] my-3" />
+
+      {/* Linhas */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <span className="text-[12px] text-[#6e7b7c]">Resultado do mês</span>
+          <span className="font-mono-tech text-[20px] font-medium text-[#1A1A1A]">R$ 284.500</span>
+        </div>
+        <div className="flex items-center justify-between">
+          <span className="text-[12px] text-[#6e7b7c]">DRE Gerencial</span>
+          <span className="px-2 py-0.5 rounded-[2px] text-[9px] font-bold tracking-wider"
+            style={{ background: "rgba(0,90,84,0.12)", color: "#005a54" }}>ATUALIZADO</span>
+        </div>
+        <div className="flex items-center justify-between">
+          <span className="text-[12px] text-[#6e7b7c]">Carga tributária</span>
+          <span className="font-mono-tech text-[18px] font-medium text-[#005a54]">−22%</span>
+        </div>
+        <div className="flex items-center justify-between">
+          <span className="text-[12px] text-[#6e7b7c]">Margem operacional</span>
+          <span className="font-mono-tech text-[18px] font-medium text-[#005a54]">+11pp</span>
+        </div>
+        <div className="flex items-center justify-between">
+          <span className="text-[12px] text-[#6e7b7c]">Próxima reunião técnica</span>
+          <span className="text-[13px] font-medium text-[#1A1A1A]">Qui, 15/05 · 14h</span>
+        </div>
+      </div>
+
+      <div className="h-px bg-[#f4f1ec] my-4" />
+
+      {/* Diagnóstico progress */}
+      <div>
+        <div className="flex items-center justify-between mb-1">
+          <span className="text-[11px] font-bold text-[#1A1A1A]">Diagnóstico técnico</span>
+          <span className="text-[11px] text-[#6e7b7c]">Fase 02 / 03</span>
+        </div>
+        <div className="text-[11px] text-[#6e7b7c] mb-2">Plano de execução</div>
+        <div className="h-1 w-full rounded-[2px] bg-[#f4f1ec] overflow-hidden">
+          <div className="h-full rounded-[2px]" style={{ width: "65%", background: "#005a54" }} />
+        </div>
+      </div>
+
+      {/* Badge inferior */}
+      <div className="mt-5 rounded-[6px] px-4 py-3" style={{ background: "#1F3D2E" }}>
+        <div className="text-[12px] font-bold text-[#f4f1ec] tracking-wide">Operação conduzida pela Cluny</div>
+        <div className="text-[10px] text-[#6e7b7c] mt-0.5">Desde 2013 · 320 empresas</div>
+      </div>
+    </div>
+  );
+}
+
 export function Hero() {
   const METRICS = [
     { n: "01", value: 12, fmt: (v: number) => `+${Math.round(v)}`, small: "anos", d: "de mercado consolidado" },
@@ -311,9 +443,9 @@ export function Hero() {
     { n: "04", value: 98, fmt: (v: number) => `${Math.round(v)}%`, small: "", d: "de retenção de clientes" },
   ];
   return (
-    <section className="bg-[#f4f1ec] text-[#1A1A1A]">
+    <section id="home" className="bg-[#f4f1ec] text-[#1A1A1A]">
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-[55fr_45fr] gap-12 lg:gap-20 py-16 lg:py-24 min-h-[calc(100vh-100px)] items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-[55fr_45fr] gap-12 lg:gap-20 py-20 items-center">
           <div className="flex flex-col justify-center animate-fade-in">
             <span className="label-mono text-[#6e7b7c] border border-[#6e7b7c] px-2 py-1 self-start mb-8">
               [ CLUNY GESTÃO EMPRESARIAL · V.2026 ]
@@ -347,17 +479,17 @@ export function Hero() {
               · Resposta em até 1 dia útil · Sem SDR · Sem funil de qualificação
             </p>
           </div>
-          <div className="relative px-4 lg:px-8">
-            <FloatingDashboard />
+          <div className="relative px-4 lg:px-8 flex justify-center">
+            <HeroCard />
           </div>
         </div>
 
         {/* Métricas em linha horizontal */}
-        <div className="border-t border-[#e8e4db] grid grid-cols-2 lg:grid-cols-4">
+        <div className="border-t border-[#e8e4db] grid grid-cols-2 lg:grid-cols-4 py-2">
           {METRICS.map((m, i) => (
             <div
               key={m.n}
-              className={`p-6 lg:p-8 ${i < METRICS.length - 1 ? "lg:border-r border-[#e8e4db]" : ""} ${i % 2 === 0 ? "border-r lg:border-r" : ""} ${i < 2 ? "border-b lg:border-b-0" : ""} border-[#e8e4db]`}
+              className={`p-6 lg:px-8 lg:py-8 ${i < METRICS.length - 1 ? "lg:border-r border-[#e8e4db]" : ""} ${i % 2 === 0 ? "border-r lg:border-r" : ""} ${i < 2 ? "border-b lg:border-b-0" : ""} border-[#e8e4db]`}
             >
               <span className="label-mono text-[#6e7b7c]">MÉTRICA · {m.n}</span>
               <div className="font-mono-tech text-[36px] leading-none text-[#1F3D2E] mt-3">
@@ -372,7 +504,6 @@ export function Hero() {
     </section>
   );
 }
-
 /* ============= ATUAÇÃO · 4 MÓDULOS ============= */
 const BUS = [
   { n: "BU-01", t: "Finanças", sub: "Gestão financeira sob método", d: "Estruturo o fluxo de caixa, custos e indicadores para que a sua decisão pare de depender da intuição." },
@@ -381,27 +512,33 @@ const BUS = [
   { n: "BU-04", t: "Educação Corporativa", sub: "Capacitação técnica aplicada", d: "Formo a equipe interna e os sócios em finanças, gestão e leitura de demonstrativos — para que a empresa cresça com método." },
 ];
 
-export function Atuacao() {
+export function Atuacao({ showModulos = true }: { showModulos?: boolean } = {}) {
+  const sectionId = showModulos ? "atuacao" : "entregaveis";
   return (
-    <section id="atuacao" className="py-24 lg:py-32 bg-[#f4f1ec] border-b border-[rgba(26,26,26,0.1)]">
+    <section id={sectionId} className="py-24 lg:py-32 bg-[#f4f1ec] border-b border-[rgba(26,26,26,0.1)]">
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
-        <div className="flex justify-between items-end mb-12 flex-wrap gap-4">
-          <h2 className="font-display text-[40px] lg:text-[56px] text-[#1F3D2E]">
-            Atuação <span className="italic text-[#6e7b7c] text-[28px]">/ 4 módulos</span>
-          </h2>
-          <span className="label-mono text-[#6e7b7c]">BU-01 → BU-04</span>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0 border-tech">
-          {BUS.map((b, i) => (
-            <article key={b.n} className={`p-8 bg-[#f4f1ec] flex flex-col min-h-[340px] ${i < BUS.length - 1 ? "border-b md:border-b-0 md:border-r border-[rgba(26,26,26,0.1)] lg:border-b-0" : ""}`}>
-              <span className="label-mono text-[#005a54] mb-6">{b.n}</span>
-              <h3 className="font-display text-[24px] text-[#1F3D2E]">{b.t}</h3>
-              <p className="font-display italic text-[#6e7b7c] mt-1 text-[14px]">{b.sub}</p>
-              <p className="text-[14px] text-[#1A1A1A]/80 mt-5 leading-relaxed flex-1">{b.d}</p>
-              <div className="mt-6 pt-4 border-t border-[rgba(26,26,26,0.1)] label-mono text-[#005a54]">3 ENTREGÁVEIS · VER →</div>
-            </article>
-          ))}
-        </div>
+        {showModulos && (
+          <>
+            <div className="flex justify-between items-end mb-12 flex-wrap gap-4">
+              <h2 className="font-display text-[40px] lg:text-[56px] text-[#1F3D2E]">
+                Atuação <span className="italic text-[#6e7b7c] text-[28px]">/ 4 módulos</span>
+              </h2>
+              <span className="label-mono text-[#6e7b7c]">BU-01 → BU-04</span>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0 border-tech">
+              {BUS.map((b, i) => (
+                <article key={b.n} className={`p-8 bg-[#f4f1ec] flex flex-col min-h-[340px] ${i < BUS.length - 1 ? "border-b md:border-b-0 md:border-r border-[rgba(26,26,26,0.1)] lg:border-b-0" : ""}`}>
+                  <span className="label-mono text-[#005a54] mb-6">{b.n}</span>
+                  <h3 className="font-display text-[24px] text-[#1F3D2E]">{b.t}</h3>
+                  <p className="font-display italic text-[#6e7b7c] mt-1 text-[14px]">{b.sub}</p>
+                  <p className="text-[14px] text-[#1A1A1A]/80 mt-5 leading-relaxed flex-1">{b.d}</p>
+                  <div className="mt-6 pt-4 border-t border-[rgba(26,26,26,0.1)] label-mono text-[#005a54]">3 ENTREGÁVEIS · VER →</div>
+                </article>
+              ))}
+            </div>
+          </>
+        )}
+
 
         {/* BLOCO A — Pills de entregáveis */}
         <div className="mt-16 rounded-[8px] px-8 py-10 lg:px-12 lg:py-12" style={{ background: "#1F3D2E" }}>
@@ -925,35 +1062,23 @@ export function Planos() {
   );
 }
 
-export function Manifesto() {
+export function Manifesto({ videoUrl }: { videoUrl?: string } = {}) {
   return (
-    <section className="bg-[#1F3D2E] text-[#f4f1ec]">
-      <div className="max-w-[1320px] mx-auto px-6 lg:px-10 grid grid-cols-1 lg:grid-cols-12 gap-0 py-24">
-        <div className="lg:col-span-5 bg-[#1A1A1A] text-[#f4f1ec] p-10 lg:p-14 min-h-[520px] flex flex-col rounded-l-[4px]">
-          <span className="label-mono text-[#6e7b7c]">· SOBRE · / 02</span>
-          <h2 className="font-display font-semibold text-[36px] lg:text-[40px] leading-[1.1] mt-8 text-[#f4f1ec] flex-1">
+    <section id="manifesto" className="bg-[#1F3D2E] text-[#f4f1ec] py-24 lg:py-32">
+      <div className="max-w-[1320px] mx-auto px-6 lg:px-10 grid grid-cols-1 lg:grid-cols-[45fr_55fr] gap-10 lg:gap-16 items-start">
+        {/* Coluna esquerda */}
+        <div className="order-2 lg:order-1">
+          <span className="label-mono text-[#6e7b7c]">· MANIFESTO</span>
+          <h2 className="font-display font-semibold text-[36px] lg:text-[48px] leading-[1.05] mt-6 text-[#f4f1ec]">
             Há 12 anos<br /><span className="italic font-normal text-[#c48b30]">lendo empresas.</span>
           </h2>
-          <div className="grid grid-cols-2 gap-6 pt-8 border-t border-[rgba(255,255,255,0.1)]">
-            <div>
-              <div className="label-mono text-[#6e7b7c] mb-2">FUNDAÇÃO</div>
-              <div className="font-mono-tech text-[20px] text-[#f4f1ec]">2013</div>
-            </div>
-            <div>
-              <div className="label-mono text-[#6e7b7c] mb-2">EQUIPE</div>
-              <div className="font-mono-tech text-[20px] text-[#f4f1ec]">34 profissionais</div>
-            </div>
-          </div>
-        </div>
-        <div className="lg:col-span-7 p-10 lg:p-14 border border-[rgba(255,255,255,0.06)] rounded-r-[4px]">
-          <span className="label-mono text-[#6e7b7c]">· MANIFESTO</span>
-          <p className="text-[16px] text-[#f4f1ec]/85 leading-[1.7] mt-6">
+          <p className="text-[16px] text-[#f4f1ec]/85 leading-[1.7] mt-8">
             A Cluny nasceu de uma <em className="font-display italic text-[#c48b30]">insatisfação técnica</em>: contadores que entregavam guia de imposto, mas nunca explicavam o que os números diziam. Decidi inverter a ordem.
           </p>
-          <p className="text-[16px] text-[#f4f1ec]/85 mt-6 leading-[1.7]">
+          <p className="text-[16px] text-[#f4f1ec]/85 mt-5 leading-[1.7]">
             Conduzo a contabilidade, as finanças e a estrutura legal de empresas que crescem com método. Atendo sócios que entendem que decisão sem dado é palpite, e que palpite repetido vira prejuízo recorrente.
           </p>
-          <p className="text-[16px] text-[#f4f1ec]/85 mt-6 leading-[1.7]">
+          <p className="text-[16px] text-[#f4f1ec]/85 mt-5 leading-[1.7]">
             Trabalho em primeira pessoa. O que entrego não é serviço prestado — é leitura técnica, plano formal e operação conduzida. Sem rodeios. Sem análise paralisante. Sem promessas que a régua contábil não comporta.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-0 mt-10 border-t border-[rgba(255,255,255,0.1)]">
@@ -969,12 +1094,61 @@ export function Manifesto() {
               </div>
             ))}
           </div>
+          <div className="grid grid-cols-2 gap-6 pt-8 mt-2 border-t border-[rgba(255,255,255,0.1)]">
+            <div>
+              <div className="label-mono text-[#6e7b7c] mb-2">FUNDAÇÃO</div>
+              <div className="font-mono-tech text-[20px] text-[#f4f1ec]">2013</div>
+            </div>
+            <div>
+              <div className="label-mono text-[#6e7b7c] mb-2">EQUIPE</div>
+              <div className="font-mono-tech text-[20px] text-[#f4f1ec]">34 profissionais</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Coluna direita — vídeo + depoimento destaque */}
+        <div className="order-1 lg:order-2">
+          <div
+            className="relative w-full overflow-hidden rounded-[8px]"
+            style={{ aspectRatio: "16 / 9", boxShadow: "0 24px 64px rgba(0,0,0,0.3)", border: "1px solid rgba(255,255,255,0.08)", background: "#1A1A1A" }}
+          >
+            {videoUrl ? (
+              <iframe
+                className="absolute inset-0 w-full h-full"
+                src={videoUrl}
+                title="Vídeo institucional Cluny"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            ) : (
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
+                <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ background: "#005a54" }}>
+                  <svg width={22} height={22} viewBox="0 0 24 24" fill="#f4f1ec" aria-hidden="true">
+                    <polygon points="6,4 20,12 6,20" />
+                  </svg>
+                </div>
+                <div className="text-[13px] text-[#6e7b7c]">Vídeo institucional Cluny</div>
+                <div className="text-[11px]" style={{ color: "rgba(255,255,255,0.3)" }}>
+                  Cole a URL do YouTube em &lt;Manifesto videoUrl="..." /&gt;
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div
+            className="mt-5 rounded-[4px] p-4"
+            style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
+          >
+            <p className="font-display italic text-[16px] text-[#f4f1ec]">
+              "A Cluny não entrega planilha. Entrega leitura."
+            </p>
+            <div className="text-[12px] text-[#6e7b7c] mt-2">Marina Vasconcelos · Estúdio Ímpar</div>
+          </div>
         </div>
       </div>
     </section>
   );
 }
-
 export function Cases() {
   return (
     <section id="cases" className="py-24 lg:py-32 border-b border-[rgba(26,26,26,0.1)]">
@@ -1262,11 +1436,11 @@ export function Conteudo() {
     { ed: "ED. 040", cat: "SOCIETÁRIO", min: "9 min", date: "17.ABR.2026", t: "Holding patrimonial: três armadilhas comuns na constituição", img: blogHolding },
   ];
   return (
-    <section id="conteudo" className="py-24 lg:py-32 bg-[#f4f1ec] border-b border-[rgba(26,26,26,0.1)]">
+    <section id="blog" className="py-24 lg:py-32 bg-[#f4f1ec] border-b border-[rgba(26,26,26,0.1)]">
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
         <div className="flex justify-between items-end mb-12 flex-wrap gap-4">
           <h2 className="font-display text-[40px] lg:text-[56px] text-[#1F3D2E]">
-            Diário <span className="italic text-[#6e7b7c] text-[28px]">/ leitura técnica</span>
+            Blog <span className="italic text-[#6e7b7c] text-[28px]">/ leitura técnica</span>
           </h2>
           <a href="#" className="label-mono text-[#005a54]">VER TODAS AS EDIÇÕES →</a>
         </div>
@@ -1533,8 +1707,8 @@ export function Cadastro() {
 
 export function Footer() {
   const COLS = [
-    { t: "ATUAÇÃO", l: [["Finanças","#atuacao"],["Contabilidade","#atuacao"],["Legalização","#atuacao"],["Educação","#atuacao"]] },
-    { t: "PLANOS", l: [["Contabilidade Consultiva","#planos"],["BPO + Controladoria","#planos"],["Quadro comparativo","#calculadora"]] },
+    { t: "ATUAÇÃO", l: [["Finanças","/planos"],["Contabilidade","/planos"],["Legalização","/planos"],["Educação","/planos"]] },
+    { t: "PLANOS", l: [["BPO Financeiro","/planos"],["Controladoria","/planos"],["Quadro comparativo","/planos"]] },
     { t: "CONTATO", l: [["contato@cluny.com.br","mailto:contato@cluny.com.br"],["+55 11 4000-0000","#cadastro"],["São Paulo / SP","#cadastro"]] },
   ];
   return (
