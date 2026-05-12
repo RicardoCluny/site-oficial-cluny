@@ -475,7 +475,7 @@ export function Planos() {
   );
 
   return (
-    <section id="planos" className="py-24 lg:py-32 bg-[#ece7dc] border-b border-[rgba(26,26,26,0.1)]">
+    <section id="planos" className="py-24 lg:py-32 bg-[#f4f1ec] border-b border-[rgba(26,26,26,0.1)]">
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
         <div className="flex justify-between items-end mb-16 flex-wrap gap-6">
           <h2 className="font-display text-[40px] lg:text-[56px] leading-[1.05] text-[#1F3D2E] max-w-2xl">
