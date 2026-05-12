@@ -121,16 +121,18 @@ export function Nav() {
 
 export function Hero() {
   return (
-    <section className="bg-[#f4f1ec] border-b border-[rgba(26,26,26,0.1)]">
+    <section className="bg-[#1F3D2E] text-[#f4f1ec]">
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 py-16 lg:py-24 min-h-[640px] items-center">
           <div className="lg:col-span-7 flex flex-col justify-center">
-            <span className="label-mono text-[#005a54] mb-6">[ Cluny Gestão Empresarial · v.2026 ]</span>
-            <h1 className="font-display text-[44px] sm:text-[64px] lg:text-[88px] leading-[0.96] text-[#1F3D2E]">
+            <span className="label-mono text-[#6e7b7c] border border-[#6e7b7c] px-2 py-1 self-start mb-8">
+              [ CLUNY GESTÃO EMPRESARIAL · V.2026 ]
+            </span>
+            <h1 className="font-display font-semibold text-[40px] sm:text-[56px] lg:text-[72px] leading-[1] text-[#f4f1ec]">
               Controladoria<br />
-              financeira <span className="italic text-[#005a54]">operada como sistema.</span>
+              financeira <span className="italic font-normal text-[#f4f1ec]">operada como sistema.</span>
             </h1>
-            <p className="mt-8 text-[18px] max-w-[620px] text-[#1A1A1A]/80 leading-relaxed">
+            <p className="mt-8 text-[16px] max-w-[560px] text-[#f4f1ec]/80 leading-relaxed">
               BPO Financeiro e Controladoria conduzidos com método técnico. Tiro o sócio da operação, devolvo leitura para a decisão.
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
@@ -142,17 +144,17 @@ export function Hero() {
             </div>
           </div>
           <div className="lg:col-span-5 relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-[rgba(0,90,84,0.08)] to-[rgba(196,139,48,0.05)] rounded-[4px] blur-2xl" />
+            <div className="absolute inset-0 bg-gradient-to-br from-[rgba(196,139,48,0.15)] to-[rgba(0,90,84,0.1)] rounded-[4px] blur-2xl" />
             <img
               src={heroImg}
               alt="Painel de controladoria financeira: gráficos, KPIs e indicadores conduzidos com método Cluny"
               width={1024}
               height={1024}
-              className="relative w-full h-auto rounded-[4px] shadow-[0_30px_80px_-30px_rgba(31,61,46,0.3)]"
+              className="relative w-full h-auto rounded-[4px] shadow-[0_30px_80px_-30px_rgba(0,0,0,0.5)] border border-[rgba(255,255,255,0.06)]"
             />
-            <div className="absolute -bottom-3 -left-3 bg-[#1F3D2E] text-[#f4f1ec] px-4 py-3 rounded-[2px] hidden md:flex items-center gap-3">
-              <span className="pulse-dot" />
-              <span className="label-mono text-[#cec9b8]">DASHBOARD AO VIVO · 320 EMPRESAS</span>
+            <div className="absolute -bottom-3 -left-3 bg-[#1A1A1A] text-[#f4f1ec] px-4 py-3 rounded-[2px] hidden md:flex items-center gap-3 border border-[rgba(255,255,255,0.08)]">
+              <span className="pulse-dot-light" />
+              <span className="label-mono text-[#6e7b7c]">DASHBOARD AO VIVO · 320 EMPRESAS</span>
             </div>
           </div>
         </div>
