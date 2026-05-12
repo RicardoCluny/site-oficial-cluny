@@ -1059,12 +1059,50 @@ export function Cadastro() {
 }
 
 export function Footer() {
+  const COLS = [
+    { t: "SERVIÇOS", l: [["BPO Financeiro","#planos"],["Controladoria","#planos"],["Combo Cluny","#calculadora"]] },
+    { t: "MÉTODO", l: [["As 5 etapas","#metodo"],["Diagnóstico 60s","#diagnostico"],["Cases","#cases"]] },
+    { t: "RECURSOS", l: [["Conteúdo","#conteudo"],["FAQ","#faq"],["Comparativo CLT","#calculadora"]] },
+  ];
   return (
-    <footer className="bg-[#f4f1ec] py-8 border-t border-[rgba(26,26,26,0.1)]">
-      <div className="max-w-[1320px] mx-auto px-6 lg:px-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <Logo size={22} color="#6e7b7c" />
-        <span className="font-mono-tech text-[11px] text-[#6e7b7c]">© 2026 · CLUNY GESTÃO EMPRESARIAL · CRC-SP 2SP-000000</span>
-        <span className="font-mono-tech text-[11px] text-[#6e7b7c]">v.2026.05 · BUILD 0511</span>
+    <footer className="bg-[#1A1A1A] text-[#f4f1ec]">
+      <div className="max-w-[1320px] mx-auto px-6 lg:px-10 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-[rgba(255,255,255,0.06)]">
+          <div className="md:col-span-4">
+            <Logo size={26} color="#f4f1ec" />
+            <p className="text-[13px] text-[#6e7b7c] mt-5 leading-relaxed max-w-xs">
+              Controladoria financeira e BPO operados como sistema. Conduzo a gestão técnica de empresas brasileiras desde 2013.
+            </p>
+            <div className="mt-6 flex items-center gap-2">
+              <span className="pulse-dot" />
+              <span className="label-mono text-[#6e7b7c]">STATUS · OPERANDO</span>
+            </div>
+          </div>
+          {COLS.map((c) => (
+            <div key={c.t} className="md:col-span-2">
+              <div className="label-mono text-[#6e7b7c] mb-4">{c.t}</div>
+              <ul className="space-y-2.5">
+                {c.l.map(([label, href]) => (
+                  <li key={label}>
+                    <a href={href} className="text-[13px] text-[#cec9b8] hover:text-[#f4f1ec] transition-colors">{label}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+          <div className="md:col-span-2">
+            <div className="label-mono text-[#6e7b7c] mb-4">CONTATO</div>
+            <ul className="space-y-2.5">
+              <li><a href="mailto:contato@cluny.com.br" className="text-[13px] text-[#cec9b8] hover:text-[#f4f1ec]">contato@cluny.com.br</a></li>
+              <li className="text-[13px] text-[#cec9b8]">+55 11 4000-0000</li>
+              <li><a href="#cadastro" className="text-[13px] text-[#c48b30] hover:text-[#f4f1ec]">Solicite uma proposta →</a></li>
+            </ul>
+          </div>
+        </div>
+        <div className="pt-6 flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <span className="font-mono-tech text-[10px] text-[#6e7b7c] uppercase tracking-[0.1em]">© 2026 · CLUNY GESTÃO EMPRESARIAL · CRC-SP 2SP-000000</span>
+          <span className="font-mono-tech text-[10px] text-[#6e7b7c] uppercase tracking-[0.1em]">v.2026.05 · BUILD 0511 · SÃO PAULO</span>
+        </div>
       </div>
     </footer>
   );
