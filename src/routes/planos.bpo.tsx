@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
-import { Nav, Calculadora, Depoimentos, FAQ, Cadastro, Footer, StickyBar } from "@/components/cluny/Sections";
+import { Fragment, useState } from "react";
+import { Nav, Calculadora, FAQ, Cadastro, Footer, StickyBar } from "@/components/cluny/Sections";
 
 export const Route = createFileRoute("/planos/bpo")({
   head: () => ({
@@ -444,7 +444,7 @@ function BpoPage() {
                           </tr>
                         );
                       })}
-                    </>
+                    </Fragment>
                   ))}
                 </tbody>
               </table>
