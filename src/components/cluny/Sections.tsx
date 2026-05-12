@@ -515,7 +515,7 @@ export function Metodo() {
 }
 
 export function Planos() {
-  const PlanCard = ({ dark, tag, camada, price, title, tagline, escopo, items, indicado, nota, cta }: any) => (
+  const PlanCard = ({ dark, tag, camada, price, title, tagline, escopo, items, indicado, nota, cta, interesse }: any) => (
     <div
       className={`group relative p-8 lg:p-10 flex flex-col transition-all duration-500 cursor-pointer rounded-[4px]
         ${dark ? "bg-[#1F3D2E] text-[#f4f1ec]" : "bg-[#ffffff] text-[#1A1A1A]"}
