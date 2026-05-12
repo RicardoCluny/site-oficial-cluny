@@ -1,9 +1,52 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { Logo } from "@/components/cluny/Logo";
 import blogTrib from "@/assets/blog-tributario.jpg";
 import blogDre from "@/assets/blog-dre.jpg";
 import blogHolding from "@/assets/blog-holding.jpg";
 import faqIllu from "@/assets/faq-illustration.jpg";
+
+/* ============ Helpers CRO ============ */
+function useCounterUp(to: number, duration = 1200) {
+  const ref = useRef<HTMLSpanElement | null>(null);
+  const [val, setVal] = useState(0);
+  const started = useRef(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting && !started.current) {
+          started.current = true;
+          const start = performance.now();
+          const tick = (now: number) => {
+            const p = Math.min(1, (now - start) / duration);
+            const eased = 1 - Math.pow(1 - p, 3);
+            setVal(to * eased);
+            if (p < 1) requestAnimationFrame(tick);
+            else setVal(to);
+          };
+          requestAnimationFrame(tick);
+        }
+      });
+    }, { threshold: 0.4 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [to, duration]);
+  return { ref, val };
+}
+
+function requestCadastro(interesse: string) {
+  try {
+    window.dispatchEvent(new CustomEvent("cluny:prefill", { detail: { interesse } }));
+  } catch { /* noop */ }
+  const el = document.getElementById("cadastro");
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function CounterMetric({ value, format }: { value: number; format: (n: number) => string }) {
+  const { ref, val } = useCounterUp(value);
+  return <span ref={ref}>{format(val)}</span>;
+}
 
 const NAV = [
   { label: "Atuação", href: "#atuacao" },
