@@ -1393,11 +1393,11 @@ export function Conteudo() {
     { ed: "ED. 040", cat: "SOCIETÁRIO", min: "9 min", date: "17.ABR.2026", t: "Holding patrimonial: três armadilhas comuns na constituição", img: blogHolding },
   ];
   return (
-    <section id="conteudo" className="py-24 lg:py-32 bg-[#f4f1ec] border-b border-[rgba(26,26,26,0.1)]">
+    <section id="blog" className="py-24 lg:py-32 bg-[#f4f1ec] border-b border-[rgba(26,26,26,0.1)]">
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
         <div className="flex justify-between items-end mb-12 flex-wrap gap-4">
           <h2 className="font-display text-[40px] lg:text-[56px] text-[#1F3D2E]">
-            Diário <span className="italic text-[#6e7b7c] text-[28px]">/ leitura técnica</span>
+            Blog <span className="italic text-[#6e7b7c] text-[28px]">/ leitura técnica</span>
           </h2>
           <a href="#" className="label-mono text-[#005a54]">VER TODAS AS EDIÇÕES →</a>
         </div>
