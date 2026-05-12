@@ -469,7 +469,7 @@ export function Hero() {
               className={`p-6 lg:px-8 lg:py-8 ${i < METRICS.length - 1 ? "lg:border-r border-[#e8e4db]" : ""} ${i % 2 === 0 ? "border-r lg:border-r" : ""} ${i < 2 ? "border-b lg:border-b-0" : ""} border-[#e8e4db]`}
             >
               <span className="label-mono text-[#6e7b7c]">MÉTRICA · {m.n}</span>
-              <div className="font-mono-tech text-[36px] leading-none text-[#1F3D2E] mt-3">
+              <div className="font-mono-tech text-[36px] leading-none text-[#c48b30] mt-3">
                 <CounterMetric value={m.value} format={m.fmt} />
                 {m.small && <span className="text-[14px] text-[#6e7b7c] ml-1">{m.small}</span>}
               </div>
