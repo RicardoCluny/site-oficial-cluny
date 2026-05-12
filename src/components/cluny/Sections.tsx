@@ -694,7 +694,7 @@ export function Calculadora() {
   ];
 
   return (
-    <section id="calculadora" className="py-24 lg:py-32 border-b border-[rgba(26,26,26,0.1)] bg-[#f4f1ec]">
+    <section id="calculadora" className="py-24 lg:py-32 border-b border-[rgba(26,26,26,0.1)] bg-[#cec9b8]">
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
         <div className="mb-16 max-w-3xl">
           <span className="label-mono text-[#005a54]">· Comparativo · CLT vs BPO Financeiro</span>
