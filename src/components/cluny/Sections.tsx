@@ -142,7 +142,7 @@ export function Nav() {
 
   const renderTrigger = (n: NavItem, isActive: boolean, hasDropdown: boolean) => {
     const cls = `relative inline-flex items-center gap-1 px-4 py-2 text-[13.5px] font-medium transition-all duration-200 border-b-2 ${
-      isActive ? "border-[#005a54] opacity-100" : `border-transparent ${inactiveOpacity} hover:opacity-100`
+      isActive ? "border-[#c48b30] opacity-100" : `border-transparent ${inactiveOpacity} hover:opacity-100`
     }`;
     const inner = (
       <>
