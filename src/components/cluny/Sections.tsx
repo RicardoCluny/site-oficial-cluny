@@ -48,8 +48,15 @@ function CounterMetric({ value, format }: { value: number; format: (n: number) =
   return <span ref={ref}>{format(val)}</span>;
 }
 
-const NAV = [
-  { label: "Atuação", href: "#atuacao" },
+type NavItem = { label: string; href: string; mega?: { n: string; t: string; sub: string }[] };
+const NAV_MEGA = [
+  { n: "BU-01", t: "Finanças", sub: "Gestão financeira sob método" },
+  { n: "BU-02", t: "Contabilidade", sub: "Contabilidade consultiva" },
+  { n: "BU-03", t: "Legalização", sub: "Constituição e regularização" },
+  { n: "BU-04", t: "Educação Corporativa", sub: "Capacitação técnica aplicada" },
+];
+const NAV: NavItem[] = [
+  { label: "Atuação", href: "#atuacao", mega: NAV_MEGA },
   { label: "Planos", href: "#planos" },
   { label: "Método", href: "#metodo" },
   { label: "Diagnóstico", href: "#diagnostico" },
