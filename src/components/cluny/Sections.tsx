@@ -554,6 +554,7 @@ export function Planos() {
         </div>
         <div className="text-[12px] italic opacity-60 mb-6">{nota}</div>
         <button
+          onClick={() => requestCadastro(interesse || title)}
           className="btn-primary mt-auto group/btn relative overflow-hidden transition-all duration-300 group-hover:scale-[1.03]"
           style={dark ? { background: "#c48b30", color: "#1F3D2E", borderColor: "#c48b30" } : {}}
         >
