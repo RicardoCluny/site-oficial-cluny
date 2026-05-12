@@ -1254,3 +1254,52 @@ export function Footer() {
     </footer>
   );
 }
+
+/* ============ Sticky CTA Bar (desktop) ============ */
+export function StickyBar() {
+  const [show, setShow] = useState(false);
+  const [closed, setClosed] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (sessionStorage.getItem("cluny:sticky-closed") === "1") setClosed(true);
+    const onScroll = () => {
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = h > 0 ? window.scrollY / h : 0;
+      const cad = document.getElementById("cadastro");
+      const cadVisible = cad ? cad.getBoundingClientRect().top < window.innerHeight * 0.8 : false;
+      setShow(pct > 0.6 && !cadVisible);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  if (closed || !show) return null;
+  return (
+    <div
+      className="hidden md:flex fixed bottom-0 left-0 right-0 z-50 bg-[#1F3D2E] border-t border-[rgba(255,255,255,0.08)] items-center justify-between gap-4 px-6 lg:px-10"
+      style={{ height: 56, animation: "fade-in 0.3s ease-out" }}
+      role="region"
+      aria-label="Chamada para cadastro"
+    >
+      <span className="text-[14px] text-[#f4f1ec]">Pronto para organizar sua operação?</span>
+      <div className="flex items-center gap-4">
+        <button
+          onClick={() => requestCadastro("")}
+          className="text-[13px] font-bold text-[#f4f1ec]"
+          style={{ background: "#005a54", padding: "10px 20px", borderRadius: 2 }}
+        >
+          Cadastre-se →
+        </button>
+        <button
+          onClick={() => { setClosed(true); sessionStorage.setItem("cluny:sticky-closed", "1"); }}
+          aria-label="Fechar barra"
+          className="text-[#cec9b8] hover:text-[#f4f1ec] text-[20px] leading-none"
+        >
+          ×
+        </button>
+      </div>
+    </div>
+  );
+}
