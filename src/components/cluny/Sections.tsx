@@ -1701,8 +1701,8 @@ export function Cadastro() {
 
 export function Footer() {
   const COLS = [
-    { t: "ATUAÇÃO", l: [["Finanças","#atuacao"],["Contabilidade","#atuacao"],["Legalização","#atuacao"],["Educação","#atuacao"]] },
-    { t: "PLANOS", l: [["Contabilidade Consultiva","#planos"],["BPO + Controladoria","#planos"],["Quadro comparativo","#calculadora"]] },
+    { t: "ATUAÇÃO", l: [["Finanças","/planos"],["Contabilidade","/planos"],["Legalização","/planos"],["Educação","/planos"]] },
+    { t: "PLANOS", l: [["BPO Financeiro","/planos"],["Controladoria","/planos"],["Quadro comparativo","/planos"]] },
     { t: "CONTATO", l: [["contato@cluny.com.br","mailto:contato@cluny.com.br"],["+55 11 4000-0000","#cadastro"],["São Paulo / SP","#cadastro"]] },
   ];
   return (
