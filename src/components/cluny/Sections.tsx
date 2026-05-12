@@ -50,45 +50,55 @@ function CounterMetric({ value, format }: { value: number; format: (n: number) =
   return <span ref={ref}>{format(val)}</span>;
 }
 
-type MegaItem = { n: string; t: string; sub: string };
-type MaterialItem = { t: string; sub: string; icon: React.ReactNode };
+type DropdownItem = { t: string; sub: string; to?: string; href?: string; icon: React.ReactNode };
 type NavItem = {
   label: string;
   href?: string;     // hash (cross-route via Link to="/" hash=...)
   to?: string;       // route path
-  mega?: MegaItem[];
-  materiais?: MaterialItem[];
+  dropdown?: DropdownItem[];
+  footer?: { label: string; to?: string; href?: string; hash?: string };
 };
 
-const NAV_MEGA_ATUACAO: MegaItem[] = [
-  { n: "BU-01", t: "Finanças", sub: "Gestão financeira sob método" },
-  { n: "BU-02", t: "Contabilidade", sub: "Contabilidade consultiva" },
-  { n: "BU-03", t: "Legalização", sub: "Constituição e regularização" },
-  { n: "BU-04", t: "Educação Corporativa", sub: "Capacitação técnica aplicada" },
+const IconStroke = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="#c48b30" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" {...props} />
+);
+
+const NAV_ATUACAO: DropdownItem[] = [
+  { t: "Finanças", sub: "Gestão financeira sob método", to: "/planos/bpo",
+    icon: (<IconStroke><path d="M3 17l5-5 4 4 8-8" /><path d="M14 8h6v6" /></IconStroke>) },
+  { t: "Contabilidade", sub: "Contabilidade consultiva", to: "/planos/contabilidade",
+    icon: (<IconStroke><path d="M7 3h8l4 4v14H7z" /><path d="M14 3v5h5" /><path d="M10 12h6M10 16h6" /></IconStroke>) },
+  { t: "Legalização", sub: "Constituição e regularização", href: "atuacao",
+    icon: (<IconStroke><path d="M4 21h16" /><path d="M5 21V9l7-5 7 5v12" /><path d="M10 21v-6h4v6" /></IconStroke>) },
+  { t: "Educação Corporativa", sub: "Capacitação técnica aplicada", href: "atuacao",
+    icon: (<IconStroke><circle cx="12" cy="8" r="3" /><path d="M5 21c0-4 3-6 7-6s7 2 7 6" /></IconStroke>) },
 ];
 
-const IconStroke = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg width={32} height={32} viewBox="0 0 32 32" fill="none" stroke="#005a54" strokeWidth={1.4} strokeLinecap="round" strokeLinejoin="round" {...props} />
-);
-const NAV_MATERIAIS: MaterialItem[] = [
-  { t: "Aulas Financeiras", sub: "Trilhas técnicas em vídeo", icon: (
-    <IconStroke><polygon points="13,10 22,16 13,22" fill="#005a54" stroke="#005a54" /><rect x="4" y="6" width="24" height="20" rx="2" /></IconStroke>
-  ) },
-  { t: "Ferramentas", sub: "Planilhas e templates aplicáveis", icon: (
-    <IconStroke><path d="M14 4l-2 2 6 6 2-2-6-6z" /><path d="M6 26l8-8" /><path d="M20 12l6 6-4 4-6-6" /></IconStroke>
-  ) },
-  { t: "E-Book", sub: "Guias técnicos para download", icon: (
-    <IconStroke><path d="M6 5h14a4 4 0 0 1 4 4v18H10a4 4 0 0 1-4-4V5z" /><path d="M6 23a4 4 0 0 1 4-4h14" /></IconStroke>
-  ) },
+const NAV_PLANOS: DropdownItem[] = [
+  { t: "BPO Financeiro", sub: "Execução financeira sob método", to: "/planos/bpo",
+    icon: (<IconStroke><path d="M4 7h12l4 4-4 4H4z" /><path d="M4 13h12" /></IconStroke>) },
+  { t: "Controladoria", sub: "Inteligência financeira para decisão", to: "/planos/controladoria",
+    icon: (<IconStroke><path d="M3 3v18h18" /><path d="M7 15l4-4 3 3 5-7" /></IconStroke>) },
+  { t: "Contabilidade", sub: "Apuração e planejamento tributário", to: "/planos/contabilidade",
+    icon: (<IconStroke><path d="M6 4h12v16H6z" /><path d="M9 8h6M9 12h6M9 16h4" /></IconStroke>) },
+];
+
+const NAV_MATERIAIS: DropdownItem[] = [
+  { t: "Aulas Financeiras", sub: "Conteúdo técnico em vídeo", href: "blog",
+    icon: (<IconStroke><polygon points="10,8 16,12 10,16" fill="#c48b30" /><rect x="3" y="5" width="18" height="14" rx="2" /></IconStroke>) },
+  { t: "Ferramentas", sub: "Planilhas e modelos prontos", href: "blog",
+    icon: (<IconStroke><path d="M14 4l-2 2 6 6 2-2-6-6z" /><path d="M6 22l8-8" /><path d="M18 10l4 4-4 4-4-4" /></IconStroke>) },
+  { t: "E-Book", sub: "Guias técnicos para download", href: "blog",
+    icon: (<IconStroke><path d="M5 4h11a3 3 0 0 1 3 3v14H8a3 3 0 0 1-3-3V4z" /><path d="M5 18a3 3 0 0 1 3-3h11" /></IconStroke>) },
 ];
 
 const NAV: NavItem[] = [
-  { label: "Atuação", href: "atuacao", mega: NAV_MEGA_ATUACAO },
+  { label: "Atuação", dropdown: NAV_ATUACAO, footer: { label: "Ver diagnóstico gratuito →", hash: "diagnostico" } },
   { label: "Método", href: "metodo" },
   { label: "Diagnóstico", href: "diagnostico" },
-  { label: "Planos", to: "/planos" },
+  { label: "Planos", to: "/planos", dropdown: NAV_PLANOS, footer: { label: "Calcular honorários →", to: "/planos/bpo", hash: "calculadora" } },
   { label: "Blog", href: "blog" },
-  { label: "Materiais", materiais: NAV_MATERIAIS },
+  { label: "Materiais", dropdown: NAV_MATERIAIS },
 ];
 
 export function Nav() {
