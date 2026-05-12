@@ -179,7 +179,7 @@ export function Nav() {
         <nav className="hidden lg:flex items-center gap-1">
           {NAV.map((n) => {
             const isActive = !!n.href && active === n.href;
-            const hasDropdown = !!(n.mega || n.materiais);
+            const hasDropdown = !!n.dropdown;
             return (
               <div
                 key={n.label}
@@ -189,72 +189,44 @@ export function Nav() {
               >
                 {renderTrigger(n, isActive, hasDropdown)}
 
-                {hasDropdown && megaOpen === n.label && n.mega && (
+                {hasDropdown && megaOpen === n.label && n.dropdown && (
                   <div
-                    className="mega-in absolute left-0 top-full mt-0 z-50 bg-white rounded-[4px] p-6 min-w-[520px]"
-                    style={{ boxShadow: "0 8px 40px rgba(0,0,0,0.12)", borderTop: "3px solid #005a54" }}
-                    onMouseEnter={() => { if (closeTimer.current) window.clearTimeout(closeTimer.current); }}
-                    onMouseLeave={handleLeave}
-                  >
-                    <div className="grid grid-cols-2 gap-2">
-                      {n.mega.map((m) => (
-                        <Link
-                          key={m.n}
-                          to="/planos"
-                          onClick={() => setMegaOpen(null)}
-                          className="group/item flex items-start gap-3 p-3 rounded-[2px] hover:bg-[#f4f1ec] transition-colors"
-                        >
-                          <span
-                            className="flex-shrink-0 w-8 h-8 rounded-[4px] flex items-center justify-center font-mono-tech text-[12px] font-medium"
-                            style={{ background: "rgba(0,90,84,0.10)", color: "#005a54" }}
-                          >
-                            {m.n.replace("BU-", "")}
-                          </span>
-                          <div className="flex-1 min-w-0">
-                            <div className="font-display font-semibold text-[15px] text-[#1A1A1A] flex items-center gap-2">
-                              {m.t}
-                              <span className="text-[12px] text-[#005a54] opacity-0 group-hover/item:opacity-100 transition-all group-hover/item:translate-x-0.5">→</span>
-                            </div>
-                            <div className="text-[12px] text-[#6e7b7c] leading-snug mt-0.5">{m.sub}</div>
-                          </div>
-                        </Link>
-                      ))}
-                    </div>
-                    <div className="mt-2 pt-4 border-t border-[#e8e4db] flex justify-between items-center">
-                      <Link to="/planos" onClick={() => setMegaOpen(null)} className="text-[12px] font-bold text-[#005a54] tracking-wide">
-                        Ver todas as frentes →
-                      </Link>
-                      <span className="text-[11px] text-[#6e7b7c]">· Diagnóstico gratuito em 60s</span>
-                    </div>
-                  </div>
-                )}
-
-                {hasDropdown && megaOpen === n.label && n.materiais && (
-                  <div
-                    className="mega-in absolute right-0 top-full mt-0 z-50 bg-white rounded-[4px] p-4 min-w-[320px]"
-                    style={{ boxShadow: "0 8px 40px rgba(0,0,0,0.12)", borderTop: "3px solid #005a54" }}
+                    className="mega-in absolute left-0 top-full mt-0 z-50 bg-white rounded-[4px] p-6 min-w-[340px]"
+                    style={{ boxShadow: "0 8px 40px rgba(0,0,0,0.12)", borderTop: "3px solid #c48b30" }}
                     onMouseEnter={() => { if (closeTimer.current) window.clearTimeout(closeTimer.current); }}
                     onMouseLeave={handleLeave}
                   >
                     <div className="flex flex-col gap-1">
-                      {n.materiais.map((m) => (
-                        <a
-                          key={m.t}
-                          href="#"
-                          onClick={(e) => { e.preventDefault(); setMegaOpen(null); }}
-                          className="group/item flex items-start gap-3 p-3 rounded-[2px] hover:bg-[#f4f1ec] transition-colors"
-                        >
-                          <span className="flex-shrink-0">{m.icon}</span>
-                          <div className="flex-1 min-w-0">
-                            <div className="font-display font-semibold text-[15px] text-[#1A1A1A] flex items-center gap-2">
-                              {m.t}
-                              <span className="text-[12px] text-[#005a54] opacity-0 group-hover/item:opacity-100 transition-all group-hover/item:translate-x-0.5">→</span>
+                      {n.dropdown.map((m) => {
+                        const inner = (
+                          <>
+                            <span className="flex-shrink-0 w-8 h-8 rounded-[4px] flex items-center justify-center" style={{ background: "rgba(196,139,48,0.10)" }}>
+                              {m.icon}
+                            </span>
+                            <div className="flex-1 min-w-0">
+                              <div className="font-display font-semibold text-[15px] text-[#1A1A1A] flex items-center gap-2">
+                                {m.t}
+                                <span className="text-[12px] text-[#c48b30] opacity-0 group-hover/item:opacity-100 transition-all group-hover/item:translate-x-[3px]">→</span>
+                              </div>
+                              <div className="text-[12px] text-[#6e7b7c] leading-snug mt-0.5">{m.sub}</div>
                             </div>
-                            <div className="text-[12px] text-[#6e7b7c] leading-snug mt-0.5">{m.sub}</div>
-                          </div>
-                        </a>
-                      ))}
+                          </>
+                        );
+                        const cls = "group/item flex items-start gap-3 p-3 rounded-[2px] hover:bg-[#f4f1ec] transition-colors";
+                        if (m.to) return <Link key={m.t} to={m.to} onClick={() => setMegaOpen(null)} className={cls}>{inner}</Link>;
+                        if (m.href) return <Link key={m.t} to="/" hash={m.href} onClick={() => setMegaOpen(null)} className={cls}>{inner}</Link>;
+                        return <a key={m.t} href="#" onClick={(e) => { e.preventDefault(); setMegaOpen(null); }} className={cls}>{inner}</a>;
+                      })}
                     </div>
+                    {n.footer && (
+                      <div className="mt-2 pt-4 border-t border-[#e8e4db]">
+                        {n.footer.to ? (
+                          <Link to={n.footer.to} hash={n.footer.hash} onClick={() => setMegaOpen(null)} className="text-[12px] font-bold text-[#005a54] tracking-wide">{n.footer.label}</Link>
+                        ) : (
+                          <Link to="/" hash={n.footer.hash} onClick={() => setMegaOpen(null)} className="text-[12px] font-bold text-[#005a54] tracking-wide">{n.footer.label}</Link>
+                        )}
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
