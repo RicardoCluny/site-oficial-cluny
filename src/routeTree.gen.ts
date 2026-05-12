@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PlanosRouteImport } from './routes/planos'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PlanosBpoRouteImport } from './routes/planos.bpo'
 
 const PlanosRoute = PlanosRouteImport.update({
   id: '/planos',
@@ -22,31 +23,39 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PlanosBpoRoute = PlanosBpoRouteImport.update({
+  id: '/bpo',
+  path: '/bpo',
+  getParentRoute: () => PlanosRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/planos': typeof PlanosRoute
+  '/planos': typeof PlanosRouteWithChildren
+  '/planos/bpo': typeof PlanosBpoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/planos': typeof PlanosRoute
+  '/planos': typeof PlanosRouteWithChildren
+  '/planos/bpo': typeof PlanosBpoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/planos': typeof PlanosRoute
+  '/planos': typeof PlanosRouteWithChildren
+  '/planos/bpo': typeof PlanosBpoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/planos'
+  fullPaths: '/' | '/planos' | '/planos/bpo'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/planos'
-  id: '__root__' | '/' | '/planos'
+  to: '/' | '/planos' | '/planos/bpo'
+  id: '__root__' | '/' | '/planos' | '/planos/bpo'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  PlanosRoute: typeof PlanosRoute
+  PlanosRoute: typeof PlanosRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -65,13 +74,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/planos/bpo': {
+      id: '/planos/bpo'
+      path: '/bpo'
+      fullPath: '/planos/bpo'
+      preLoaderRoute: typeof PlanosBpoRouteImport
+      parentRoute: typeof PlanosRoute
+    }
   }
 }
 
+interface PlanosRouteChildren {
+  PlanosBpoRoute: typeof PlanosBpoRoute
+}
+
+const PlanosRouteChildren: PlanosRouteChildren = {
+  PlanosBpoRoute: PlanosBpoRoute,
+}
+
+const PlanosRouteWithChildren =
+  PlanosRoute._addFileChildren(PlanosRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  PlanosRoute: PlanosRoute,
+  PlanosRoute: PlanosRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
