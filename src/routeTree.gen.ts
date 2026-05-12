@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PlanosRouteImport } from './routes/planos'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PlanosControladoriaRouteImport } from './routes/planos.controladoria'
 import { Route as PlanosBpoRouteImport } from './routes/planos.bpo'
 
 const PlanosRoute = PlanosRouteImport.update({
@@ -23,6 +24,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PlanosControladoriaRoute = PlanosControladoriaRouteImport.update({
+  id: '/controladoria',
+  path: '/controladoria',
+  getParentRoute: () => PlanosRoute,
+} as any)
 const PlanosBpoRoute = PlanosBpoRouteImport.update({
   id: '/bpo',
   path: '/bpo',
@@ -33,24 +39,27 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/planos': typeof PlanosRouteWithChildren
   '/planos/bpo': typeof PlanosBpoRoute
+  '/planos/controladoria': typeof PlanosControladoriaRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/planos': typeof PlanosRouteWithChildren
   '/planos/bpo': typeof PlanosBpoRoute
+  '/planos/controladoria': typeof PlanosControladoriaRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/planos': typeof PlanosRouteWithChildren
   '/planos/bpo': typeof PlanosBpoRoute
+  '/planos/controladoria': typeof PlanosControladoriaRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/planos' | '/planos/bpo'
+  fullPaths: '/' | '/planos' | '/planos/bpo' | '/planos/controladoria'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/planos' | '/planos/bpo'
-  id: '__root__' | '/' | '/planos' | '/planos/bpo'
+  to: '/' | '/planos' | '/planos/bpo' | '/planos/controladoria'
+  id: '__root__' | '/' | '/planos' | '/planos/bpo' | '/planos/controladoria'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -74,6 +83,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/planos/controladoria': {
+      id: '/planos/controladoria'
+      path: '/controladoria'
+      fullPath: '/planos/controladoria'
+      preLoaderRoute: typeof PlanosControladoriaRouteImport
+      parentRoute: typeof PlanosRoute
+    }
     '/planos/bpo': {
       id: '/planos/bpo'
       path: '/bpo'
@@ -86,10 +102,12 @@ declare module '@tanstack/react-router' {
 
 interface PlanosRouteChildren {
   PlanosBpoRoute: typeof PlanosBpoRoute
+  PlanosControladoriaRoute: typeof PlanosControladoriaRoute
 }
 
 const PlanosRouteChildren: PlanosRouteChildren = {
   PlanosBpoRoute: PlanosBpoRoute,
+  PlanosControladoriaRoute: PlanosControladoriaRoute,
 }
 
 const PlanosRouteWithChildren =
