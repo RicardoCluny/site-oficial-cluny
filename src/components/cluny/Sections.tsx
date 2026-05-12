@@ -1040,86 +1040,69 @@ export function Planos() {
 }
 
 export function Manifesto({ videoUrl }: { videoUrl?: string } = {}) {
+  const YOUTUBE_ID = "";
+  const finalUrl = videoUrl || (YOUTUBE_ID ? `https://www.youtube.com/embed/${YOUTUBE_ID}` : "");
   return (
-    <section id="manifesto" className="bg-[#1F3D2E] text-[#f4f1ec] py-24 lg:py-32">
-      <div className="max-w-[1320px] mx-auto px-6 lg:px-10 grid grid-cols-1 lg:grid-cols-[45fr_55fr] gap-10 lg:gap-16 items-start">
-        {/* Coluna esquerda */}
+    <section id="manifesto" className="bg-[#1F3D2E] text-[#f4f1ec] py-20">
+      <div className="max-w-[1320px] mx-auto px-6 lg:px-10 grid grid-cols-1 lg:grid-cols-[35fr_65fr] gap-10 lg:gap-14 items-start">
+        {/* Coluna esquerda — texto enxuto */}
         <div className="order-2 lg:order-1">
           <span className="label-mono text-[#6e7b7c]">· MANIFESTO</span>
-          <h2 className="font-display font-semibold text-[36px] lg:text-[48px] leading-[1.05] mt-6 text-[#f4f1ec]">
+          <h2 className="font-display font-semibold text-[36px] leading-[1.05] mt-6 text-[#f4f1ec]">
             Há 12 anos<br /><span className="italic font-normal text-[#c48b30]">lendo empresas.</span>
           </h2>
-          <p className="text-[16px] text-[#f4f1ec]/85 leading-[1.7] mt-8">
+          <p className="text-[15px] mt-6 leading-relaxed" style={{ color: "rgba(244,241,236,0.85)" }}>
             A Cluny nasceu de uma <em className="font-display italic text-[#c48b30]">insatisfação técnica</em>: contadores que entregavam guia de imposto, mas nunca explicavam o que os números diziam. Decidi inverter a ordem.
           </p>
-          <p className="text-[16px] text-[#f4f1ec]/85 mt-5 leading-[1.7]">
-            Conduzo a contabilidade, as finanças e a estrutura legal de empresas que crescem com método. Atendo sócios que entendem que decisão sem dado é palpite, e que palpite repetido vira prejuízo recorrente.
-          </p>
-          <p className="text-[16px] text-[#f4f1ec]/85 mt-5 leading-[1.7]">
-            Trabalho em primeira pessoa. O que entrego não é serviço prestado — é leitura técnica, plano formal e operação conduzida. Sem rodeios. Sem análise paralisante. Sem promessas que a régua contábil não comporta.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 mt-10 border-t border-[rgba(255,255,255,0.1)]">
-            {[
-              ["01", "Critério", "Decisão técnica antes de comercial."],
-              ["02", "Clareza", "Linguagem que o sócio entende."],
-              ["03", "Continuidade", "Operação que sobrevive ao mês."],
-            ].map(([n, t, d]) => (
-              <div key={n} className="p-5 border-r border-b md:border-b-0 border-[rgba(255,255,255,0.1)] last:border-r-0">
-                <div className="label-mono text-[#6e7b7c] mb-2">{n}</div>
-                <div className="font-display font-semibold text-[16px] text-[#f4f1ec] mb-2">{t}</div>
-                <div className="text-[13px] text-[#cec9b8]">{d}</div>
+
+          <div className="mt-8 space-y-2">
+            {["01 — Critério", "02 — Clareza", "03 — Continuidade"].map((b) => (
+              <div key={b} className="px-3 py-2" style={{ borderLeft: "3px solid #c48b30", background: "rgba(255,255,255,0.03)" }}>
+                <span className="text-[13px] font-bold text-[#f4f1ec]">{b}</span>
               </div>
             ))}
           </div>
-          <div className="grid grid-cols-2 gap-6 pt-8 mt-2 border-t border-[rgba(255,255,255,0.1)]">
-            <div>
-              <div className="label-mono text-[#6e7b7c] mb-2">FUNDAÇÃO</div>
-              <div className="font-mono-tech text-[20px] text-[#f4f1ec]">2013</div>
-            </div>
-            <div>
-              <div className="label-mono text-[#6e7b7c] mb-2">EQUIPE</div>
-              <div className="font-mono-tech text-[20px] text-[#f4f1ec]">34 profissionais</div>
-            </div>
+
+          <div className="mt-8 pt-5 border-t border-[rgba(255,255,255,0.1)] font-mono-tech text-[10px] uppercase tracking-wider" style={{ color: "#6e7b7c" }}>
+            FUNDAÇÃO 2013 · EQUIPE 34 PROFISSIONAIS
           </div>
         </div>
 
-        {/* Coluna direita — vídeo + depoimento destaque */}
+        {/* Coluna direita — vídeo grande + depoimento */}
         <div className="order-1 lg:order-2">
           <div
-            className="relative w-full overflow-hidden rounded-[8px]"
-            style={{ aspectRatio: "16 / 9", boxShadow: "0 24px 64px rgba(0,0,0,0.3)", border: "1px solid rgba(255,255,255,0.08)", background: "#1A1A1A" }}
+            className="relative w-full overflow-hidden rounded-[12px]"
+            style={{ aspectRatio: "16 / 9", boxShadow: "0 32px 80px rgba(0,0,0,0.4)", background: "#1A1A1A" }}
           >
-            {videoUrl ? (
+            {finalUrl ? (
               <iframe
                 className="absolute inset-0 w-full h-full"
-                src={videoUrl}
+                src={finalUrl}
                 title="Vídeo institucional Cluny"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
               />
             ) : (
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
-                <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ background: "#005a54" }}>
-                  <svg width={22} height={22} viewBox="0 0 24 24" fill="#f4f1ec" aria-hidden="true">
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
+                <div className="w-[72px] h-[72px] rounded-full flex items-center justify-center" style={{ background: "#c48b30" }}>
+                  <svg width={28} height={28} viewBox="0 0 24 24" fill="#ffffff" aria-hidden="true">
                     <polygon points="6,4 20,12 6,20" />
                   </svg>
                 </div>
                 <div className="text-[13px] text-[#6e7b7c]">Vídeo institucional Cluny</div>
-                <div className="text-[11px]" style={{ color: "rgba(255,255,255,0.3)" }}>
-                  Cole a URL do YouTube em &lt;Manifesto videoUrl="..." /&gt;
-                </div>
               </div>
             )}
           </div>
 
           <div
-            className="mt-5 rounded-[4px] p-4"
+            className="mt-5 rounded-[4px] p-4 relative"
             style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
           >
-            <p className="font-display italic text-[16px] text-[#f4f1ec]">
-              "A Cluny não entrega planilha. Entrega leitura."
+            <span className="font-display absolute top-1 left-3 text-[32px] leading-none" style={{ color: "#c48b30", opacity: 0.4 }}>"</span>
+            <p className="font-display italic text-[15px] text-[#f4f1ec] pl-6">
+              A Cluny não entrega planilha. Entrega leitura.
             </p>
-            <div className="text-[12px] text-[#6e7b7c] mt-2">Marina Vasconcelos · Estúdio Ímpar</div>
+            <div className="text-[12px] text-[#6e7b7c] mt-2 pl-6">Marina Vasconcelos · Estúdio Ímpar</div>
           </div>
         </div>
       </div>
