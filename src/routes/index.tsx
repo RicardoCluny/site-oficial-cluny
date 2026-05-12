@@ -15,7 +15,7 @@ function Index() {
       <main>
         <Hero />
         <Metodo />
-        <Atuacao />
+        <Atuacao showModulos={false} />
         <Diagnostico />
         <Manifesto />
         <Cases />
