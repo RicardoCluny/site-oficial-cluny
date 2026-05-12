@@ -50,7 +50,7 @@ function CounterMetric({ value, format }: { value: number; format: (n: number) =
 }
 
 type MegaItem = { n: string; t: string; sub: string };
-type MaterialItem = { t: string; sub: string; icon: JSX.Element };
+type MaterialItem = { t: string; sub: string; icon: React.ReactNode };
 type NavItem = {
   label: string;
   href?: string;     // hash (cross-route via Link to="/" hash=...)
