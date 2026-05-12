@@ -744,7 +744,7 @@ export function Diagnostico() {
         <div>
           <span className="label-mono text-[#c48b30]">· DIAGNÓSTICO · 60 SEGUNDOS</span>
           <h2 className="font-display text-[40px] lg:text-[56px] leading-[1.05] mt-6 text-[#f4f1ec]">
-            Em 5 perguntas,<br /><span className="italic text-[#cec9b8]">eu indico</span><br />o caminho técnico.
+            Em 5 perguntas,<br /><span className="italic text-[#c48b30]">eu indico</span><br />o caminho técnico.
           </h2>
           <p className="mt-6 text-[#f4f1ec]/75 max-w-md">Sem cadastro. Sem e-mail. Respondo aqui mesmo qual frente cabe à sua operação — e por quê.</p>
           <div className="mt-10 flex gap-1.5">
