@@ -16,6 +16,7 @@
   --color-areia: #cec9b8;
   --color-latao: #c48b30;
   --color-cinza: #6e7b7c;
+  --color-branco: #ffffff;
   --color-ece7dc: #ece7dc;
 
   --color-background: var(--color-papel);
@@ -27,6 +28,15 @@
 }
 
 :root {
+  --verde-cluny: #005a54;
+  --cinza-cluny: #6e7b7c;
+  --verde-escuro: #1F3D2E;
+  --grafite: #1A1A1A;
+  --papel: #f4f1ec;
+  --areia: #cec9b8;
+  --latao: #c48b30;
+  --branco: #ffffff;
+
   --background: #f4f1ec;
   --foreground: #1A1A1A;
   --border: rgba(26,26,26,0.1);
@@ -37,48 +47,124 @@ html { scroll-behavior: smooth; }
 @layer base {
   * { border-color: rgba(26,26,26,0.1); }
   body {
-    background-color: #f4f1ec;
-    color: #1A1A1A;
+    background-color: var(--papel);
+    color: var(--grafite);
     font-family: "Inter", system-ui, sans-serif;
+    font-weight: 400;
     -webkit-font-smoothing: antialiased;
   }
-  h1,h2,h3,h4 {
+  h1, h2 {
     font-family: "Fraunces", Georgia, serif;
-    font-weight: 500;
+    font-weight: 600;
     letter-spacing: -0.025em;
-    color: var(--color-verde-escuro);
+  }
+  h3, h4 {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 400;
+    letter-spacing: -0.015em;
   }
 }
 
 @layer utilities {
   .font-display { font-family: "Fraunces", Georgia, serif; }
-  .font-mono-tech { font-family: "JetBrains Mono", ui-monospace, monospace; }
+  .font-mono-tech { font-family: "JetBrains Mono", ui-monospace, monospace; font-weight: 400; }
+
+  /* Label técnico padrão (· NOME DA SEÇÃO) */
   .label-mono {
+    font-family: "Inter", system-ui, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 10px;
+    font-weight: 700;
+  }
+  .label-tech {
     font-family: "JetBrains Mono", ui-monospace, monospace;
     text-transform: uppercase;
-    letter-spacing: 0.18em;
-    font-size: 11px;
+    letter-spacing: 0.1em;
+    font-size: 10px;
+    font-weight: 400;
   }
+
+  /* === Botões === */
+  /* Primário (sobre fundo claro ou escuro): preenchido verde */
   .btn-primary {
-    background: #005a54; color: #f4f1ec; padding: 14px 22px;
-    border-radius: 2px; font-size: 14px; font-weight: 500;
-    display: inline-flex; align-items: center; gap: 8px;
-    transition: background .2s; cursor: pointer; border: none;
+    background: var(--verde-cluny);
+    color: var(--papel);
+    padding: 14px 28px;
+    border-radius: 2px;
+    border: 2px solid var(--verde-cluny);
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 200ms ease;
   }
-  .btn-primary:hover { background: #1F3D2E; }
-  .btn-primary-sm { padding: 8px 14px; font-size: 12px; }
+  .btn-primary:hover {
+    background: var(--papel);
+    color: var(--verde-cluny);
+    border-color: var(--papel);
+  }
+  .btn-primary-sm { padding: 9px 16px; font-size: 11px; }
+
+  /* Secundário sobre fundo ESCURO: outline papel */
   .btn-secondary {
-    background: transparent; color: #005a54; padding: 13px 21px;
-    border: 1px solid #005a54; border-radius: 2px; font-size: 14px;
-    display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
-    transition: background .2s;
+    background: transparent;
+    color: var(--papel);
+    padding: 13px 27px;
+    border: 2px solid var(--papel);
+    border-radius: 2px;
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 200ms ease;
   }
-  .btn-secondary:hover { background: rgba(0,90,84,0.06); }
-  .border-tech { border: 1px solid rgba(26,26,26,0.1); }
+  .btn-secondary:hover {
+    background: var(--papel);
+    color: var(--verde-escuro);
+  }
+
+  /* Terciário sobre fundo CLARO: outline verde */
+  .btn-tertiary {
+    background: transparent;
+    color: var(--verde-cluny);
+    padding: 13px 27px;
+    border: 2px solid var(--verde-cluny);
+    border-radius: 2px;
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 200ms ease;
+  }
+  .btn-tertiary:hover {
+    background: var(--verde-cluny);
+    color: var(--papel);
+  }
+
+  .border-tech { border: 1px solid #e8e4db; }
+
   .pulse-dot {
     width: 8px; height: 8px; border-radius: 999px; background: #005a54;
     box-shadow: 0 0 0 0 rgba(0,90,84,0.6);
     animation: pulse 1.8s infinite;
+  }
+  .pulse-dot-light {
+    width: 8px; height: 8px; border-radius: 999px; background: #c48b30;
+    box-shadow: 0 0 0 0 rgba(196,139,48,0.6);
+    animation: pulse-light 1.8s infinite;
   }
 }
 
@@ -86,4 +172,9 @@ html { scroll-behavior: smooth; }
   0% { box-shadow: 0 0 0 0 rgba(0,90,84,0.5); }
   70% { box-shadow: 0 0 0 8px rgba(0,90,84,0); }
   100% { box-shadow: 0 0 0 0 rgba(0,90,84,0); }
+}
+@keyframes pulse-light {
+  0% { box-shadow: 0 0 0 0 rgba(196,139,48,0.5); }
+  70% { box-shadow: 0 0 0 8px rgba(196,139,48,0); }
+  100% { box-shadow: 0 0 0 0 rgba(196,139,48,0); }
 }
