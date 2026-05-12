@@ -1144,7 +1144,7 @@ export function Cases() {
               <span className="label-mono text-[#cec9b8]">· BPO + CONTROLADORIA · 18 MESES</span>
             </div>
             <h3 className="font-display text-[34px] lg:text-[42px] leading-tight">
-              De gestão por intuição a tese técnica em <em className="italic text-[#cec9b8]">seis trimestres.</em>
+              De gestão por intuição a tese técnica em <em className="italic text-[#c48b30]">seis trimestres.</em>
             </h3>
             <p className="text-[15px] mt-6 opacity-85 max-w-2xl">
               Estúdio de arquitetura, 38 colaboradores. Entrou na Cluny sem DRE gerencial, sem painel de KPIs e com margem oscilando 9 pontos entre meses. Saiu com leitura mensal técnica e tese tributária revista.
