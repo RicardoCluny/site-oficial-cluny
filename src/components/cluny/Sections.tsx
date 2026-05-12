@@ -1151,7 +1151,7 @@ export function Cadastro() {
                 <p className="text-[15px] text-[#f4f1ec]/80 max-w-md">Recebi sua solicitação. Respondo pessoalmente em até 1 dia útil, por escrito.</p>
               </div>
             ) : (
-              <form onSubmit={(e)=>{e.preventDefault(); setSent(true);}} className="space-y-6">
+              <form onSubmit={submit} className="space-y-6">
                 {[
                   { n: "nome", l: "Nome completo" },
                   { n: "email", l: "E-mail corporativo", t: "email" },
@@ -1159,13 +1159,21 @@ export function Cadastro() {
                   { n: "tel", l: "Telefone" },
                 ].map((f) => (
                   <div key={f.n}>
-                    <label className="label-mono text-[#6e7b7c] block mb-2">{f.l}</label>
-                    <input required type={f.t || "text"} name={f.n} placeholder={f.l} className="w-full bg-transparent border-b border-[rgba(255,255,255,0.2)] py-2 outline-none focus:border-[#c48b30] text-[15px] text-[#f4f1ec] placeholder:text-[#6e7b7c] transition-colors" />
+                    <label htmlFor={f.n} className="label-mono text-[#6e7b7c] block mb-2">{f.l}</label>
+                    <input id={f.n} required aria-required="true" type={f.t || "text"} name={f.n} placeholder={f.l} className="w-full bg-transparent border-b border-[rgba(255,255,255,0.2)] py-2 outline-none focus:border-[#c48b30] text-[15px] text-[#f4f1ec] placeholder:text-[#6e7b7c] transition-colors" />
                   </div>
                 ))}
                 <div>
-                  <label className="label-mono text-[#6e7b7c] block mb-2">Interesse principal</label>
-                  <select required defaultValue="" className="w-full bg-transparent border-b border-[rgba(255,255,255,0.2)] py-2 outline-none focus:border-[#c48b30] text-[15px] text-[#f4f1ec]">
+                  <label htmlFor="interesse" className="label-mono text-[#6e7b7c] block mb-2">Interesse principal</label>
+                  <select
+                    id="interesse"
+                    ref={selectRef}
+                    required
+                    aria-required="true"
+                    value={interesse}
+                    onChange={(e) => setInteresse(e.target.value)}
+                    className="w-full bg-transparent border-b border-[rgba(255,255,255,0.2)] py-2 outline-none focus:border-[#c48b30] text-[15px] text-[#f4f1ec]"
+                  >
                     <option value="" className="bg-[#1A1A1A]">Selecione...</option>
                     <option className="bg-[#1A1A1A]">Finanças / BPO</option>
                     <option className="bg-[#1A1A1A]">Contabilidade</option>
@@ -1174,10 +1182,28 @@ export function Cadastro() {
                     <option className="bg-[#1A1A1A]">Não sei ainda</option>
                   </select>
                 </div>
-                <button type="submit" className="btn-primary w-full justify-center mt-4" style={{ height: 52 }}>
-                  Quero conversar com a Cluny →
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="btn-primary w-full justify-center mt-4 disabled:opacity-60 disabled:cursor-not-allowed"
+                  style={{ height: 52 }}
+                >
+                  {loading ? (
+                    <>
+                      <span>Enviando...</span>
+                      <span className="ml-2 inline-block w-4 h-4 border-2 border-[#f4f1ec] border-t-transparent rounded-full animate-spin" />
+                    </>
+                  ) : (
+                    <>Quero conversar com a Cluny →</>
+                  )}
                 </button>
-                <p className="text-[11px] text-[#6e7b7c]">Resposta da nossa equipe em até 1 dia útil. Seus dados não são compartilhados.</p>
+                <p className="text-[11px] text-[#6e7b7c] flex items-center gap-2">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#6e7b7c" strokeWidth="2" aria-hidden="true">
+                    <rect x="4" y="11" width="16" height="10" rx="1" />
+                    <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+                  </svg>
+                  Resposta em até 1 dia útil. Seus dados não são compartilhados.
+                </p>
               </form>
             )}
           </div>
