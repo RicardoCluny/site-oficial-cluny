@@ -255,7 +255,7 @@ export function Nav() {
       {open && (
         <div className="lg:hidden border-t border-[rgba(255,255,255,0.08)] px-6 py-6 flex flex-col gap-1 bg-[#1F3D2E] animate-fade-in">
           {NAV.map((n) => {
-            const hasDropdown = !!(n.mega || n.materiais);
+            const hasDropdown = !!n.dropdown;
             if (hasDropdown) {
               return (
                 <div key={n.label}>
@@ -268,17 +268,12 @@ export function Nav() {
                   </button>
                   {mobileSub === n.label && (
                     <div className="pl-4 pb-2 flex flex-col gap-1">
-                      {n.mega && n.mega.map((m) => (
-                        <Link key={m.n} to="/planos" onClick={() => setOpen(false)} className="flex items-center gap-3 py-2 px-3 text-[13px] text-[#cec9b8] hover:bg-[rgba(255,255,255,0.06)] rounded-md">
-                          <span className="font-mono-tech text-[#c48b30] text-[11px]">{m.n.replace("BU-", "")}</span>
-                          <span>{m.t}</span>
-                        </Link>
-                      ))}
-                      {n.materiais && n.materiais.map((m) => (
-                        <a key={m.t} href="#" onClick={() => setOpen(false)} className="block py-2 px-3 text-[13px] text-[#cec9b8] hover:bg-[rgba(255,255,255,0.06)] rounded-md">
-                          {m.t}
-                        </a>
-                      ))}
+                      {n.dropdown!.map((m) => {
+                        const cls = "block py-2 px-3 text-[13px] text-[#cec9b8] hover:bg-[rgba(255,255,255,0.06)] rounded-md";
+                        if (m.to) return <Link key={m.t} to={m.to} onClick={() => setOpen(false)} className={cls}>{m.t}</Link>;
+                        if (m.href) return <Link key={m.t} to="/" hash={m.href} onClick={() => setOpen(false)} className={cls}>{m.t}</Link>;
+                        return <a key={m.t} href="#" onClick={() => setOpen(false)} className={cls}>{m.t}</a>;
+                      })}
                     </div>
                   )}
                 </div>
