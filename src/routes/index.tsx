@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
-  Nav, Hero, Atuacao, Diagnostico, Metodo, Planos,
+  Nav, Hero, Diagnostico, Metodo, Planos,
   Manifesto, Cases, Depoimentos, Calculadora, Conteudo, FAQ, Cadastro, Footer,
 } from "@/components/cluny/Sections";
 
