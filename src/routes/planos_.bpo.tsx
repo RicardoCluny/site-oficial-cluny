@@ -461,11 +461,166 @@ function CalculadoraCLT() {
 
 /* ── Page ── */
 function BpoPage() {
+  const [modalidade, setModalidade] = useState<"full" | "assistido">("full");
+
+  const promessas: [string, string][] = [
+    ["Operação rodando sem CLT", "Fluxo de caixa diário e DRE gerencial mensal entregues no prazo, sem depender de profissional interno."],
+    ["Processos documentados", "Rotinas auditáveis, aprovação dupla e trilha completa de auditoria — do documento à baixa contábil."],
+    ["Sócio fora da execução", "Você aprova. A Cluny executa. Sua atenção volta para o que gera receita."],
+    ["Custo inferior à contratação CLT", "Operação que substitui analista interno com previsibilidade de custo e sem encargos trabalhistas."],
+  ];
+
+  const etapas: [string, string, string, string, boolean][] = [
+    ["01", "Receber documento (NF, boleto)", "Cluny", "Cluny", false],
+    ["02", "Conferir e classificar", "Cluny", "Cluny", false],
+    ["03", "Lançar no sistema", "Cluny", "Cluny", false],
+    ["04", "Programar pagamento", "Cluny", "Cluny", false],
+    ["05", "Submeter aprovação ao cliente", "Cluny", "Cluny", false],
+    ["06", "Aprovar lote", "Cliente", "Cliente", false],
+    ["07", "Executar pagamento no banco", "Cluny ✓", "Cliente ✓", true],
+    ["08", "Conciliar baixa", "Cluny", "Cluny", false],
+    ["09", "Registrar comprovante", "Cluny", "Cluny", false],
+  ];
+
   return (
-    <div style={{background: "#1F3D2E", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center"}}>
-      <h1 style={{color: "#c48b30", fontFamily: "Fraunces, serif", fontSize: 64}}>
-        BPO Financeiro
-      </h1>
+    <div style={{ background: "#f4f1ec", minHeight: "100vh", fontFamily: "Inter, sans-serif" }}>
+      <Nav />
+
+      {/* HERO */}
+      <section style={{ background: "#1F3D2E", padding: "120px 0 100px", color: "#f4f1ec" }}>
+        <div style={{ maxWidth: 1180, margin: "0 auto", padding: "0 32px" }}>
+          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "#c48b30", marginBottom: 24 }}>
+            · BPO FINANCEIRO / EXECUÇÃO
+          </div>
+          <h1 style={{ fontFamily: "Fraunces, serif", fontWeight: 600, fontSize: 64, lineHeight: 1.05, margin: 0, maxWidth: 880 }}>
+            Tiramos o sócio da{" "}
+            <span style={{ fontStyle: "italic", color: "#c48b30" }}>operação financeira.</span>
+          </h1>
+          <p style={{ fontSize: 18, lineHeight: 1.6, color: "#d8d2c4", maxWidth: 720, marginTop: 32 }}>
+            Operação financeira completa, executada pela equipe Cluny, dimensionada para o estágio da sua empresa. Substitui a contratação de analista financeiro CLT com previsibilidade de custo e resultado em até 90 dias.
+          </p>
+          <button
+            onClick={() => scrollTo("cadastro")}
+            style={{ marginTop: 40, background: "#c48b30", color: "#1A1A1A", fontFamily: "Inter", fontWeight: 700, fontSize: 14, padding: "16px 32px", borderRadius: 2, border: "none", cursor: "pointer" }}
+          >
+            Quero agendar uma conversa →
+          </button>
+        </div>
+
+        {/* METRICS BAR */}
+        <div style={{ maxWidth: 1180, margin: "80px auto 0", padding: "0 32px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 0, borderTop: "1px solid rgba(196,139,48,0.3)", borderBottom: "1px solid rgba(196,139,48,0.3)" }}>
+            {[["90 dias", "para operação estabilizada"], ["3 planos", "Start, Gestão e Premium"], ["2 modalidades", "Full e Assistido"], ["12 meses", "contrato mínimo"]].map(([v, l], i) => (
+              <div key={i} style={{ padding: "32px 24px", borderRight: i < 3 ? "1px solid rgba(196,139,48,0.2)" : "none" }}>
+                <div style={{ fontFamily: "Fraunces, serif", fontSize: 32, color: "#c48b30", fontWeight: 600 }}>{v}</div>
+                <div style={{ fontSize: 13, color: "#d8d2c4", marginTop: 8 }}>{l}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* O QUE MUDA NA PRÁTICA */}
+      <section style={{ background: "#f4f1ec", padding: "80px 0" }}>
+        <div style={{ maxWidth: 1180, margin: "0 auto", padding: "0 32px" }}>
+          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "#6e7b7c", marginBottom: 16 }}>
+            · EM ATÉ 90 DIAS, VOCÊ TERÁ
+          </div>
+          <h2 style={{ fontFamily: "Fraunces, serif", fontWeight: 600, fontSize: 44, lineHeight: 1.1, color: "#1A1A1A", margin: "0 0 48px" }}>
+            O que <span style={{ fontStyle: "italic", color: "#c48b30" }}>muda na prática.</span>
+          </h2>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 24 }}>
+            {promessas.map(([t, d]) => (
+              <div key={t} style={{ background: "white", border: "1px solid #e8e4db", borderLeft: "3px solid #c48b30", borderRadius: 4, padding: 28 }}>
+                <div style={{ fontFamily: "Fraunces, serif", fontSize: 22, fontWeight: 600, color: "#1A1A1A", marginBottom: 12 }}>{t}</div>
+                <div style={{ fontSize: 15, lineHeight: 1.6, color: "#4a5253" }}>{d}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* MODALIDADES */}
+      <section style={{ background: "white", padding: "80px 0" }}>
+        <div style={{ maxWidth: 1180, margin: "0 auto", padding: "0 32px" }}>
+          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "#6e7b7c", marginBottom: 16 }}>
+            · MODALIDADES / COMO FUNCIONA
+          </div>
+          <h2 style={{ fontFamily: "Fraunces, serif", fontWeight: 600, fontSize: 44, lineHeight: 1.1, color: "#1A1A1A", margin: "0 0 16px" }}>
+            Full ou Assistido. <span style={{ fontStyle: "italic", color: "#c48b30" }}>Uma etapa de diferença.</span>
+          </h2>
+          <p style={{ fontSize: 16, color: "#4a5253", maxWidth: 720, marginBottom: 48 }}>
+            As duas modalidades são idênticas em 8 das 9 etapas do processo. A diferença está em quem executa o pagamento no banco.
+          </p>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(360px, 1fr))", gap: 24, marginBottom: 64 }}>
+            {[
+              { tag: "MODALIDADE FULL", title: "Cluny executa", desc: "A Cluny acessa o banco do cliente mediante procuração específica e executa todos os pagamentos aprovados. 100% da rotina financeira terceirizada.", items: ["Sócio quer sair 100% da operação financeira", "Empresa sem profissional interno disponível", "Prioridade em velocidade e centralização"] },
+              { tag: "MODALIDADE ASSISTIDO", title: "Cliente executa", desc: "A Cluny prepara, classifica, agenda e submete aprovação. O cliente acessa o banco e efetiva o pagamento. Cluny não possui poderes de movimentação bancária.", items: ["Governança bancária restritiva ou conselho deliberativo", "Sociedade com múltiplos sócios e aprovação interna", "Empresas em M&A, due diligence ou auditoria externa", "Início gradual da terceirização"] },
+            ].map((c) => (
+              <div key={c.tag} style={{ background: "#f4f1ec", border: "1px solid #e8e4db", borderRadius: 4, padding: 32 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.16em", color: "#c48b30", marginBottom: 12 }}>{c.tag}</div>
+                <div style={{ fontFamily: "Fraunces, serif", fontSize: 28, fontWeight: 600, color: "#1A1A1A", marginBottom: 16 }}>{c.title}</div>
+                <p style={{ fontSize: 14, lineHeight: 1.6, color: "#4a5253", marginBottom: 20 }}>{c.desc}</p>
+                {c.items.map((i) => (
+                  <div key={i} style={{ fontSize: 13, color: "#1A1A1A", padding: "8px 0", borderTop: "1px solid #e8e4db" }}>→ {i}</div>
+                ))}
+              </div>
+            ))}
+          </div>
+
+          {/* TABLE */}
+          <div style={{ overflowX: "auto", border: "1px solid #e8e4db", borderRadius: 4 }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
+              <thead>
+                <tr style={{ background: "#1F3D2E", color: "#f4f1ec" }}>
+                  {["ETAPA", "DESCRIÇÃO", "FULL", "ASSISTIDO"].map((h) => (
+                    <th key={h} style={{ padding: "16px 20px", textAlign: "left", fontSize: 11, fontWeight: 700, letterSpacing: "0.12em" }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {etapas.map(([e, d, f, a, dest]) => (
+                  <tr key={e} style={{ background: dest ? "#fdf6e8" : "white", borderTop: "1px solid #e8e4db" }}>
+                    <td style={{ padding: "14px 20px", fontFamily: "Fraunces, serif", color: "#c48b30", fontWeight: 600 }}>{e}</td>
+                    <td style={{ padding: "14px 20px", color: "#1A1A1A" }}>{d}</td>
+                    <td style={{ padding: "14px 20px", color: "#4a5253", fontWeight: dest ? 700 : 400 }}>{f}</td>
+                    <td style={{ padding: "14px 20px", color: "#4a5253", fontWeight: dest ? 700 : 400 }}>{a}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p style={{ textAlign: "center", fontSize: 13, color: "#6e7b7c", marginTop: 24 }}>
+            A etapa 07 é a única diferença entre as duas modalidades.
+          </p>
+        </div>
+      </section>
+
+      {/* MODALIDADE TOGGLE */}
+      <section style={{ background: "#f4f1ec", padding: "60px 0" }}>
+        <div style={{ maxWidth: 1180, margin: "0 auto", padding: "0 32px", textAlign: "center" }}>
+          <div style={{ fontSize: 13, color: "#4a5253", marginBottom: 16 }}>Escolha a modalidade:</div>
+          <div style={{ display: "inline-flex", gap: 12 }}>
+            {(["full", "assistido"] as const).map((m) => (
+              <button
+                key={m}
+                onClick={() => setModalidade(m)}
+                style={{ padding: "8px 20px", fontSize: 12, fontWeight: 700, fontFamily: "Inter", textTransform: "uppercase", letterSpacing: "0.08em", borderRadius: 2, border: modalidade === m ? "2px solid #005a54" : "2px solid #e8e4db", background: modalidade === m ? "#005a54" : "white", color: modalidade === m ? "#f4f1ec" : "#6e7b7c", cursor: "pointer", transition: "all 200ms" }}
+              >
+                {m === "full" ? "FULL" : "ASSISTIDO"}
+              </button>
+            ))}
+          </div>
+          <div style={{ marginTop: 16, fontSize: 13, color: "#6e7b7c", fontStyle: "italic" }}>
+            {modalidade === "full" ? "Programação bancária pela Cluny" : "Cliente executa no internet banking"}
+          </div>
+        </div>
+      </section>
+
+      <FAQ />
+      <Cadastro />
+      <Footer />
     </div>
   );
 }
