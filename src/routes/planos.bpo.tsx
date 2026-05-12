@@ -472,8 +472,7 @@ function BpoPage() {
         <div className="max-w-[1320px] mx-auto px-6 lg:px-10 pb-16">
           <span className="label-mono text-[#6e7b7c]">· BPO FINANCEIRO / EXECUÇÃO</span>
           <h1 className="font-display font-semibold text-[52px] lg:text-[64px] leading-[1.05] mt-6 mb-6 text-[#f4f1ec] max-w-2xl">
-            Tiramos o sócio da<br />
-            <em className="italic font-normal text-[#c48b30]">operação financeira.</em>
+            Tiramos o sócio da operação financeira.
           </h1>
           <p className="text-[16px] text-[#f4f1ec]/80 max-w-xl leading-relaxed mb-10">
             Operação financeira completa, executada pela equipe Cluny, dimensionada para o estágio da sua empresa. Substitui a contratação de analista financeiro CLT com previsibilidade de custo e resultado em até 90 dias.
