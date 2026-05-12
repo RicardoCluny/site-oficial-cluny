@@ -50,45 +50,55 @@ function CounterMetric({ value, format }: { value: number; format: (n: number) =
   return <span ref={ref}>{format(val)}</span>;
 }
 
-type MegaItem = { n: string; t: string; sub: string };
-type MaterialItem = { t: string; sub: string; icon: React.ReactNode };
+type DropdownItem = { t: string; sub: string; to?: string; href?: string; icon: React.ReactNode };
 type NavItem = {
   label: string;
   href?: string;     // hash (cross-route via Link to="/" hash=...)
   to?: string;       // route path
-  mega?: MegaItem[];
-  materiais?: MaterialItem[];
+  dropdown?: DropdownItem[];
+  footer?: { label: string; to?: string; href?: string; hash?: string };
 };
 
-const NAV_MEGA_ATUACAO: MegaItem[] = [
-  { n: "BU-01", t: "Finanças", sub: "Gestão financeira sob método" },
-  { n: "BU-02", t: "Contabilidade", sub: "Contabilidade consultiva" },
-  { n: "BU-03", t: "Legalização", sub: "Constituição e regularização" },
-  { n: "BU-04", t: "Educação Corporativa", sub: "Capacitação técnica aplicada" },
+const IconStroke = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="#c48b30" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" {...props} />
+);
+
+const NAV_ATUACAO: DropdownItem[] = [
+  { t: "Finanças", sub: "Gestão financeira sob método", to: "/planos/bpo",
+    icon: (<IconStroke><path d="M3 17l5-5 4 4 8-8" /><path d="M14 8h6v6" /></IconStroke>) },
+  { t: "Contabilidade", sub: "Contabilidade consultiva", to: "/planos/contabilidade",
+    icon: (<IconStroke><path d="M7 3h8l4 4v14H7z" /><path d="M14 3v5h5" /><path d="M10 12h6M10 16h6" /></IconStroke>) },
+  { t: "Legalização", sub: "Constituição e regularização", href: "atuacao",
+    icon: (<IconStroke><path d="M4 21h16" /><path d="M5 21V9l7-5 7 5v12" /><path d="M10 21v-6h4v6" /></IconStroke>) },
+  { t: "Educação Corporativa", sub: "Capacitação técnica aplicada", href: "atuacao",
+    icon: (<IconStroke><circle cx="12" cy="8" r="3" /><path d="M5 21c0-4 3-6 7-6s7 2 7 6" /></IconStroke>) },
 ];
 
-const IconStroke = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg width={32} height={32} viewBox="0 0 32 32" fill="none" stroke="#005a54" strokeWidth={1.4} strokeLinecap="round" strokeLinejoin="round" {...props} />
-);
-const NAV_MATERIAIS: MaterialItem[] = [
-  { t: "Aulas Financeiras", sub: "Trilhas técnicas em vídeo", icon: (
-    <IconStroke><polygon points="13,10 22,16 13,22" fill="#005a54" stroke="#005a54" /><rect x="4" y="6" width="24" height="20" rx="2" /></IconStroke>
-  ) },
-  { t: "Ferramentas", sub: "Planilhas e templates aplicáveis", icon: (
-    <IconStroke><path d="M14 4l-2 2 6 6 2-2-6-6z" /><path d="M6 26l8-8" /><path d="M20 12l6 6-4 4-6-6" /></IconStroke>
-  ) },
-  { t: "E-Book", sub: "Guias técnicos para download", icon: (
-    <IconStroke><path d="M6 5h14a4 4 0 0 1 4 4v18H10a4 4 0 0 1-4-4V5z" /><path d="M6 23a4 4 0 0 1 4-4h14" /></IconStroke>
-  ) },
+const NAV_PLANOS: DropdownItem[] = [
+  { t: "BPO Financeiro", sub: "Execução financeira sob método", to: "/planos/bpo",
+    icon: (<IconStroke><path d="M4 7h12l4 4-4 4H4z" /><path d="M4 13h12" /></IconStroke>) },
+  { t: "Controladoria", sub: "Inteligência financeira para decisão", to: "/planos/controladoria",
+    icon: (<IconStroke><path d="M3 3v18h18" /><path d="M7 15l4-4 3 3 5-7" /></IconStroke>) },
+  { t: "Contabilidade", sub: "Apuração e planejamento tributário", to: "/planos/contabilidade",
+    icon: (<IconStroke><path d="M6 4h12v16H6z" /><path d="M9 8h6M9 12h6M9 16h4" /></IconStroke>) },
+];
+
+const NAV_MATERIAIS: DropdownItem[] = [
+  { t: "Aulas Financeiras", sub: "Conteúdo técnico em vídeo", href: "blog",
+    icon: (<IconStroke><polygon points="10,8 16,12 10,16" fill="#c48b30" /><rect x="3" y="5" width="18" height="14" rx="2" /></IconStroke>) },
+  { t: "Ferramentas", sub: "Planilhas e modelos prontos", href: "blog",
+    icon: (<IconStroke><path d="M14 4l-2 2 6 6 2-2-6-6z" /><path d="M6 22l8-8" /><path d="M18 10l4 4-4 4-4-4" /></IconStroke>) },
+  { t: "E-Book", sub: "Guias técnicos para download", href: "blog",
+    icon: (<IconStroke><path d="M5 4h11a3 3 0 0 1 3 3v14H8a3 3 0 0 1-3-3V4z" /><path d="M5 18a3 3 0 0 1 3-3h11" /></IconStroke>) },
 ];
 
 const NAV: NavItem[] = [
-  { label: "Atuação", href: "atuacao", mega: NAV_MEGA_ATUACAO },
+  { label: "Atuação", dropdown: NAV_ATUACAO, footer: { label: "Ver diagnóstico gratuito →", hash: "diagnostico" } },
   { label: "Método", href: "metodo" },
   { label: "Diagnóstico", href: "diagnostico" },
-  { label: "Planos", to: "/planos" },
+  { label: "Planos", to: "/planos", dropdown: NAV_PLANOS, footer: { label: "Calcular honorários →", to: "/planos/bpo", hash: "calculadora" } },
   { label: "Blog", href: "blog" },
-  { label: "Materiais", materiais: NAV_MATERIAIS },
+  { label: "Materiais", dropdown: NAV_MATERIAIS },
 ];
 
 export function Nav() {
@@ -132,7 +142,7 @@ export function Nav() {
 
   const renderTrigger = (n: NavItem, isActive: boolean, hasDropdown: boolean) => {
     const cls = `relative inline-flex items-center gap-1 px-4 py-2 text-[13.5px] font-medium transition-all duration-200 border-b-2 ${
-      isActive ? "border-[#005a54] opacity-100" : `border-transparent ${inactiveOpacity} hover:opacity-100`
+      isActive ? "border-[#c48b30] opacity-100" : `border-transparent ${inactiveOpacity} hover:opacity-100`
     }`;
     const inner = (
       <>
@@ -169,7 +179,7 @@ export function Nav() {
         <nav className="hidden lg:flex items-center gap-1">
           {NAV.map((n) => {
             const isActive = !!n.href && active === n.href;
-            const hasDropdown = !!(n.mega || n.materiais);
+            const hasDropdown = !!n.dropdown;
             return (
               <div
                 key={n.label}
@@ -179,72 +189,44 @@ export function Nav() {
               >
                 {renderTrigger(n, isActive, hasDropdown)}
 
-                {hasDropdown && megaOpen === n.label && n.mega && (
+                {hasDropdown && megaOpen === n.label && n.dropdown && (
                   <div
-                    className="mega-in absolute left-0 top-full mt-0 z-50 bg-white rounded-[4px] p-6 min-w-[520px]"
-                    style={{ boxShadow: "0 8px 40px rgba(0,0,0,0.12)", borderTop: "3px solid #005a54" }}
-                    onMouseEnter={() => { if (closeTimer.current) window.clearTimeout(closeTimer.current); }}
-                    onMouseLeave={handleLeave}
-                  >
-                    <div className="grid grid-cols-2 gap-2">
-                      {n.mega.map((m) => (
-                        <Link
-                          key={m.n}
-                          to="/planos"
-                          onClick={() => setMegaOpen(null)}
-                          className="group/item flex items-start gap-3 p-3 rounded-[2px] hover:bg-[#f4f1ec] transition-colors"
-                        >
-                          <span
-                            className="flex-shrink-0 w-8 h-8 rounded-[4px] flex items-center justify-center font-mono-tech text-[12px] font-medium"
-                            style={{ background: "rgba(0,90,84,0.10)", color: "#005a54" }}
-                          >
-                            {m.n.replace("BU-", "")}
-                          </span>
-                          <div className="flex-1 min-w-0">
-                            <div className="font-display font-semibold text-[15px] text-[#1A1A1A] flex items-center gap-2">
-                              {m.t}
-                              <span className="text-[12px] text-[#005a54] opacity-0 group-hover/item:opacity-100 transition-all group-hover/item:translate-x-0.5">→</span>
-                            </div>
-                            <div className="text-[12px] text-[#6e7b7c] leading-snug mt-0.5">{m.sub}</div>
-                          </div>
-                        </Link>
-                      ))}
-                    </div>
-                    <div className="mt-2 pt-4 border-t border-[#e8e4db] flex justify-between items-center">
-                      <Link to="/planos" onClick={() => setMegaOpen(null)} className="text-[12px] font-bold text-[#005a54] tracking-wide">
-                        Ver todas as frentes →
-                      </Link>
-                      <span className="text-[11px] text-[#6e7b7c]">· Diagnóstico gratuito em 60s</span>
-                    </div>
-                  </div>
-                )}
-
-                {hasDropdown && megaOpen === n.label && n.materiais && (
-                  <div
-                    className="mega-in absolute right-0 top-full mt-0 z-50 bg-white rounded-[4px] p-4 min-w-[320px]"
-                    style={{ boxShadow: "0 8px 40px rgba(0,0,0,0.12)", borderTop: "3px solid #005a54" }}
+                    className="mega-in absolute left-0 top-full mt-0 z-50 bg-white rounded-[4px] p-6 min-w-[340px]"
+                    style={{ boxShadow: "0 8px 40px rgba(0,0,0,0.12)", borderTop: "3px solid #c48b30" }}
                     onMouseEnter={() => { if (closeTimer.current) window.clearTimeout(closeTimer.current); }}
                     onMouseLeave={handleLeave}
                   >
                     <div className="flex flex-col gap-1">
-                      {n.materiais.map((m) => (
-                        <a
-                          key={m.t}
-                          href="#"
-                          onClick={(e) => { e.preventDefault(); setMegaOpen(null); }}
-                          className="group/item flex items-start gap-3 p-3 rounded-[2px] hover:bg-[#f4f1ec] transition-colors"
-                        >
-                          <span className="flex-shrink-0">{m.icon}</span>
-                          <div className="flex-1 min-w-0">
-                            <div className="font-display font-semibold text-[15px] text-[#1A1A1A] flex items-center gap-2">
-                              {m.t}
-                              <span className="text-[12px] text-[#005a54] opacity-0 group-hover/item:opacity-100 transition-all group-hover/item:translate-x-0.5">→</span>
+                      {n.dropdown.map((m) => {
+                        const inner = (
+                          <>
+                            <span className="flex-shrink-0 w-8 h-8 rounded-[4px] flex items-center justify-center" style={{ background: "rgba(196,139,48,0.10)" }}>
+                              {m.icon}
+                            </span>
+                            <div className="flex-1 min-w-0">
+                              <div className="font-display font-semibold text-[15px] text-[#1A1A1A] flex items-center gap-2">
+                                {m.t}
+                                <span className="text-[12px] text-[#c48b30] opacity-0 group-hover/item:opacity-100 transition-all group-hover/item:translate-x-[3px]">→</span>
+                              </div>
+                              <div className="text-[12px] text-[#6e7b7c] leading-snug mt-0.5">{m.sub}</div>
                             </div>
-                            <div className="text-[12px] text-[#6e7b7c] leading-snug mt-0.5">{m.sub}</div>
-                          </div>
-                        </a>
-                      ))}
+                          </>
+                        );
+                        const cls = "group/item flex items-start gap-3 p-3 rounded-[2px] hover:bg-[#f4f1ec] transition-colors";
+                        if (m.to) return <Link key={m.t} to={m.to} onClick={() => setMegaOpen(null)} className={cls}>{inner}</Link>;
+                        if (m.href) return <Link key={m.t} to="/" hash={m.href} onClick={() => setMegaOpen(null)} className={cls}>{inner}</Link>;
+                        return <a key={m.t} href="#" onClick={(e) => { e.preventDefault(); setMegaOpen(null); }} className={cls}>{inner}</a>;
+                      })}
                     </div>
+                    {n.footer && (
+                      <div className="mt-2 pt-4 border-t border-[#e8e4db]">
+                        {n.footer.to ? (
+                          <Link to={n.footer.to} hash={n.footer.hash} onClick={() => setMegaOpen(null)} className="text-[12px] font-bold text-[#005a54] tracking-wide">{n.footer.label}</Link>
+                        ) : (
+                          <Link to="/" hash={n.footer.hash} onClick={() => setMegaOpen(null)} className="text-[12px] font-bold text-[#005a54] tracking-wide">{n.footer.label}</Link>
+                        )}
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -273,7 +255,7 @@ export function Nav() {
       {open && (
         <div className="lg:hidden border-t border-[rgba(255,255,255,0.08)] px-6 py-6 flex flex-col gap-1 bg-[#1F3D2E] animate-fade-in">
           {NAV.map((n) => {
-            const hasDropdown = !!(n.mega || n.materiais);
+            const hasDropdown = !!n.dropdown;
             if (hasDropdown) {
               return (
                 <div key={n.label}>
@@ -286,17 +268,12 @@ export function Nav() {
                   </button>
                   {mobileSub === n.label && (
                     <div className="pl-4 pb-2 flex flex-col gap-1">
-                      {n.mega && n.mega.map((m) => (
-                        <Link key={m.n} to="/planos" onClick={() => setOpen(false)} className="flex items-center gap-3 py-2 px-3 text-[13px] text-[#cec9b8] hover:bg-[rgba(255,255,255,0.06)] rounded-md">
-                          <span className="font-mono-tech text-[#c48b30] text-[11px]">{m.n.replace("BU-", "")}</span>
-                          <span>{m.t}</span>
-                        </Link>
-                      ))}
-                      {n.materiais && n.materiais.map((m) => (
-                        <a key={m.t} href="#" onClick={() => setOpen(false)} className="block py-2 px-3 text-[13px] text-[#cec9b8] hover:bg-[rgba(255,255,255,0.06)] rounded-md">
-                          {m.t}
-                        </a>
-                      ))}
+                      {n.dropdown!.map((m) => {
+                        const cls = "block py-2 px-3 text-[13px] text-[#cec9b8] hover:bg-[rgba(255,255,255,0.06)] rounded-md";
+                        if (m.to) return <Link key={m.t} to={m.to} onClick={() => setOpen(false)} className={cls}>{m.t}</Link>;
+                        if (m.href) return <Link key={m.t} to="/" hash={m.href} onClick={() => setOpen(false)} className={cls}>{m.t}</Link>;
+                        return <a key={m.t} href="#" onClick={() => setOpen(false)} className={cls}>{m.t}</a>;
+                      })}
                     </div>
                   )}
                 </div>
@@ -492,7 +469,7 @@ export function Hero() {
               className={`p-6 lg:px-8 lg:py-8 ${i < METRICS.length - 1 ? "lg:border-r border-[#e8e4db]" : ""} ${i % 2 === 0 ? "border-r lg:border-r" : ""} ${i < 2 ? "border-b lg:border-b-0" : ""} border-[#e8e4db]`}
             >
               <span className="label-mono text-[#6e7b7c]">MÉTRICA · {m.n}</span>
-              <div className="font-mono-tech text-[36px] leading-none text-[#1F3D2E] mt-3">
+              <div className="font-mono-tech text-[36px] leading-none text-[#c48b30] mt-3">
                 <CounterMetric value={m.value} format={m.fmt} />
                 {m.small && <span className="text-[14px] text-[#6e7b7c] ml-1">{m.small}</span>}
               </div>
@@ -767,7 +744,7 @@ export function Diagnostico() {
         <div>
           <span className="label-mono text-[#c48b30]">· DIAGNÓSTICO · 60 SEGUNDOS</span>
           <h2 className="font-display text-[40px] lg:text-[56px] leading-[1.05] mt-6 text-[#f4f1ec]">
-            Em 5 perguntas,<br /><span className="italic text-[#cec9b8]">eu indico</span><br />o caminho técnico.
+            Em 5 perguntas,<br /><span className="italic text-[#c48b30]">eu indico</span><br />o caminho técnico.
           </h2>
           <p className="mt-6 text-[#f4f1ec]/75 max-w-md">Sem cadastro. Sem e-mail. Respondo aqui mesmo qual frente cabe à sua operação — e por quê.</p>
           <div className="mt-10 flex gap-1.5">
@@ -850,7 +827,7 @@ export function Metodo() {
           <div>
             <span className="label-mono text-[#005a54]">· MÉTODO / LEITURA TÉCNICA</span>
             <h2 className="font-display text-[40px] lg:text-[56px] leading-[1.05] text-[#1F3D2E] mt-4">
-              Como leio<br />uma empresa em<br /><span className="italic text-[#005a54]">6 etapas.</span>
+              Como leio<br />uma empresa em<br /><span className="italic text-[#c48b30]">6 etapas.</span>
             </h2>
           </div>
           <p className="text-[16px] text-[#1A1A1A]/80 leading-relaxed max-w-md">
@@ -1063,86 +1040,69 @@ export function Planos() {
 }
 
 export function Manifesto({ videoUrl }: { videoUrl?: string } = {}) {
+  const YOUTUBE_ID = "";
+  const finalUrl = videoUrl || (YOUTUBE_ID ? `https://www.youtube.com/embed/${YOUTUBE_ID}` : "");
   return (
-    <section id="manifesto" className="bg-[#1F3D2E] text-[#f4f1ec] py-24 lg:py-32">
-      <div className="max-w-[1320px] mx-auto px-6 lg:px-10 grid grid-cols-1 lg:grid-cols-[45fr_55fr] gap-10 lg:gap-16 items-start">
-        {/* Coluna esquerda */}
+    <section id="manifesto" className="bg-[#1F3D2E] text-[#f4f1ec] py-20">
+      <div className="max-w-[1320px] mx-auto px-6 lg:px-10 grid grid-cols-1 lg:grid-cols-[35fr_65fr] gap-10 lg:gap-14 items-start">
+        {/* Coluna esquerda — texto enxuto */}
         <div className="order-2 lg:order-1">
           <span className="label-mono text-[#6e7b7c]">· MANIFESTO</span>
-          <h2 className="font-display font-semibold text-[36px] lg:text-[48px] leading-[1.05] mt-6 text-[#f4f1ec]">
+          <h2 className="font-display font-semibold text-[36px] leading-[1.05] mt-6 text-[#f4f1ec]">
             Há 12 anos<br /><span className="italic font-normal text-[#c48b30]">lendo empresas.</span>
           </h2>
-          <p className="text-[16px] text-[#f4f1ec]/85 leading-[1.7] mt-8">
+          <p className="text-[15px] mt-6 leading-relaxed" style={{ color: "rgba(244,241,236,0.85)" }}>
             A Cluny nasceu de uma <em className="font-display italic text-[#c48b30]">insatisfação técnica</em>: contadores que entregavam guia de imposto, mas nunca explicavam o que os números diziam. Decidi inverter a ordem.
           </p>
-          <p className="text-[16px] text-[#f4f1ec]/85 mt-5 leading-[1.7]">
-            Conduzo a contabilidade, as finanças e a estrutura legal de empresas que crescem com método. Atendo sócios que entendem que decisão sem dado é palpite, e que palpite repetido vira prejuízo recorrente.
-          </p>
-          <p className="text-[16px] text-[#f4f1ec]/85 mt-5 leading-[1.7]">
-            Trabalho em primeira pessoa. O que entrego não é serviço prestado — é leitura técnica, plano formal e operação conduzida. Sem rodeios. Sem análise paralisante. Sem promessas que a régua contábil não comporta.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 mt-10 border-t border-[rgba(255,255,255,0.1)]">
-            {[
-              ["01", "Critério", "Decisão técnica antes de comercial."],
-              ["02", "Clareza", "Linguagem que o sócio entende."],
-              ["03", "Continuidade", "Operação que sobrevive ao mês."],
-            ].map(([n, t, d]) => (
-              <div key={n} className="p-5 border-r border-b md:border-b-0 border-[rgba(255,255,255,0.1)] last:border-r-0">
-                <div className="label-mono text-[#6e7b7c] mb-2">{n}</div>
-                <div className="font-display font-semibold text-[16px] text-[#f4f1ec] mb-2">{t}</div>
-                <div className="text-[13px] text-[#cec9b8]">{d}</div>
+
+          <div className="mt-8 space-y-2">
+            {["01 — Critério", "02 — Clareza", "03 — Continuidade"].map((b) => (
+              <div key={b} className="px-3 py-2" style={{ borderLeft: "3px solid #c48b30", background: "rgba(255,255,255,0.03)" }}>
+                <span className="text-[13px] font-bold text-[#f4f1ec]">{b}</span>
               </div>
             ))}
           </div>
-          <div className="grid grid-cols-2 gap-6 pt-8 mt-2 border-t border-[rgba(255,255,255,0.1)]">
-            <div>
-              <div className="label-mono text-[#6e7b7c] mb-2">FUNDAÇÃO</div>
-              <div className="font-mono-tech text-[20px] text-[#f4f1ec]">2013</div>
-            </div>
-            <div>
-              <div className="label-mono text-[#6e7b7c] mb-2">EQUIPE</div>
-              <div className="font-mono-tech text-[20px] text-[#f4f1ec]">34 profissionais</div>
-            </div>
+
+          <div className="mt-8 pt-5 border-t border-[rgba(255,255,255,0.1)] font-mono-tech text-[10px] uppercase tracking-wider" style={{ color: "#6e7b7c" }}>
+            FUNDAÇÃO 2013 · EQUIPE 34 PROFISSIONAIS
           </div>
         </div>
 
-        {/* Coluna direita — vídeo + depoimento destaque */}
+        {/* Coluna direita — vídeo grande + depoimento */}
         <div className="order-1 lg:order-2">
           <div
-            className="relative w-full overflow-hidden rounded-[8px]"
-            style={{ aspectRatio: "16 / 9", boxShadow: "0 24px 64px rgba(0,0,0,0.3)", border: "1px solid rgba(255,255,255,0.08)", background: "#1A1A1A" }}
+            className="relative w-full overflow-hidden rounded-[12px]"
+            style={{ aspectRatio: "16 / 9", boxShadow: "0 32px 80px rgba(0,0,0,0.4)", background: "#1A1A1A" }}
           >
-            {videoUrl ? (
+            {finalUrl ? (
               <iframe
                 className="absolute inset-0 w-full h-full"
-                src={videoUrl}
+                src={finalUrl}
                 title="Vídeo institucional Cluny"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
               />
             ) : (
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
-                <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ background: "#005a54" }}>
-                  <svg width={22} height={22} viewBox="0 0 24 24" fill="#f4f1ec" aria-hidden="true">
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
+                <div className="w-[72px] h-[72px] rounded-full flex items-center justify-center" style={{ background: "#c48b30" }}>
+                  <svg width={28} height={28} viewBox="0 0 24 24" fill="#ffffff" aria-hidden="true">
                     <polygon points="6,4 20,12 6,20" />
                   </svg>
                 </div>
                 <div className="text-[13px] text-[#6e7b7c]">Vídeo institucional Cluny</div>
-                <div className="text-[11px]" style={{ color: "rgba(255,255,255,0.3)" }}>
-                  Cole a URL do YouTube em &lt;Manifesto videoUrl="..." /&gt;
-                </div>
               </div>
             )}
           </div>
 
           <div
-            className="mt-5 rounded-[4px] p-4"
+            className="mt-5 rounded-[4px] p-4 relative"
             style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
           >
-            <p className="font-display italic text-[16px] text-[#f4f1ec]">
-              "A Cluny não entrega planilha. Entrega leitura."
+            <span className="font-display absolute top-1 left-3 text-[32px] leading-none" style={{ color: "#c48b30", opacity: 0.4 }}>"</span>
+            <p className="font-display italic text-[15px] text-[#f4f1ec] pl-6">
+              A Cluny não entrega planilha. Entrega leitura.
             </p>
-            <div className="text-[12px] text-[#6e7b7c] mt-2">Marina Vasconcelos · Estúdio Ímpar</div>
+            <div className="text-[12px] text-[#6e7b7c] mt-2 pl-6">Marina Vasconcelos · Estúdio Ímpar</div>
           </div>
         </div>
       </div>
@@ -1167,7 +1127,7 @@ export function Cases() {
               <span className="label-mono text-[#cec9b8]">· BPO + CONTROLADORIA · 18 MESES</span>
             </div>
             <h3 className="font-display text-[34px] lg:text-[42px] leading-tight">
-              De gestão por intuição a tese técnica em <em className="italic text-[#cec9b8]">seis trimestres.</em>
+              De gestão por intuição a tese técnica em <em className="italic text-[#c48b30]">seis trimestres.</em>
             </h3>
             <p className="text-[15px] mt-6 opacity-85 max-w-2xl">
               Estúdio de arquitetura, 38 colaboradores. Entrou na Cluny sem DRE gerencial, sem painel de KPIs e com margem oscilando 9 pontos entre meses. Saiu com leitura mensal técnica e tese tributária revista.
