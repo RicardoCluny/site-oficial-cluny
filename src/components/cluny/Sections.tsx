@@ -40,13 +40,21 @@ export function Nav() {
     <header
       className={`sticky top-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-[#f4f1ec]/95 backdrop-blur-md border-b border-[rgba(26,26,26,0.08)] shadow-[0_1px_0_rgba(26,26,26,0.04)]"
-          : "bg-[#f4f1ec]/80 backdrop-blur border-b border-transparent"
+          ? "bg-[#1F3D2E] border-b border-[rgba(255,255,255,0.08)]"
+          : "bg-transparent border-b border-transparent"
       }`}
     >
+      {/* Barra técnica superior */}
+      <div className="bg-[#1A1A1A] border-b border-[rgba(255,255,255,0.06)]">
+        <div className="max-w-[1320px] mx-auto px-6 lg:px-10 h-7 flex items-center justify-between gap-6">
+          <span className="label-tech text-[#6e7b7c]">CRC-SP 2SP-000000 · OPERANDO DESDE 2013</span>
+          <span className="label-tech text-[#6e7b7c] hidden md:block">SÃO PAULO · BRASIL</span>
+        </div>
+      </div>
+
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10 h-[68px] flex items-center justify-between gap-6">
         <a href="#" className="flex items-center gap-2 group">
-          <Logo size={28} />
+          <Logo size={28} color="#f4f1ec" />
         </a>
 
         <nav className="hidden lg:flex items-center gap-1">
@@ -56,10 +64,10 @@ export function Nav() {
               <a
                 key={n.href}
                 href={n.href}
-                className={`relative px-4 py-2 text-[13.5px] font-medium rounded-full transition-all duration-200 ${
+                className={`relative px-4 py-2 text-[13.5px] font-medium transition-all duration-200 border-b-2 ${
                   isActive
-                    ? "text-[#005a54] bg-[rgba(0,90,84,0.08)]"
-                    : "text-[#1A1A1A]/70 hover:text-[#005a54] hover:bg-[rgba(0,90,84,0.05)]"
+                    ? "text-[#f4f1ec] border-[#c48b30] opacity-100"
+                    : "text-[#f4f1ec] border-transparent opacity-75 hover:opacity-100 hover:border-[#f4f1ec]"
                 }`}
               >
                 {n.label}
@@ -69,12 +77,12 @@ export function Nav() {
         </nav>
 
         <div className="hidden lg:flex items-center gap-3">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[rgba(0,90,84,0.06)]">
-            <span className="pulse-dot" />
-            <span className="label-mono text-[#005a54]">OPERANDO</span>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-[4px] bg-[#005a54]">
+            <span className="pulse-dot-light" />
+            <span className="label-mono text-[#f4f1ec]">STATUS · OPERANDO</span>
           </div>
           <a href="#cadastro" className="btn-primary btn-primary-sm group">
-            Solicite uma proposta
+            Cadastre-se
             <span className="transition-transform group-hover:translate-x-0.5">→</span>
           </a>
         </div>
@@ -84,42 +92,26 @@ export function Nav() {
           onClick={() => setOpen(!open)}
           aria-label="Menu"
         >
-          <span
-            className={`block w-6 h-[2px] bg-[#1F3D2E] transition-transform ${
-              open ? "translate-y-[7px] rotate-45" : ""
-            }`}
-          />
-          <span
-            className={`block w-6 h-[2px] bg-[#1F3D2E] transition-opacity ${
-              open ? "opacity-0" : ""
-            }`}
-          />
-          <span
-            className={`block w-6 h-[2px] bg-[#1F3D2E] transition-transform ${
-              open ? "-translate-y-[7px] -rotate-45" : ""
-            }`}
-          />
+          <span className={`block w-6 h-[2px] bg-[#f4f1ec] transition-transform ${open ? "translate-y-[7px] rotate-45" : ""}`} />
+          <span className={`block w-6 h-[2px] bg-[#f4f1ec] transition-opacity ${open ? "opacity-0" : ""}`} />
+          <span className={`block w-6 h-[2px] bg-[#f4f1ec] transition-transform ${open ? "-translate-y-[7px] -rotate-45" : ""}`} />
         </button>
       </div>
 
       {open && (
-        <div className="lg:hidden border-t border-[rgba(26,26,26,0.08)] px-6 py-6 flex flex-col gap-1 bg-[#f4f1ec] animate-fade-in">
+        <div className="lg:hidden border-t border-[rgba(255,255,255,0.08)] px-6 py-6 flex flex-col gap-1 bg-[#1F3D2E] animate-fade-in">
           {NAV.map((n) => (
             <a
               key={n.href}
               href={n.href}
               onClick={() => setOpen(false)}
-              className="text-[15px] py-3 px-3 rounded-md hover:bg-[rgba(0,90,84,0.06)] text-[#1F3D2E]"
+              className="text-[15px] py-3 px-3 rounded-md hover:bg-[rgba(255,255,255,0.06)] text-[#f4f1ec]"
             >
               {n.label}
             </a>
           ))}
-          <a
-            href="#cadastro"
-            onClick={() => setOpen(false)}
-            className="btn-primary mt-3 justify-center"
-          >
-            Solicite uma proposta →
+          <a href="#cadastro" onClick={() => setOpen(false)} className="btn-primary mt-3 justify-center">
+            Cadastre-se →
           </a>
         </div>
       )}
