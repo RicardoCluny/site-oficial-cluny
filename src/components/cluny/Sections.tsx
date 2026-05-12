@@ -1056,35 +1056,23 @@ export function Planos() {
   );
 }
 
-export function Manifesto() {
+export function Manifesto({ videoUrl }: { videoUrl?: string } = {}) {
   return (
-    <section className="bg-[#1F3D2E] text-[#f4f1ec]">
-      <div className="max-w-[1320px] mx-auto px-6 lg:px-10 grid grid-cols-1 lg:grid-cols-12 gap-0 py-24">
-        <div className="lg:col-span-5 bg-[#1A1A1A] text-[#f4f1ec] p-10 lg:p-14 min-h-[520px] flex flex-col rounded-l-[4px]">
-          <span className="label-mono text-[#6e7b7c]">· SOBRE · / 02</span>
-          <h2 className="font-display font-semibold text-[36px] lg:text-[40px] leading-[1.1] mt-8 text-[#f4f1ec] flex-1">
+    <section id="manifesto" className="bg-[#1F3D2E] text-[#f4f1ec] py-24 lg:py-32">
+      <div className="max-w-[1320px] mx-auto px-6 lg:px-10 grid grid-cols-1 lg:grid-cols-[45fr_55fr] gap-10 lg:gap-16 items-start">
+        {/* Coluna esquerda */}
+        <div className="order-2 lg:order-1">
+          <span className="label-mono text-[#6e7b7c]">· MANIFESTO</span>
+          <h2 className="font-display font-semibold text-[36px] lg:text-[48px] leading-[1.05] mt-6 text-[#f4f1ec]">
             Há 12 anos<br /><span className="italic font-normal text-[#c48b30]">lendo empresas.</span>
           </h2>
-          <div className="grid grid-cols-2 gap-6 pt-8 border-t border-[rgba(255,255,255,0.1)]">
-            <div>
-              <div className="label-mono text-[#6e7b7c] mb-2">FUNDAÇÃO</div>
-              <div className="font-mono-tech text-[20px] text-[#f4f1ec]">2013</div>
-            </div>
-            <div>
-              <div className="label-mono text-[#6e7b7c] mb-2">EQUIPE</div>
-              <div className="font-mono-tech text-[20px] text-[#f4f1ec]">34 profissionais</div>
-            </div>
-          </div>
-        </div>
-        <div className="lg:col-span-7 p-10 lg:p-14 border border-[rgba(255,255,255,0.06)] rounded-r-[4px]">
-          <span className="label-mono text-[#6e7b7c]">· MANIFESTO</span>
-          <p className="text-[16px] text-[#f4f1ec]/85 leading-[1.7] mt-6">
+          <p className="text-[16px] text-[#f4f1ec]/85 leading-[1.7] mt-8">
             A Cluny nasceu de uma <em className="font-display italic text-[#c48b30]">insatisfação técnica</em>: contadores que entregavam guia de imposto, mas nunca explicavam o que os números diziam. Decidi inverter a ordem.
           </p>
-          <p className="text-[16px] text-[#f4f1ec]/85 mt-6 leading-[1.7]">
+          <p className="text-[16px] text-[#f4f1ec]/85 mt-5 leading-[1.7]">
             Conduzo a contabilidade, as finanças e a estrutura legal de empresas que crescem com método. Atendo sócios que entendem que decisão sem dado é palpite, e que palpite repetido vira prejuízo recorrente.
           </p>
-          <p className="text-[16px] text-[#f4f1ec]/85 mt-6 leading-[1.7]">
+          <p className="text-[16px] text-[#f4f1ec]/85 mt-5 leading-[1.7]">
             Trabalho em primeira pessoa. O que entrego não é serviço prestado — é leitura técnica, plano formal e operação conduzida. Sem rodeios. Sem análise paralisante. Sem promessas que a régua contábil não comporta.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-0 mt-10 border-t border-[rgba(255,255,255,0.1)]">
@@ -1100,12 +1088,61 @@ export function Manifesto() {
               </div>
             ))}
           </div>
+          <div className="grid grid-cols-2 gap-6 pt-8 mt-2 border-t border-[rgba(255,255,255,0.1)]">
+            <div>
+              <div className="label-mono text-[#6e7b7c] mb-2">FUNDAÇÃO</div>
+              <div className="font-mono-tech text-[20px] text-[#f4f1ec]">2013</div>
+            </div>
+            <div>
+              <div className="label-mono text-[#6e7b7c] mb-2">EQUIPE</div>
+              <div className="font-mono-tech text-[20px] text-[#f4f1ec]">34 profissionais</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Coluna direita — vídeo + depoimento destaque */}
+        <div className="order-1 lg:order-2">
+          <div
+            className="relative w-full overflow-hidden rounded-[8px]"
+            style={{ aspectRatio: "16 / 9", boxShadow: "0 24px 64px rgba(0,0,0,0.3)", border: "1px solid rgba(255,255,255,0.08)", background: "#1A1A1A" }}
+          >
+            {videoUrl ? (
+              <iframe
+                className="absolute inset-0 w-full h-full"
+                src={videoUrl}
+                title="Vídeo institucional Cluny"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            ) : (
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
+                <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ background: "#005a54" }}>
+                  <svg width={22} height={22} viewBox="0 0 24 24" fill="#f4f1ec" aria-hidden="true">
+                    <polygon points="6,4 20,12 6,20" />
+                  </svg>
+                </div>
+                <div className="text-[13px] text-[#6e7b7c]">Vídeo institucional Cluny</div>
+                <div className="text-[11px]" style={{ color: "rgba(255,255,255,0.3)" }}>
+                  Cole a URL do YouTube em &lt;Manifesto videoUrl="..." /&gt;
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div
+            className="mt-5 rounded-[4px] p-4"
+            style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
+          >
+            <p className="font-display italic text-[16px] text-[#f4f1ec]">
+              "A Cluny não entrega planilha. Entrega leitura."
+            </p>
+            <div className="text-[12px] text-[#6e7b7c] mt-2">Marina Vasconcelos · Estúdio Ímpar</div>
+          </div>
         </div>
       </div>
     </section>
   );
 }
-
 export function Cases() {
   return (
     <section id="cases" className="py-24 lg:py-32 border-b border-[rgba(26,26,26,0.1)]">
