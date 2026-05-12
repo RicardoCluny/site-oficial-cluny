@@ -934,10 +934,10 @@ export function Calculadora() {
               Em 12 meses, você economiza <strong>{fmt(calc.economiaAno)}</strong> — sem rotatividade, sem passivo trabalhista, com time técnico completo.
             </p>
           </div>
-          <a href="#cadastro" className="btn-primary group" style={{ background: "#1F3D2E", color: "#f4f1ec", borderColor: "#1F3D2E" }}>
+          <button onClick={() => requestCadastro("BPO Financeiro")} className="btn-primary group" style={{ background: "#1F3D2E", color: "#f4f1ec", borderColor: "#1F3D2E" }}>
             QUERO ESTA PROPOSTA
             <span className="transition-transform group-hover:translate-x-1">→</span>
-          </a>
+          </button>
         </div>
       </div>
     </section>
