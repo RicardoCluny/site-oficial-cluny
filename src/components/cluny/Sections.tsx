@@ -1270,29 +1270,36 @@ export function Conteudo() {
           </h2>
           <a href="#" className="label-mono text-[#005a54]">VER TODAS AS EDIÇÕES →</a>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="pt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
           {POSTS.map((p) => (
-            <article key={p.ed} className="group bg-[#f4f1ec] border-tech flex flex-col overflow-hidden cursor-pointer transition-all duration-500 hover:scale-[1.015] hover:shadow-[0_30px_60px_-30px_rgba(31,61,46,0.3)]">
-              <div className="relative aspect-[16/10] overflow-hidden bg-[#cec9b8]">
+            <article
+              key={p.ed}
+              className="group bg-white flex flex-col overflow-hidden cursor-pointer rounded-[4px] transition-all duration-200"
+              style={{ border: "1px solid #e8e4db" }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#005a54"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(0,0,0,0.08)"; e.currentTarget.style.transform = "translateY(-4px)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#e8e4db"; e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.transform = "translateY(0)"; }}
+            >
+              <div className="relative h-[200px] w-full overflow-hidden" style={{ background: "linear-gradient(135deg, #1F3D2E, #005a54)" }}>
                 <img
                   src={p.img}
                   alt={p.t}
                   loading="lazy"
                   width={896}
                   height={640}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="absolute inset-0 w-full h-full object-cover opacity-80 mix-blend-luminosity transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className="absolute top-4 left-4 px-3 py-1.5 bg-[#1F3D2E]/90 backdrop-blur text-[#f4f1ec] label-mono">
-                  {p.ed} · {p.cat}
+                <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, rgba(31,61,46,0.55), rgba(0,90,84,0.45))" }} />
+                <div className="absolute bottom-3 left-3 px-2.5 py-1 rounded-[2px]" style={{ background: "#1A1A1A" }}>
+                  <span className="label-mono text-[#f4f1ec]" style={{ fontSize: 9 }}>{p.cat}</span>
                 </div>
               </div>
-              <div className="p-7 flex flex-col flex-1">
-                <div className="label-mono text-[#005a54] mb-4">{p.date} · {p.min}</div>
-                <h3 className="font-display text-[22px] text-[#1F3D2E] flex-1 leading-snug">{p.t}</h3>
-                <div className="flex justify-between mt-6 pt-4 border-t border-[rgba(26,26,26,0.1)]">
-                  <span className="label-mono text-[#6e7b7c]">{p.date}</span>
-                  <span className="label-mono text-[#005a54] transition-transform group-hover:translate-x-1">LER →</span>
-                </div>
+              <div className="p-5 flex flex-col flex-1">
+                <div className="font-mono-tech text-[10px] text-[#6e7b7c]">{p.date} · {p.min}</div>
+                <h3 className="font-display font-semibold text-[16px] text-[#1A1A1A] flex-1 leading-[1.4] mt-2">{p.t}</h3>
+                <div className="h-px bg-[#e8e4db] my-4" />
+                <span className="text-[11px] font-bold text-[#005a54] tracking-wide">
+                  LEIA MAIS <span className="inline-block transition-transform group-hover:translate-x-0.5">↗</span>
+                </span>
               </div>
             </article>
           ))}
