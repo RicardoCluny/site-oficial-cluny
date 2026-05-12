@@ -1073,6 +1073,34 @@ export function FAQ() {
 
 export function Cadastro() {
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [interesse, setInteresse] = useState("");
+  const selectRef = useRef<HTMLSelectElement | null>(null);
+
+  useEffect(() => {
+    const onPrefill = (e: Event) => {
+      const det = (e as CustomEvent).detail as { interesse?: string };
+      const map: Record<string, string> = {
+        "BPO Financeiro": "Finanças / BPO",
+        "Controladoria": "Não sei ainda",
+        "BPO + Controladoria": "Finanças / BPO",
+        "Contabilidade": "Contabilidade",
+        "Legalização": "Legalização",
+        "Educação Corporativa": "Educação Corporativa",
+      };
+      const v = det?.interesse ? (map[det.interesse] || det.interesse) : "";
+      if (v) setInteresse(v);
+    };
+    window.addEventListener("cluny:prefill", onPrefill as EventListener);
+    return () => window.removeEventListener("cluny:prefill", onPrefill as EventListener);
+  }, []);
+
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setTimeout(() => { setLoading(false); setSent(true); }, 1500);
+  };
+
   return (
     <section id="cadastro" className="py-24 lg:py-32 bg-[#1F3D2E] text-[#f4f1ec]">
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
