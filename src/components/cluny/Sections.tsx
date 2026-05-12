@@ -171,16 +171,16 @@ export function Nav() {
 
 export function Hero() {
   const METRICS = [
-    { n: "01", v: "+12", small: "anos", d: "de mercado consolidado" },
-    { n: "02", v: "320", small: "empresas", d: "atendidas em todo o país" },
-    { n: "03", v: "R$ 1.2M", small: "", d: "economizados em tributos em 2024" },
-    { n: "04", v: "98%", small: "", d: "de retenção de clientes" },
+    { n: "01", value: 12, fmt: (v: number) => `+${Math.round(v)}`, small: "anos", d: "de mercado consolidado" },
+    { n: "02", value: 320, fmt: (v: number) => `${Math.round(v)}`, small: "empresas", d: "atendidas em todo o país" },
+    { n: "03", value: 1.2, fmt: (v: number) => `R$ ${v.toFixed(1)}M`, small: "", d: "economizados em tributos em 2024" },
+    { n: "04", value: 98, fmt: (v: number) => `${Math.round(v)}%`, small: "", d: "de retenção de clientes" },
   ];
   return (
     <section className="bg-[#f4f1ec] text-[#1A1A1A]">
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 py-16 lg:py-24 min-h-[640px] items-center">
-          <div className="lg:col-span-7 flex flex-col justify-center">
+          <div className="lg:col-span-7 flex flex-col justify-center animate-fade-in">
             <span className="label-mono text-[#6e7b7c] border border-[#6e7b7c] px-2 py-1 self-start mb-8">
               [ CLUNY GESTÃO EMPRESARIAL · V.2026 ]
             </span>
@@ -209,6 +209,9 @@ export function Hero() {
                 Diagnóstico em 60s ↓
               </a>
             </div>
+            <p className="mt-5 text-[11px] text-[#6e7b7c]">
+              · Resposta em até 1 dia útil · Sem SDR · Sem funil de qualificação
+            </p>
           </div>
           <div className="lg:col-span-5">
             <div className="grid grid-cols-2 gap-3">
@@ -217,7 +220,8 @@ export function Hero() {
                   <span className="label-mono text-[#c48b30]">MÉTRICA · {m.n}</span>
                   <div>
                     <div className="font-mono-tech text-[36px] leading-none text-[#f4f1ec]">
-                      {m.v}{m.small && <span className="text-[14px] text-[#cec9b8] ml-1">{m.small}</span>}
+                      <CounterMetric value={m.value} format={m.fmt} />
+                      {m.small && <span className="text-[14px] text-[#cec9b8] ml-1">{m.small}</span>}
                     </div>
                     <p className="text-[12px] text-[#cec9b8] mt-3 leading-snug">{m.d}</p>
                   </div>
