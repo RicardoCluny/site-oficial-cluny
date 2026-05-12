@@ -706,10 +706,16 @@ export function Cases() {
           </div>
         </div>
 
-        <div className="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 border-tech">
-          {["ESTÚDIO ÍMPAR","TAVARES ENG.","KHOURY PART.","NORDA & CIA","VEREDA TECH","MERIDIO LAB"].map((l) => (
-            <div key={l} className="font-display text-[14px] text-[#6e7b7c] text-center py-6 border-r border-b md:border-b-0 border-[rgba(26,26,26,0.1)] last:border-r-0">{l}</div>
-          ))}
+        <div className="mt-12 border-tech overflow-hidden" aria-label="Logos de clientes">
+          <div className="marquee-track py-6 whitespace-nowrap">
+            {[...Array(2)].map((_, dup) => (
+              <div key={dup} className="inline-flex">
+                {["ESTÚDIO ÍMPAR","TAVARES ENG.","KHOURY PART.","NORDA & CIA","VEREDA TECH","MERIDIO LAB"].map((l, i) => (
+                  <div key={`${dup}-${i}`} className="font-display text-[14px] text-[#6e7b7c] px-12">{l}</div>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
