@@ -48,8 +48,15 @@ function CounterMetric({ value, format }: { value: number; format: (n: number) =
   return <span ref={ref}>{format(val)}</span>;
 }
 
-const NAV = [
-  { label: "Atuação", href: "#atuacao" },
+type NavItem = { label: string; href: string; mega?: { n: string; t: string; sub: string }[] };
+const NAV_MEGA = [
+  { n: "BU-01", t: "Finanças", sub: "Gestão financeira sob método" },
+  { n: "BU-02", t: "Contabilidade", sub: "Contabilidade consultiva" },
+  { n: "BU-03", t: "Legalização", sub: "Constituição e regularização" },
+  { n: "BU-04", t: "Educação Corporativa", sub: "Capacitação técnica aplicada" },
+];
+const NAV: NavItem[] = [
+  { label: "Atuação", href: "#atuacao", mega: NAV_MEGA },
   { label: "Planos", href: "#planos" },
   { label: "Método", href: "#metodo" },
   { label: "Diagnóstico", href: "#diagnostico" },
@@ -60,6 +67,10 @@ export function Nav() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState<string>("");
+  const [megaOpen, setMegaOpen] = useState<string | null>(null);
+  const [mobileSub, setMobileSub] = useState<string | null>(null);
+  const openTimer = useRef<number | null>(null);
+  const closeTimer = useRef<number | null>(null);
 
   useEffect(() => {
     const onScroll = () => {
@@ -77,12 +88,19 @@ export function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Navbar sobre o hero (não-scrolled): fundo #f4f1ec, texto #1A1A1A
-  // Navbar com scroll: fundo verde escuro, texto papel
   const onLight = !scrolled;
   const txtColor = onLight ? "#1A1A1A" : "#f4f1ec";
   const inactiveOpacity = onLight ? "opacity-70" : "opacity-75";
   const logoColor = onLight ? "#1A1A1A" : "#f4f1ec";
+
+  const handleEnter = (label: string) => {
+    if (closeTimer.current) window.clearTimeout(closeTimer.current);
+    openTimer.current = window.setTimeout(() => setMegaOpen(label), 150);
+  };
+  const handleLeave = () => {
+    if (openTimer.current) window.clearTimeout(openTimer.current);
+    closeTimer.current = window.setTimeout(() => setMegaOpen(null), 100);
+  };
 
   return (
     <header
@@ -92,7 +110,6 @@ export function Nav() {
           : "bg-[#f4f1ec] border-b border-[rgba(26,26,26,0.08)]"
       }`}
     >
-      {/* Barra técnica superior */}
       <div className="bg-[#1A1A1A] border-b border-[rgba(255,255,255,0.06)]">
         <div className="max-w-[1320px] mx-auto px-6 lg:px-10 h-7 flex items-center justify-between gap-6">
           <span className="label-tech text-[#6e7b7c] truncate">
@@ -109,19 +126,66 @@ export function Nav() {
         <nav className="hidden lg:flex items-center gap-1">
           {NAV.map((n) => {
             const isActive = active === n.href.replace("#", "");
+            const hasMega = !!n.mega;
             return (
-              <a
+              <div
                 key={n.href}
-                href={n.href}
-                style={{ color: txtColor }}
-                className={`relative px-4 py-2 text-[13.5px] font-medium transition-all duration-200 border-b-2 ${
-                  isActive
-                    ? "border-[#c48b30] opacity-100"
-                    : `border-transparent ${inactiveOpacity} hover:opacity-100`
-                }`}
+                className="relative"
+                onMouseEnter={hasMega ? () => handleEnter(n.label) : undefined}
+                onMouseLeave={hasMega ? handleLeave : undefined}
               >
-                {n.label}
-              </a>
+                <a
+                  href={n.href}
+                  style={{ color: txtColor }}
+                  className={`relative inline-flex items-center gap-1 px-4 py-2 text-[13.5px] font-medium transition-all duration-200 border-b-2 ${
+                    isActive
+                      ? "border-[#005a54] opacity-100"
+                      : `border-transparent ${inactiveOpacity} hover:opacity-100`
+                  }`}
+                >
+                  {n.label}
+                  {hasMega && <span className="text-[9px] opacity-60">▾</span>}
+                </a>
+                {hasMega && megaOpen === n.label && (
+                  <div
+                    className="mega-in absolute left-0 top-full mt-0 z-50 bg-white rounded-[4px] p-6 min-w-[520px]"
+                    style={{ boxShadow: "0 8px 40px rgba(0,0,0,0.12)", borderTop: "3px solid #005a54" }}
+                    onMouseEnter={() => { if (closeTimer.current) window.clearTimeout(closeTimer.current); }}
+                    onMouseLeave={handleLeave}
+                  >
+                    <div className="grid grid-cols-2 gap-2">
+                      {n.mega!.map((m) => (
+                        <a
+                          key={m.n}
+                          href="#atuacao"
+                          onClick={() => setMegaOpen(null)}
+                          className="group/item flex items-start gap-3 p-3 rounded-[2px] hover:bg-[#f4f1ec] transition-colors"
+                        >
+                          <span
+                            className="flex-shrink-0 w-8 h-8 rounded-[4px] flex items-center justify-center font-mono-tech text-[12px] font-medium"
+                            style={{ background: "rgba(0,90,84,0.10)", color: "#005a54" }}
+                          >
+                            {m.n.replace("BU-", "")}
+                          </span>
+                          <div className="flex-1 min-w-0">
+                            <div className="font-display font-semibold text-[15px] text-[#1A1A1A] flex items-center gap-2">
+                              {m.t}
+                              <span className="text-[12px] text-[#005a54] opacity-0 group-hover/item:opacity-100 transition-all group-hover/item:translate-x-0.5">→</span>
+                            </div>
+                            <div className="text-[12px] text-[#6e7b7c] leading-snug mt-0.5">{m.sub}</div>
+                          </div>
+                        </a>
+                      ))}
+                    </div>
+                    <div className="mt-2 pt-4 border-t border-[#e8e4db] flex justify-between items-center">
+                      <a href="#atuacao" onClick={() => setMegaOpen(null)} className="text-[12px] font-bold text-[#005a54] tracking-wide">
+                        Ver todas as frentes →
+                      </a>
+                      <span className="text-[11px] text-[#6e7b7c]">· Diagnóstico gratuito em 60s</span>
+                    </div>
+                  </div>
+                )}
+              </div>
             );
           })}
         </nav>
@@ -151,14 +215,33 @@ export function Nav() {
       {open && (
         <div className="lg:hidden border-t border-[rgba(255,255,255,0.08)] px-6 py-6 flex flex-col gap-1 bg-[#1F3D2E] animate-fade-in">
           {NAV.map((n) => (
-            <a
-              key={n.href}
-              href={n.href}
-              onClick={() => setOpen(false)}
-              className="text-[15px] py-3 px-3 rounded-md hover:bg-[rgba(255,255,255,0.06)] text-[#f4f1ec]"
-            >
-              {n.label}
-            </a>
+            <div key={n.href}>
+              {n.mega ? (
+                <>
+                  <button
+                    onClick={() => setMobileSub(mobileSub === n.label ? null : n.label)}
+                    className="w-full flex justify-between items-center text-[15px] py-3 px-3 rounded-md hover:bg-[rgba(255,255,255,0.06)] text-[#f4f1ec]"
+                  >
+                    <span>{n.label}</span>
+                    <span className={`transition-transform ${mobileSub === n.label ? "rotate-180" : ""}`}>▾</span>
+                  </button>
+                  {mobileSub === n.label && (
+                    <div className="pl-4 pb-2 flex flex-col gap-1">
+                      {n.mega.map((m) => (
+                        <a key={m.n} href="#atuacao" onClick={() => setOpen(false)} className="flex items-center gap-3 py-2 px-3 text-[13px] text-[#cec9b8] hover:bg-[rgba(255,255,255,0.06)] rounded-md">
+                          <span className="font-mono-tech text-[#c48b30] text-[11px]">{m.n.replace("BU-", "")}</span>
+                          <span>{m.t}</span>
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </>
+              ) : (
+                <a href={n.href} onClick={() => setOpen(false)} className="block text-[15px] py-3 px-3 rounded-md hover:bg-[rgba(255,255,255,0.06)] text-[#f4f1ec]">
+                  {n.label}
+                </a>
+              )}
+            </div>
           ))}
           <a href="#cadastro" onClick={() => setOpen(false)} className="btn-primary mt-3 justify-center">
             Cadastre-se →
@@ -166,6 +249,57 @@ export function Nav() {
         </div>
       )}
     </header>
+  );
+}
+
+/* ============= Floating Dashboard Mockup (reutilizável) ============= */
+export function FloatingDashboard({ compact = false }: { compact?: boolean }) {
+  return (
+    <div className={`relative w-full ${compact ? "min-h-[360px]" : "min-h-[480px]"} flex items-center justify-center`}>
+      {/* Card principal */}
+      <div className="float-card-1 relative z-10 w-full max-w-[420px] bg-white rounded-[12px] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.15)]">
+        <div className="flex items-center justify-between pb-4 border-b border-[#f4f1ec]">
+          <span className="label-mono text-[#6e7b7c]">PAINEL CLUNY</span>
+          <span className="pulse-dot" />
+        </div>
+        <div className="mt-4 space-y-4">
+          <div className="flex items-center justify-between">
+            <span className="text-[12px] text-[#6e7b7c]">Resultado do mês</span>
+            <span className="font-mono-tech text-[22px] font-medium text-[#1A1A1A]">R$ 284.500</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-[12px] text-[#6e7b7c]">DRE Gerencial</span>
+            <span className="px-2 py-1 rounded-[2px] text-[9px] font-bold tracking-wider" style={{ background: "rgba(0,90,84,0.15)", color: "#005a54" }}>ATUALIZADO</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-[12px] text-[#6e7b7c]">Carga tributária</span>
+            <span className="font-mono-tech text-[18px] font-medium text-[#005a54]">−22%</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-[12px] text-[#6e7b7c]">Próxima reunião</span>
+            <span className="text-[14px] font-medium text-[#1A1A1A]">Qui, 15/05</span>
+          </div>
+          <div className="h-px bg-[#f4f1ec]" />
+          <div className="rounded-[6px] px-3 py-2 text-center" style={{ background: "#1F3D2E" }}>
+            <span className="text-[11px] font-bold text-[#f4f1ec] tracking-wide">Operação conduzida pela Cluny</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Card secundário (KPI) */}
+      <div className="float-card-2 hidden md:block absolute z-20 right-0 -top-2 lg:-top-4 w-[160px] p-4 rounded-[8px] shadow-[0_12px_32px_rgba(0,0,0,0.18)]" style={{ background: "#1F3D2E" }}>
+        <div className="label-mono text-[#6e7b7c]" style={{ fontSize: 9 }}>KPI · MAR</div>
+        <div className="font-mono-tech text-[32px] text-[#f4f1ec] leading-none mt-1">98%</div>
+        <div className="text-[11px] text-[#6e7b7c] mt-1">retenção</div>
+      </div>
+
+      {/* Card terciário (economia) */}
+      <div className="float-card-3 hidden md:block absolute z-20 left-0 -bottom-4 w-[180px] p-4 rounded-[8px] shadow-[0_12px_32px_rgba(0,0,0,0.18)]" style={{ background: "#c48b30" }}>
+        <div className="label-mono" style={{ fontSize: 9, color: "rgba(26,26,26,0.7)" }}>ECONOMIA 2024</div>
+        <div className="font-mono-tech text-[24px] text-[#1A1A1A] leading-none mt-1">R$ 1.2M</div>
+        <div className="text-[11px] mt-1" style={{ color: "rgba(26,26,26,0.7)" }}>em tributos</div>
+      </div>
+    </div>
   );
 }
 
@@ -179,8 +313,8 @@ export function Hero() {
   return (
     <section className="bg-[#f4f1ec] text-[#1A1A1A]">
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 py-16 lg:py-24 min-h-[640px] items-center">
-          <div className="lg:col-span-7 flex flex-col justify-center animate-fade-in">
+        <div className="grid grid-cols-1 lg:grid-cols-[55fr_45fr] gap-12 lg:gap-20 py-16 lg:py-24 min-h-[calc(100vh-100px)] items-center">
+          <div className="flex flex-col justify-center animate-fade-in">
             <span className="label-mono text-[#6e7b7c] border border-[#6e7b7c] px-2 py-1 self-start mb-8">
               [ CLUNY GESTÃO EMPRESARIAL · V.2026 ]
             </span>
@@ -213,22 +347,26 @@ export function Hero() {
               · Resposta em até 1 dia útil · Sem SDR · Sem funil de qualificação
             </p>
           </div>
-          <div className="lg:col-span-5">
-            <div className="grid grid-cols-2 gap-3">
-              {METRICS.map((m) => (
-                <div key={m.n} className="p-6 rounded-[4px] flex flex-col justify-between min-h-[180px] bg-[#1F3D2E] text-[#f4f1ec] border border-[rgba(255,255,255,0.06)]">
-                  <span className="label-mono text-[#c48b30]">MÉTRICA · {m.n}</span>
-                  <div>
-                    <div className="font-mono-tech text-[36px] leading-none text-[#f4f1ec]">
-                      <CounterMetric value={m.value} format={m.fmt} />
-                      {m.small && <span className="text-[14px] text-[#cec9b8] ml-1">{m.small}</span>}
-                    </div>
-                    <p className="text-[12px] text-[#cec9b8] mt-3 leading-snug">{m.d}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+          <div className="relative px-4 lg:px-8">
+            <FloatingDashboard />
           </div>
+        </div>
+
+        {/* Métricas em linha horizontal */}
+        <div className="border-t border-[#e8e4db] grid grid-cols-2 lg:grid-cols-4">
+          {METRICS.map((m, i) => (
+            <div
+              key={m.n}
+              className={`p-6 lg:p-8 ${i < METRICS.length - 1 ? "lg:border-r border-[#e8e4db]" : ""} ${i % 2 === 0 ? "border-r lg:border-r" : ""} ${i < 2 ? "border-b lg:border-b-0" : ""} border-[#e8e4db]`}
+            >
+              <span className="label-mono text-[#6e7b7c]">MÉTRICA · {m.n}</span>
+              <div className="font-mono-tech text-[36px] leading-none text-[#1F3D2E] mt-3">
+                <CounterMetric value={m.value} format={m.fmt} />
+                {m.small && <span className="text-[14px] text-[#6e7b7c] ml-1">{m.small}</span>}
+              </div>
+              <p className="text-[12px] text-[#1A1A1A]/70 mt-3 leading-snug">{m.d}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -264,7 +402,180 @@ export function Atuacao() {
             </article>
           ))}
         </div>
+
+        {/* BLOCO A — Pills de entregáveis */}
+        <div className="mt-16 rounded-[8px] px-8 py-10 lg:px-12 lg:py-12" style={{ background: "#1F3D2E" }}>
+          <h3 className="font-display font-semibold text-[24px] lg:text-[28px] text-[#f4f1ec] text-center">
+            O que eu entrego em cada operação.
+          </h3>
+          <p className="mt-3 text-[15px] text-center max-w-[640px] mx-auto" style={{ color: "rgba(244,241,236,0.7)" }}>
+            Entregáveis técnicos das quatro frentes — sem pacotes genéricos.
+          </p>
+          <div className="flex flex-wrap justify-center gap-3 mt-8">
+            {[
+              "DRE Gerencial Mensal","Painel de KPIs","Plano Orçamentário",
+              "Fluxo de Caixa Projetado","Apuração Fiscal Completa","Planejamento Tributário",
+              "Suporte Direto ao Sócio","Abertura de Empresa","Alterações Contratuais",
+              "Registro de Marca","Mentorias para Sócios","Trilhas de Educação Financeira",
+            ].map((p) => (
+              <span
+                key={p}
+                className="px-5 py-2 text-[13px] font-medium text-[#f4f1ec] rounded-full transition-all duration-150 cursor-default hover:bg-[#005a54] hover:border-[#005a54]"
+                style={{ border: "1px solid rgba(255,255,255,0.18)" }}
+              >
+                {p}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* BLOCO B — Métricas em 3 colunas */}
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-3">
+          {[
+            { v: 12, fmt: (n: number) => `+${Math.round(n)}`, small: "anos", d: "de mercado consolidado" },
+            { v: 320, fmt: (n: number) => `${Math.round(n)}`, small: "empresas", d: "atendidas em todo o país" },
+            { v: 98, fmt: (n: number) => `${Math.round(n)}%`, small: "", d: "de retenção de clientes" },
+          ].map((m, i) => (
+            <div key={i} className={`py-12 px-6 text-center ${i < 2 ? "md:border-r border-[#e8e4db]" : ""} ${i < 2 ? "border-b md:border-b-0" : ""} border-[#e8e4db]`}>
+              <div className="flex items-baseline justify-center gap-2">
+                <span className="font-mono-tech text-[48px] text-[#005a54] leading-none">
+                  <CounterMetric value={m.v} format={m.fmt} />
+                </span>
+                {m.small && <span className="text-[14px] font-bold text-[#005a54] tracking-wide">{m.small}</span>}
+              </div>
+              <p className="text-[15px] text-[#1A1A1A] max-w-[200px] mx-auto mt-3 leading-snug">{m.d}</p>
+            </div>
+          ))}
+        </div>
       </div>
+    </section>
+  );
+}
+
+/* ============= COMO FUNCIONA / FEATURES ALTERNADAS ============= */
+const FEATURES = [
+  {
+    badge: "BU-01 · FINANÇAS",
+    title: <>Pare de decidir <em className="italic font-normal">por intuição.</em></>,
+    sub: "Estruturo o fluxo de caixa, custos e indicadores até que cada decisão sua passe a depender do que você lê — não do que você sente.",
+    bullets: ["DRE gerencial mensal comentado", "Painel de KPIs sob medida", "Plano orçamentário revisado trimestralmente"],
+    cta: "Conhecer a frente Finanças →",
+    bg: "#f4f1ec",
+    mockupKind: "dashboard" as const,
+  },
+  {
+    badge: "BU-02 · CONTABILIDADE",
+    title: <>Contabilidade que <em className="italic font-normal">explica.</em></>,
+    sub: "Conduzo a apuração mensal, o planejamento tributário e o suporte direto ao sócio. O relatório que entrego precisa ser lido — não apenas arquivado.",
+    bullets: ["Apuração federal, estadual e municipal", "Planejamento tributário anual", "Reunião técnica mensal com o sócio"],
+    cta: "Conhecer a frente Contabilidade →",
+    bg: "#ffffff",
+    mockupKind: "sand" as const,
+  },
+  {
+    badge: "BU-03 · LEGALIZAÇÃO",
+    title: <>Estrutura societária <em className="italic font-normal">sem improviso.</em></>,
+    sub: "Abro, regularizo e ajusto o seu negócio com o rigor que o crescimento exige. Da abertura ao registro de marca.",
+    bullets: ["Abertura e alterações contratuais", "Licenças e alvarás", "Registro de marcas no INPI"],
+    cta: "Conhecer a frente Legalização →",
+    bg: "#f4f1ec",
+    mockupKind: "dark" as const,
+  },
+];
+
+function FeatureMockup({ kind }: { kind: "dashboard" | "sand" | "dark" }) {
+  if (kind === "dashboard") {
+    return (
+      <div className="w-full" style={{ filter: "drop-shadow(0 16px 48px rgba(0,0,0,0.08))" }}>
+        <FloatingDashboard compact />
+      </div>
+    );
+  }
+  if (kind === "sand") {
+    return (
+      <div className="w-full max-w-[480px] aspect-[4/3] rounded-[8px] flex items-center justify-center shadow-[0_16px_48px_rgba(0,0,0,0.08)]" style={{ background: "#cec9b8" }}>
+        <span className="label-mono text-[#1F3D2E]">Mockup · Contabilidade</span>
+      </div>
+    );
+  }
+  return (
+    <div className="w-full max-w-[480px] aspect-[4/3] rounded-[8px] flex items-center justify-center shadow-[0_16px_48px_rgba(0,0,0,0.08)]" style={{ background: "#1F3D2E" }}>
+      <span className="text-[14px] text-[#f4f1ec]">Mockup · Legalização</span>
+    </div>
+  );
+}
+
+function FeatureBlock({ f, idx }: { f: typeof FEATURES[number]; idx: number }) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) setVisible(true); });
+    }, { threshold: 0.2 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  const reverse = idx % 2 === 1;
+  return (
+    <div ref={ref} className="py-20" style={{ background: f.bg }}>
+      <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
+        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center ${reverse ? "lg:[&>*:first-child]:order-2" : ""}`}>
+          <div
+            className="transition-all duration-500"
+            style={{
+              opacity: visible ? 1 : 0,
+              transform: visible ? "translateX(0)" : `translateX(${reverse ? 30 : -30}px)`,
+            }}
+          >
+            <span className="label-mono text-[#005a54]">{f.badge}</span>
+            <h3 className="font-display font-semibold text-[28px] lg:text-[32px] text-[#1A1A1A] mt-4 leading-tight">
+              {f.title}
+            </h3>
+            <p className="text-[16px] mt-4 leading-relaxed" style={{ color: "rgba(26,26,26,0.8)" }}>{f.sub}</p>
+            <ul className="mt-6 space-y-2">
+              {f.bullets.map((b) => (
+                <li key={b} className="flex gap-3 text-[14px] text-[#1A1A1A]">
+                  <span className="text-[#005a54] font-bold">—</span>
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
+            <a href="#atuacao" className="inline-block mt-8 text-[14px] font-bold text-[#005a54] tracking-wide hover:translate-x-1 transition-transform">
+              {f.cta}
+            </a>
+          </div>
+          <div
+            className="flex justify-center transition-all duration-500"
+            style={{
+              opacity: visible ? 1 : 0,
+              transform: visible ? "translateX(0)" : `translateX(${reverse ? -30 : 30}px)`,
+            }}
+          >
+            <FeatureMockup kind={f.mockupKind} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function ComoFunciona() {
+  return (
+    <section id="como-funciona" className="border-b border-[rgba(26,26,26,0.1)]">
+      <div className="max-w-[1320px] mx-auto px-6 lg:px-10 pt-24 pb-8">
+        <span className="label-mono text-[#005a54]">· OPERAÇÃO / COMO FUNCIONA</span>
+        <h2 className="font-display text-[40px] lg:text-[56px] leading-[1.05] text-[#1F3D2E] mt-4 max-w-3xl">
+          Na prática, <span className="italic text-[#005a54]">é assim.</span>
+        </h2>
+        <p className="text-[16px] text-[#1A1A1A]/80 mt-6 max-w-2xl leading-relaxed">
+          Cada frente opera com método próprio, entregáveis definidos e reuniões técnicas recorrentes. Não há caixa-preta.
+        </p>
+      </div>
+      {FEATURES.map((f, i) => (
+        <FeatureBlock key={f.badge} f={f} idx={i} />
+      ))}
     </section>
   );
 }
@@ -959,29 +1270,36 @@ export function Conteudo() {
           </h2>
           <a href="#" className="label-mono text-[#005a54]">VER TODAS AS EDIÇÕES →</a>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="pt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
           {POSTS.map((p) => (
-            <article key={p.ed} className="group bg-[#f4f1ec] border-tech flex flex-col overflow-hidden cursor-pointer transition-all duration-500 hover:scale-[1.015] hover:shadow-[0_30px_60px_-30px_rgba(31,61,46,0.3)]">
-              <div className="relative aspect-[16/10] overflow-hidden bg-[#cec9b8]">
+            <article
+              key={p.ed}
+              className="group bg-white flex flex-col overflow-hidden cursor-pointer rounded-[4px] transition-all duration-200"
+              style={{ border: "1px solid #e8e4db" }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#005a54"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(0,0,0,0.08)"; e.currentTarget.style.transform = "translateY(-4px)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#e8e4db"; e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.transform = "translateY(0)"; }}
+            >
+              <div className="relative h-[200px] w-full overflow-hidden" style={{ background: "linear-gradient(135deg, #1F3D2E, #005a54)" }}>
                 <img
                   src={p.img}
                   alt={p.t}
                   loading="lazy"
                   width={896}
                   height={640}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="absolute inset-0 w-full h-full object-cover opacity-80 mix-blend-luminosity transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className="absolute top-4 left-4 px-3 py-1.5 bg-[#1F3D2E]/90 backdrop-blur text-[#f4f1ec] label-mono">
-                  {p.ed} · {p.cat}
+                <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, rgba(31,61,46,0.55), rgba(0,90,84,0.45))" }} />
+                <div className="absolute bottom-3 left-3 px-2.5 py-1 rounded-[2px]" style={{ background: "#1A1A1A" }}>
+                  <span className="label-mono text-[#f4f1ec]" style={{ fontSize: 9 }}>{p.cat}</span>
                 </div>
               </div>
-              <div className="p-7 flex flex-col flex-1">
-                <div className="label-mono text-[#005a54] mb-4">{p.date} · {p.min}</div>
-                <h3 className="font-display text-[22px] text-[#1F3D2E] flex-1 leading-snug">{p.t}</h3>
-                <div className="flex justify-between mt-6 pt-4 border-t border-[rgba(26,26,26,0.1)]">
-                  <span className="label-mono text-[#6e7b7c]">{p.date}</span>
-                  <span className="label-mono text-[#005a54] transition-transform group-hover:translate-x-1">LER →</span>
-                </div>
+              <div className="p-5 flex flex-col flex-1">
+                <div className="font-mono-tech text-[10px] text-[#6e7b7c]">{p.date} · {p.min}</div>
+                <h3 className="font-display font-semibold text-[16px] text-[#1A1A1A] flex-1 leading-[1.4] mt-2">{p.t}</h3>
+                <div className="h-px bg-[#e8e4db] my-4" />
+                <span className="text-[11px] font-bold text-[#005a54] tracking-wide">
+                  LEIA MAIS <span className="inline-block transition-transform group-hover:translate-x-0.5">↗</span>
+                </span>
               </div>
             </article>
           ))}

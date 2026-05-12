@@ -190,6 +190,30 @@ html { scroll-behavior: smooth; }
 }
 .marquee-track:hover { animation-play-state: paused; }
 
+/* Floating dashboard cards */
+@keyframes float-y-1 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes float-y-2 {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-5px) rotate(-3deg); }
+}
+@keyframes float-y-3 {
+  0%, 100% { transform: translateY(0) rotate(2deg); }
+  50% { transform: translateY(-6px) rotate(2deg); }
+}
+.float-card-1 { animation: float-y-1 4s ease-in-out infinite; }
+.float-card-2 { animation: float-y-2 3s ease-in-out infinite 1s; }
+.float-card-3 { animation: float-y-3 5s ease-in-out infinite 0.5s; }
+
+/* Mega menu animation */
+@keyframes mega-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.mega-in { animation: mega-in 200ms ease forwards; }
+
 /* Acessibilidade: respeitar redução de movimento */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
