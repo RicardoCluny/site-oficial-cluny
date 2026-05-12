@@ -27,6 +27,7 @@ function Index() {
         <Cadastro />
       </main>
       <Footer />
+      <StickyBar />
     </div>
   );
 }
