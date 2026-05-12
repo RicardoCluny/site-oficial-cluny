@@ -512,8 +512,16 @@ const BUS = [
   { n: "BU-04", t: "Educação Corporativa", sub: "Capacitação técnica aplicada", d: "Formo a equipe interna e os sócios em finanças, gestão e leitura de demonstrativos — para que a empresa cresça com método." },
 ];
 
-export function Atuacao() {
+export function Atuacao({ showModulos = true }: { showModulos?: boolean } = {}) {
+  const sectionId = showModulos ? "atuacao" : "entregaveis";
   return (
+    <section id={sectionId} className="py-24 lg:py-32 bg-[#f4f1ec] border-b border-[rgba(26,26,26,0.1)]">
+      <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
+        {showModulos && (<>
+        </>)}{showModulos ? null : null}
+        {void 0}
+        {(() => null)()}
+        {/* placeholder removed below */}
     <section id="atuacao" className="py-24 lg:py-32 bg-[#f4f1ec] border-b border-[rgba(26,26,26,0.1)]">
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
         <div className="flex justify-between items-end mb-12 flex-wrap gap-4">
