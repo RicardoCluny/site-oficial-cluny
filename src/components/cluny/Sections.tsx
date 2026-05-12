@@ -1,44 +1,126 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Logo } from "@/components/cluny/Logo";
+import heroImg from "@/assets/hero-controladoria.jpg";
+import blogTrib from "@/assets/blog-tributario.jpg";
+import blogDre from "@/assets/blog-dre.jpg";
+import blogHolding from "@/assets/blog-holding.jpg";
+import faqIllu from "@/assets/faq-illustration.jpg";
 
 const NAV = [
-  { label: "Atuação", href: "#atuacao" },
-  { label: "Planos", href: "#planos" },
   { label: "Método", href: "#metodo" },
+  { label: "Serviços", href: "#planos" },
   { label: "Diagnóstico", href: "#diagnostico" },
+  { label: "Comparativo", href: "#calculadora" },
   { label: "Cases", href: "#cases" },
+  { label: "Conteúdo", href: "#conteudo" },
 ];
 
 export function Nav() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState<string>("");
+
+  useEffect(() => {
+    const onScroll = () => {
+      setScrolled(window.scrollY > 12);
+      const ids = NAV.map((n) => n.href.replace("#", ""));
+      let current = "";
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= 120) current = id;
+      }
+      setActive(current);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-50 bg-[#f4f1ec]/90 backdrop-blur border-b border-[rgba(26,26,26,0.1)]">
-      <div className="max-w-[1320px] mx-auto px-6 lg:px-10 h-16 grid grid-cols-[1fr_auto_1fr] items-center gap-4">
-        <a href="#" className="justify-self-start"><Logo size={28} /></a>
-        <nav className="hidden md:flex justify-self-center bg-[rgba(26,26,26,0.04)] rounded-[2px] p-1">
+    <header
+      className={`sticky top-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-[#f4f1ec]/95 backdrop-blur-md border-b border-[rgba(26,26,26,0.08)] shadow-[0_1px_0_rgba(26,26,26,0.04)]"
+          : "bg-[#f4f1ec]/80 backdrop-blur border-b border-transparent"
+      }`}
+    >
+      <div className="max-w-[1320px] mx-auto px-6 lg:px-10 h-[68px] flex items-center justify-between gap-6">
+        <a href="#" className="flex items-center gap-2 group">
+          <Logo size={28} />
+        </a>
+
+        <nav className="hidden lg:flex items-center gap-1">
+          {NAV.map((n) => {
+            const isActive = active === n.href.replace("#", "");
+            return (
+              <a
+                key={n.href}
+                href={n.href}
+                className={`relative px-4 py-2 text-[13.5px] font-medium rounded-full transition-all duration-200 ${
+                  isActive
+                    ? "text-[#005a54] bg-[rgba(0,90,84,0.08)]"
+                    : "text-[#1A1A1A]/70 hover:text-[#005a54] hover:bg-[rgba(0,90,84,0.05)]"
+                }`}
+              >
+                {n.label}
+              </a>
+            );
+          })}
+        </nav>
+
+        <div className="hidden lg:flex items-center gap-3">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[rgba(0,90,84,0.06)]">
+            <span className="pulse-dot" />
+            <span className="label-mono text-[#005a54]">OPERANDO</span>
+          </div>
+          <a href="#cadastro" className="btn-primary btn-primary-sm group">
+            Solicite uma proposta
+            <span className="transition-transform group-hover:translate-x-0.5">→</span>
+          </a>
+        </div>
+
+        <button
+          className="lg:hidden flex flex-col gap-1.5 p-2"
+          onClick={() => setOpen(!open)}
+          aria-label="Menu"
+        >
+          <span
+            className={`block w-6 h-[2px] bg-[#1F3D2E] transition-transform ${
+              open ? "translate-y-[7px] rotate-45" : ""
+            }`}
+          />
+          <span
+            className={`block w-6 h-[2px] bg-[#1F3D2E] transition-opacity ${
+              open ? "opacity-0" : ""
+            }`}
+          />
+          <span
+            className={`block w-6 h-[2px] bg-[#1F3D2E] transition-transform ${
+              open ? "-translate-y-[7px] -rotate-45" : ""
+            }`}
+          />
+        </button>
+      </div>
+
+      {open && (
+        <div className="lg:hidden border-t border-[rgba(26,26,26,0.08)] px-6 py-6 flex flex-col gap-1 bg-[#f4f1ec] animate-fade-in">
           {NAV.map((n) => (
-            <a key={n.href} href={n.href} className="px-3 py-1.5 text-[13px] text-[#1A1A1A] hover:text-[#005a54] rounded-[2px] transition-colors">
+            <a
+              key={n.href}
+              href={n.href}
+              onClick={() => setOpen(false)}
+              className="text-[15px] py-3 px-3 rounded-md hover:bg-[rgba(0,90,84,0.06)] text-[#1F3D2E]"
+            >
               {n.label}
             </a>
           ))}
-        </nav>
-        <div className="hidden md:flex items-center gap-4 justify-self-end">
-          <div className="flex items-center gap-2">
-            <span className="pulse-dot" />
-            <span className="label-mono text-[#6e7b7c]">STATUS · OPERANDO</span>
-          </div>
-          <a href="#cadastro" className="btn-primary btn-primary-sm">Cadastre-se</a>
-        </div>
-        <button className="md:hidden justify-self-end label-mono" onClick={() => setOpen(!open)}>
-          {open ? "FECHAR" : "MENU"}
-        </button>
-      </div>
-      {open && (
-        <div className="md:hidden border-t border-[rgba(26,26,26,0.1)] px-6 py-4 flex flex-col gap-3 bg-[#f4f1ec]">
-          {NAV.map((n) => (
-            <a key={n.href} href={n.href} onClick={() => setOpen(false)} className="text-sm">{n.label}</a>
-          ))}
-          <a href="#cadastro" onClick={() => setOpen(false)} className="btn-primary btn-primary-sm self-start">Cadastre-se</a>
+          <a
+            href="#cadastro"
+            onClick={() => setOpen(false)}
+            className="btn-primary mt-3 justify-center"
+          >
+            Solicite uma proposta →
+          </a>
         </div>
       )}
     </header>
@@ -48,94 +130,39 @@ export function Nav() {
 export function Hero() {
   return (
     <section className="bg-[#f4f1ec] border-b border-[rgba(26,26,26,0.1)]">
-      <div className="max-w-[1320px] mx-auto px-6 lg:px-10 pt-10">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-3 pb-6 border-b border-[rgba(26,26,26,0.1)]">
-          {[
-            ["INDEX", "/ HOME"],
-            ["REGISTRO", "CRC-SP 2SP-000000"],
-            ["ATUALIZADO", "11.MAI.2026"],
-            ["LATITUDE", "-23.5505, -46.6333"],
-          ].map(([k, v]) => (
-            <div key={k} className="font-mono-tech text-[11px] flex flex-col gap-1">
-              <span className="text-[#6e7b7c]">{k}</span>
-              <span className="text-[#1A1A1A]">{v}</span>
-            </div>
-          ))}
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 py-16 lg:py-24 min-h-[640px]">
-          <div className="lg:col-span-8 flex flex-col justify-center">
+      <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 py-16 lg:py-24 min-h-[640px] items-center">
+          <div className="lg:col-span-7 flex flex-col justify-center">
             <span className="label-mono text-[#005a54] mb-6">[ Cluny Gestão Empresarial · v.2026 ]</span>
-            <h1 className="font-display text-[44px] sm:text-[64px] lg:text-[92px] leading-[0.96] text-[#1F3D2E]">
-              Gestão técnica<br />
-              operada como sistema. <span className="italic text-[#005a54]"></span>
+            <h1 className="font-display text-[44px] sm:text-[64px] lg:text-[88px] leading-[0.96] text-[#1F3D2E]">
+              Controladoria<br />
+              financeira <span className="italic text-[#005a54]">operada como sistema.</span>
             </h1>
-            <p className="mt-8 text-[18px] max-w-[640px] text-[#1A1A1A]/80 leading-relaxed">
-              Contabilidade, BPO Financeiro, Controladoria e legalização em uma única operação. Quatro frentes técnicas, um único método de leitura.
+            <p className="mt-8 text-[18px] max-w-[620px] text-[#1A1A1A]/80 leading-relaxed">
+              BPO Financeiro e Controladoria conduzidos com método técnico. Tiro o sócio da operação, devolvo leitura para a decisão.
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
-              <a href="#cadastro" className="btn-primary">Cadastre-se</a>
+              <a href="#cadastro" className="btn-primary group">
+                Solicite uma proposta
+                <span className="transition-transform group-hover:translate-x-1">→</span>
+              </a>
               <a href="#diagnostico" className="btn-secondary">Diagnóstico em 60s ↓</a>
             </div>
           </div>
-          <div className="lg:col-span-4 grid grid-cols-1 gap-0 border-tech">
-            {[
-              { label: "MÉTRICA 01", val: "+12 anos", desc: "de mercado consolidado", dark: true },
-              { label: "MÉTRICA 02", val: "320", desc: "empresas atendidas em todo o país" },
-              { label: "MÉTRICA 03", val: "R$ 1.2M", desc: "economizados em tributos 2024" },
-              { label: "MÉTRICA 04", val: "98%", desc: "de retenção de clientes" },
-            ].map((m, i) => (
-              <div key={i} className={`p-6 border-b border-[rgba(26,26,26,0.1)] last:border-b-0 ${m.dark ? "bg-[#005a54] text-[#f4f1ec]" : "bg-[#f4f1ec]"}`}>
-                <div className="label-mono opacity-70 mb-3">{m.label}</div>
-                <div className="font-mono-tech text-[28px] lg:text-[32px] leading-none mb-2">{m.val}</div>
-                <div className="text-[13px] opacity-80">{m.desc}</div>
-              </div>
-            ))}
+          <div className="lg:col-span-5 relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-[rgba(0,90,84,0.08)] to-[rgba(196,139,48,0.05)] rounded-[4px] blur-2xl" />
+            <img
+              src={heroImg}
+              alt="Painel de controladoria financeira: gráficos, KPIs e indicadores conduzidos com método Cluny"
+              width={1024}
+              height={1024}
+              className="relative w-full h-auto rounded-[4px] shadow-[0_30px_80px_-30px_rgba(31,61,46,0.3)]"
+            />
+            <div className="absolute -bottom-3 -left-3 bg-[#1F3D2E] text-[#f4f1ec] px-4 py-3 rounded-[2px] hidden md:flex items-center gap-3">
+              <span className="pulse-dot" />
+              <span className="label-mono text-[#cec9b8]">DASHBOARD AO VIVO · 320 EMPRESAS</span>
+            </div>
           </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-const BUS = [
-  { id: "BU-01", area: "Finanças", title: "Gestão financeira sob método", tagline: "Decisão técnica antes da intuição.", desc: "Estruturo o fluxo de caixa, custos e indicadores para que a sua decisão pare de depender da intuição.", entregas: ["DRE gerencial mensal", "Painel de KPIs", "Plano orçamentário"] },
-  { id: "BU-02", area: "Contabilidade", title: "Contabilidade consultiva", tagline: "Conformidade com inteligência.", desc: "Conduzo a contabilidade da sua empresa de forma técnica, fiscal e estratégica — não apenas conformidade, mas inteligência tributária.", entregas: ["Apuração mensal", "Planejamento tributário", "Suporte ao sócio"] },
-  { id: "BU-03", area: "Legalização", title: "Constituição e regularização", tagline: "Estrutura societária com rigor.", desc: "Abro, regularizo e ajusto a estrutura societária do seu negócio com o rigor que o crescimento exige.", entregas: ["Abertura de empresa", "Alterações contratuais", "Licenças e alvarás"] },
-  { id: "BU-04", area: "Educação Corporativa", title: "Capacitação técnica aplicada", tagline: "Equipe que lê o próprio negócio.", desc: "Formo a equipe interna e os sócios em finanças, gestão e leitura de demonstrativos — para que a empresa cresça com método.", entregas: ["Mentorias individuais", "Cursos in-company", "Trilhas para sócios"] },
-];
-
-export function Atuacao() {
-  return (
-    <section id="atuacao" className="py-24 lg:py-32 border-b border-[rgba(26,26,26,0.1)]">
-      <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
-        <div className="flex justify-between items-end mb-12">
-          <h2 className="font-display text-[40px] lg:text-[56px] leading-[1.05] text-[#1F3D2E]">
-            Atuação <span className="italic text-[#6e7b7c] text-[28px]">/ 4 módulos</span>
-          </h2>
-          <span className="label-mono text-[#6e7b7c]">BU-01 → BU-04</span>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0 border-tech">
-          {BUS.map((bu) => (
-            <article key={bu.id} className="p-7 border-r border-b lg:border-b-0 border-[rgba(26,26,26,0.1)] last:border-r-0 min-h-[380px] flex flex-col bg-[#f4f1ec]">
-              <div className="flex items-center gap-2 mb-6">
-                <span className="pulse-dot" />
-                <span className="label-mono text-[#005a54]">{bu.id} · {bu.area}</span>
-              </div>
-              <h3 className="font-display text-[24px] lg:text-[26px] text-[#1F3D2E] leading-tight">{bu.title}</h3>
-              <p className="font-display italic text-[14px] text-[#6e7b7c] mt-2 mb-5">{bu.tagline}</p>
-              <p className="text-[13.5px] text-[#1A1A1A]/80 leading-relaxed flex-1">{bu.desc}</p>
-              <div className="mt-6 pt-4 border-t border-[rgba(26,26,26,0.1)] flex justify-between items-center">
-                <span className="label-mono text-[#6e7b7c]">{bu.entregas.length} ENTREGÁVEIS</span>
-                <span className="label-mono text-[#005a54]">VER →</span>
-              </div>
-              <div className="mt-3 space-y-1">
-                {bu.entregas.map((e) => (
-                  <div key={e} className="text-[12px] text-[#1A1A1A]/70 flex gap-2"><span className="text-[#005a54]">→</span>{e}</div>
-                ))}
-              </div>
-            </article>
-          ))}
         </div>
       </div>
     </section>
@@ -165,7 +192,6 @@ export function Diagnostico() {
   };
 
   const reset = () => { setScores([]); setStep(0); };
-
   const r = 70, c = 2 * Math.PI * r;
 
   return (
@@ -180,7 +206,7 @@ export function Diagnostico() {
           <p className="mt-6 text-[#f4f1ec]/75 max-w-md">Sem cadastro. Sem e-mail. Respondo aqui mesmo qual frente cabe à sua operação — e por quê.</p>
           <div className="mt-10 flex gap-1.5">
             {[0,1,2,3,4].map((i) => (
-              <div key={i} className="flex-1 h-1 rounded-sm" style={{
+              <div key={i} className="flex-1 h-1 rounded-sm transition-all duration-500" style={{
                 background: i < scores.length ? "#c48b30" : i === step && !done ? "rgba(255,255,255,0.45)" : "rgba(255,255,255,0.15)",
               }} />
             ))}
@@ -218,7 +244,7 @@ export function Diagnostico() {
                     strokeLinecap="round" transform="rotate(-90 90 90)"
                     style={{ transition: "stroke-dashoffset 1s ease" }}
                   />
-                  <text x="90" y="95" textAnchor="middle" className="font-mono-tech" fill="#f4f1ec" fontSize="32" fontFamily="JetBrains Mono">{score}</text>
+                  <text x="90" y="95" textAnchor="middle" fill="#f4f1ec" fontSize="32" fontFamily="JetBrains Mono">{score}</text>
                   <text x="90" y="115" textAnchor="middle" fill="#cec9b8" fontSize="9" fontFamily="JetBrains Mono">MATURIDADE</text>
                 </svg>
                 <div>
@@ -226,21 +252,8 @@ export function Diagnostico() {
                   <h3 className="font-display text-[28px] text-[#f4f1ec]">{reco}</h3>
                 </div>
               </div>
-              <div className="grid grid-cols-5 gap-3 mb-8">
-                {scores.map((s, i) => (
-                  <div key={i} className="flex flex-col items-center gap-1.5">
-                    <div className="label-mono text-[#cec9b8]">Q{i+1}</div>
-                    <div className="flex flex-col gap-1">
-                      {[1,2,3,4].map(n => (
-                        <span key={n} className="w-2 h-2 rounded-full" style={{ background: n <= s ? "#c48b30" : "rgba(244,241,236,0.18)" }} />
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
               <div className="flex flex-wrap gap-3 mt-auto">
-                <a href="#cadastro" className="btn-primary" style={{ background: "#c48b30" }}>Quero esta proposta →</a>
-                <button className="btn-secondary" style={{ borderColor: "#f4f1ec", color: "#f4f1ec" }}>↓ Baixar relatório PDF</button>
+                <a href="#cadastro" className="btn-primary" style={{ background: "#c48b30" }}>Solicite uma proposta →</a>
                 <button onClick={reset} className="label-mono text-[#cec9b8] underline ml-auto">↺ REFAZER</button>
               </div>
             </div>
@@ -252,44 +265,164 @@ export function Diagnostico() {
 }
 
 const ETAPAS = [
-  { n: "01", t: "Societário", i: "Contrato social, quadro de sócios", e: "Mapa de responsabilidades" },
-  { n: "02", t: "Fiscal", i: "Regime, obrigações, riscos", e: "Diagnóstico tributário" },
-  { n: "03", t: "Contábil", i: "Plano de contas atual", e: "Plano de contas vivo" },
-  { n: "04", t: "Financeiro", i: "Extratos, contas a pagar/receber", e: "Régua de caixa" },
-  { n: "05", t: "Gerencial", i: "Indicadores em uso", e: "Painel de KPIs próprios" },
-  { n: "06", t: "Continuidade", i: "Tese do sócio, horizonte", e: "Plano de 90/365 dias" },
+  {
+    n: "01",
+    t: "Imersão",
+    sub: "Leitura inicial",
+    desc: "Mergulho no contrato social, regime fiscal, plano de contas e rotinas em uso. Mapeio onde a operação sangra antes de propor qualquer movimento.",
+    entregas: ["Mapa de responsabilidades", "Diagnóstico fiscal"],
+    dias: "5 dias",
+  },
+  {
+    n: "02",
+    t: "Estruturação",
+    sub: "Plano de contas vivo",
+    desc: "Reconstruo o plano de contas e as réguas de classificação para que cada lançamento conte a verdade do negócio — não a do sistema.",
+    entregas: ["Plano de contas gerencial", "Régua de classificação"],
+    dias: "10 dias",
+  },
+  {
+    n: "03",
+    t: "Operação",
+    sub: "Régua de caixa",
+    desc: "Coloco a operação financeira para rodar com método: a pagar, a receber, conciliação e fluxo projetado de 90 dias com governança diária.",
+    entregas: ["Fluxo de caixa 90 dias", "Conciliação diária"],
+    dias: "15 dias",
+  },
+  {
+    n: "04",
+    t: "Leitura",
+    sub: "Painel de KPIs",
+    desc: "Construo o painel de indicadores sob medida e a DRE gerencial comentada — a leitura técnica que orienta a decisão do sócio.",
+    entregas: ["Painel KPIs sob medida", "DRE gerencial comentada"],
+    dias: "10 dias",
+  },
+  {
+    n: "05",
+    t: "Continuidade",
+    sub: "Plano 90/365",
+    desc: "Entrego o plano operacional de 90 e 365 dias e mantenho a régua viva — com revisões trimestrais de tese junto ao sócio.",
+    entregas: ["Plano 90/365", "Revisão trimestral de tese"],
+    dias: "Contínuo",
+  },
 ];
 
 export function Metodo() {
+  const [active, setActive] = useState(0);
+  const cur = ETAPAS[active];
+
   return (
-    <section id="metodo" className="py-24 lg:py-32 border-b border-[rgba(26,26,26,0.1)]">
+    <section id="metodo" className="py-24 lg:py-32 border-b border-[rgba(26,26,26,0.1)] bg-[#f4f1ec]">
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16 items-end">
           <div>
-            <span className="label-mono text-[#005a54]">· Método</span>
+            <span className="label-mono text-[#005a54]">· Método Cluny</span>
             <h2 className="font-display text-[40px] lg:text-[56px] leading-[1.05] text-[#1F3D2E] mt-4">
-              Como leio<br /><span className="italic text-[#005a54]">/ uma empresa em</span><br />6 etapas.
+              Como leio<br /><span className="italic text-[#005a54]">/ uma empresa em</span><br />5 etapas.
             </h2>
           </div>
           <p className="text-[16px] text-[#1A1A1A]/80 leading-relaxed max-w-md">
-            Cada empresa que entra na Cluny passa pelo mesmo protocolo. Não é checklist — é régua técnica. Em 35 a 45 dias, devolvo um relatório operacional e um plano de 90/365 dias.
+            Cada empresa que entra na Cluny passa pelo mesmo protocolo. Não é checklist — é régua técnica viva. Em 35 a 45 dias, devolvo um relatório operacional e um plano de 90/365 dias.
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-0 border-tech">
-          {ETAPAS.map((et, i) => (
-            <div key={et.n} className="p-6 border-r border-b border-[rgba(26,26,26,0.1)] last:border-r-0 min-h-[260px] flex flex-col" style={{ background: i === 0 ? "rgba(0,90,84,0.05)" : "#f4f1ec" }}>
-              <div className="label-mono mb-4" style={{ color: i < 3 ? "#005a54" : "#c48b30" }}>ETAPA · {et.n}</div>
-              <div className="w-9 h-9 rounded-full flex items-center justify-center font-mono-tech text-[13px] mb-4" style={{ border: `1px solid ${i < 3 ? "#005a54" : "#c48b30"}`, color: i < 3 ? "#005a54" : "#c48b30" }}>{et.n}</div>
-              <h4 className="font-display text-[20px] text-[#1F3D2E] mb-4">{et.t}</h4>
-              <div className="text-[12px] mt-auto">
-                <div className="label-mono text-[#6e7b7c] mb-1">INPUT</div>
-                <div className="text-[#1A1A1A]/80 mb-3">{et.i}</div>
-                <div className="label-mono text-[#005a54] mb-1">ENTREGA →</div>
-                <div className="text-[#1A1A1A]">{et.e}</div>
+        {/* Timeline interativa */}
+        <div className="relative">
+          {/* Linha contínua de progresso */}
+          <div className="hidden md:block absolute top-[42px] left-0 right-0 h-[2px] bg-[rgba(26,26,26,0.08)]">
+            <div
+              className="h-full bg-gradient-to-r from-[#005a54] to-[#c48b30] transition-all duration-700 ease-out"
+              style={{ width: `${((active + 1) / ETAPAS.length) * 100}%` }}
+            />
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 relative">
+            {ETAPAS.map((et, i) => {
+              const reached = i <= active;
+              return (
+                <button
+                  key={et.n}
+                  onClick={() => setActive(i)}
+                  onMouseEnter={() => setActive(i)}
+                  className="group flex flex-col items-center text-center cursor-pointer focus:outline-none"
+                >
+                  <div
+                    className={`relative w-[84px] h-[84px] rounded-full flex items-center justify-center font-mono-tech text-[18px] transition-all duration-500 ${
+                      reached
+                        ? "bg-[#005a54] text-[#f4f1ec] scale-100 shadow-[0_10px_30px_-10px_rgba(0,90,84,0.6)]"
+                        : "bg-[#f4f1ec] text-[#6e7b7c] border border-[rgba(26,26,26,0.12)] scale-95 group-hover:scale-100"
+                    } ${i === active ? "ring-4 ring-[#c48b30]/30" : ""}`}
+                  >
+                    {et.n}
+                    {i === active && (
+                      <span className="absolute -inset-2 rounded-full border border-[#c48b30] animate-pulse" />
+                    )}
+                  </div>
+                  <div className={`label-mono mt-4 transition-colors ${reached ? "text-[#005a54]" : "text-[#6e7b7c]"}`}>
+                    ETAPA {et.n}
+                  </div>
+                  <div className={`font-display text-[18px] mt-1 transition-colors ${i === active ? "text-[#1F3D2E]" : "text-[#1A1A1A]/70"}`}>
+                    {et.t}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Painel da etapa ativa */}
+        <div
+          key={active}
+          className="mt-16 grid grid-cols-1 lg:grid-cols-12 gap-0 border-tech overflow-hidden animate-fade-in"
+        >
+          <div className="lg:col-span-5 bg-[#1F3D2E] text-[#f4f1ec] p-10 lg:p-12 flex flex-col justify-between min-h-[360px]">
+            <div>
+              <div className="flex items-center justify-between mb-6">
+                <span className="label-mono text-[#c48b30]">ETAPA · {cur.n} / 05</span>
+                <span className="label-mono text-[#cec9b8]">{cur.dias}</span>
+              </div>
+              <div className="font-mono-tech text-[88px] lg:text-[120px] leading-none text-[#c48b30]/30">{cur.n}</div>
+            </div>
+            <div>
+              <h3 className="font-display text-[32px] lg:text-[40px] text-[#f4f1ec] leading-tight">{cur.t}</h3>
+              <p className="font-display italic text-[#cec9b8] mt-2 text-[16px]">/ {cur.sub}</p>
+            </div>
+          </div>
+          <div className="lg:col-span-7 bg-[#f4f1ec] p-10 lg:p-12 flex flex-col">
+            <p className="text-[18px] lg:text-[20px] text-[#1A1A1A]/85 leading-relaxed font-display">
+              {cur.desc}
+            </p>
+            <div className="mt-10 pt-8 border-t border-[rgba(26,26,26,0.1)]">
+              <div className="label-mono text-[#005a54] mb-4">ENTREGAS DESTA ETAPA</div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {cur.entregas.map((e) => (
+                  <div key={e} className="flex items-center gap-3 p-4 bg-[rgba(0,90,84,0.04)] rounded-[2px] border border-[rgba(0,90,84,0.1)]">
+                    <span className="w-8 h-8 rounded-full bg-[#005a54] text-[#f4f1ec] flex items-center justify-center text-[12px]">→</span>
+                    <span className="text-[14px] text-[#1F3D2E] font-medium">{e}</span>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
+            <div className="mt-auto pt-8 flex flex-wrap items-center justify-between gap-4">
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setActive(Math.max(0, active - 1))}
+                  disabled={active === 0}
+                  className="btn-secondary btn-primary-sm disabled:opacity-30"
+                >
+                  ← Anterior
+                </button>
+                <button
+                  onClick={() => setActive(Math.min(ETAPAS.length - 1, active + 1))}
+                  disabled={active === ETAPAS.length - 1}
+                  className="btn-primary btn-primary-sm disabled:opacity-30"
+                >
+                  Próxima →
+                </button>
+              </div>
+              <span className="label-mono text-[#6e7b7c]">{active + 1} / {ETAPAS.length}</span>
+            </div>
+          </div>
         </div>
 
         <div className="mt-8 p-5 flex flex-col md:flex-row md:justify-between gap-3" style={{ background: "rgba(0,90,84,0.06)" }}>
@@ -303,60 +436,84 @@ export function Metodo() {
 
 export function Planos() {
   const PlanCard = ({ dark, tag, camada, price, tagline, escopo, items, indicado, nota, cta }: any) => (
-    <div className={`p-8 lg:p-10 border-tech flex flex-col ${dark ? "bg-[#1F3D2E] text-[#f4f1ec]" : "bg-[#f4f1ec] text-[#1A1A1A]"}`}>
-      <div className="flex justify-between items-center mb-8">
-        <span className="label-mono" style={{ color: dark ? "#c48b30" : "#005a54" }}>{tag}</span>
-        <span className="label-mono opacity-70">{camada}</span>
+    <div
+      className={`group relative p-8 lg:p-10 flex flex-col transition-all duration-500 cursor-pointer rounded-[4px]
+        ${dark ? "bg-[#1F3D2E] text-[#f4f1ec]" : "bg-[#f4f1ec] text-[#1A1A1A]"}
+        border border-[rgba(26,26,26,0.1)]
+        hover:scale-[1.02] hover:shadow-[0_30px_80px_-30px_rgba(31,61,46,0.4)]
+        hover:border-[#c48b30]
+      `}
+    >
+      {/* Glow effect on hover */}
+      <div className="absolute inset-0 rounded-[4px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+        style={{ background: dark
+          ? "radial-gradient(circle at 50% 0%, rgba(196,139,48,0.15), transparent 60%)"
+          : "radial-gradient(circle at 50% 0%, rgba(0,90,84,0.08), transparent 60%)" }}
+      />
+      <div className="relative flex flex-col h-full">
+        <div className="flex justify-between items-center mb-8">
+          <span className="label-mono" style={{ color: dark ? "#c48b30" : "#005a54" }}>{tag}</span>
+          <span className="label-mono opacity-70">{camada}</span>
+        </div>
+        <div className="font-mono-tech text-[36px] lg:text-[44px] leading-none mb-2">{price}</div>
+        <div className="label-mono opacity-60 mb-6">/MÊS · A PARTIR DE</div>
+        <h3 className="font-display text-[26px] mb-3" style={{ color: dark ? "#f4f1ec" : "#1F3D2E" }}>{tagline}</h3>
+        <p className="text-[14px] opacity-80 mb-8 leading-relaxed">{escopo}</p>
+        <div className="space-y-2.5 mb-8">
+          {items.map((it: string) => (
+            <div key={it} className="flex gap-3 text-[14px]"><span style={{ color: dark ? "#c48b30" : "#005a54" }}>→</span>{it}</div>
+          ))}
+        </div>
+        <div className="text-[12px] opacity-70 pt-4 mb-3 border-t" style={{ borderColor: dark ? "rgba(244,241,236,0.15)" : "rgba(26,26,26,0.1)" }}>
+          <div className="label-mono mb-2">INDICADO PARA</div>
+          {indicado.map((ix: string) => <div key={ix}>· {ix}</div>)}
+        </div>
+        <div className="text-[12px] italic opacity-60 mb-6">{nota}</div>
+        <button
+          className="btn-primary mt-auto group/btn relative overflow-hidden transition-all duration-300 group-hover:scale-[1.03]"
+          style={dark ? { background: "#c48b30", color: "#1F3D2E" } : {}}
+        >
+          <span className="relative z-10">{cta}</span>
+          <span className="relative z-10 transition-transform group-hover/btn:translate-x-1">→</span>
+        </button>
       </div>
-      <div className="font-mono-tech text-[36px] lg:text-[44px] leading-none mb-2">{price}</div>
-      <div className="label-mono opacity-60 mb-6">/MÊS · A PARTIR DE</div>
-      <h3 className="font-display text-[26px] mb-3" style={{ color: dark ? "#f4f1ec" : "#1F3D2E" }}>{tagline}</h3>
-      <p className="text-[14px] opacity-80 mb-8 leading-relaxed">{escopo}</p>
-      <div className="space-y-2.5 mb-8">
-        {items.map((it: string) => (
-          <div key={it} className="flex gap-3 text-[14px]"><span style={{ color: dark ? "#c48b30" : "#005a54" }}>→</span>{it}</div>
-        ))}
-      </div>
-      <div className="text-[12px] opacity-70 border-t border-[rgba(244,241,236,0.15)] pt-4 mb-3" style={{ borderColor: dark ? "rgba(244,241,236,0.15)" : "rgba(26,26,26,0.1)" }}>
-        <div className="label-mono mb-2">INDICADO PARA</div>
-        {indicado.map((ix: string) => <div key={ix}>· {ix}</div>)}
-      </div>
-      <div className="text-[12px] italic opacity-60 mb-6">{nota}</div>
-      <button className="btn-primary mt-auto" style={dark ? { background: "#f4f1ec", color: "#1F3D2E" } : {}}>{cta}</button>
     </div>
   );
 
   return (
     <section id="planos" className="py-24 lg:py-32 bg-[#ece7dc] border-b border-[rgba(26,26,26,0.1)]">
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
-        <h2 className="font-display text-[40px] lg:text-[56px] leading-[1.05] text-[#1F3D2E] mb-16 max-w-3xl">
-          Dois serviços. <br /><span className="italic text-[#005a54]">Mesma régua técnica.</span>
-        </h2>
+        <div className="flex justify-between items-end mb-16 flex-wrap gap-6">
+          <h2 className="font-display text-[40px] lg:text-[56px] leading-[1.05] text-[#1F3D2E] max-w-2xl">
+            Dois serviços. <br /><span className="italic text-[#005a54]">Mesma régua técnica.</span>
+          </h2>
+          <span className="label-mono text-[#6e7b7c]">SERVIÇO 01 → SERVIÇO 02</span>
+        </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <PlanCard
             tag="SERVIÇO 01" camada="CAMADA · EXECUÇÃO"
             price="R$ 4.800"
-            tagline="A operação financeira da sua empresa, conduzida com método."
+            tagline="BPO Financeiro: a operação financeira conduzida com método."
             escopo="Para empresas que precisam tirar o sócio da operação financeira sem terceirizar o critério."
             items={["Contas a pagar e a receber (rotina diária)","Conciliação bancária e cartões","Emissão de NF e cobrança ativa","Fluxo de caixa diário e projetado 90 dias","Gestor de conta dedicado","Reunião quinzenal de operação (60 min)","Integração com ERP do cliente"]}
             indicado={["Faturamento R$ 2M – 15M","Sem analista financeiro dedicado","Sócio ainda na operação"]}
             nota="Não substitui Controladoria. Foco em execução, não em tese."
-            cta="Quero o BPO Financeiro →"
+            cta="Quero o BPO Financeiro"
           />
           <PlanCard dark
             tag="SERVIÇO 02" camada="CAMADA · TESE"
             price="R$ 7.200"
-            tagline="A inteligência financeira que orienta a decisão do sócio."
+            tagline="Controladoria: inteligência financeira que orienta a decisão."
             escopo="Para empresas que já têm operação rodando e precisam de leitura técnica para decidir com tese — não com intuição."
             items={["Painel de KPIs sob medida (gerencial)","DRE gerencial mensal comentado","Análise de margem por linha / cliente / projeto","Orçamento anual com revisão trimestral","Modelagem de cenários (3 horizontes)","Reunião mensal com o sócio (90 min)","Sessão trimestral de tese (3 horas)"]}
             indicado={["Faturamento R$ 8M+","Estrutura financeira já organizada","Sócio buscando tese, não relatório"]}
             nota="Não executa rotina financeira. Pressupõe operação saudável — ou contratação conjunta com BPO."
-            cta="Quero a Controladoria →"
+            cta="Quero a Controladoria"
           />
         </div>
-        <div className="mt-6 p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4" style={{ background: "#c48b30", color: "#1F3D2E" }}>
+        <div className="mt-6 p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 transition-all hover:scale-[1.01] cursor-pointer" style={{ background: "#c48b30", color: "#1F3D2E" }}>
           <div className="label-mono">· COMBO 01 + 02 — BPO + Controladoria em pacote integrado · 15% de desconto</div>
-          <button className="btn-primary" style={{ background: "#1F3D2E", color: "#f4f1ec" }}>Calcular meu combo →</button>
+          <a href="#calculadora" className="btn-primary" style={{ background: "#1F3D2E", color: "#f4f1ec" }}>Calcular meu combo →</a>
         </div>
       </div>
     </section>
@@ -389,10 +546,7 @@ export function Manifesto() {
             A Cluny nasceu de uma <em className="italic">insatisfação técnica</em>: contadores que entregavam guia de imposto, mas nunca explicavam o que os números diziam. Decidi inverter a ordem.
           </p>
           <p className="text-[15.5px] text-[#1A1A1A]/85 mt-6 leading-relaxed">
-            Em vez de processar obrigação fiscal, comecei pela leitura técnica do negócio. O que a empresa faz, como cobra, onde sangra margem, qual decisão depende de qual número. A obrigação acessória virou consequência, não centro.
-          </p>
-          <p className="text-[15.5px] text-[#1A1A1A]/85 mt-4 leading-relaxed">
-            Hoje, conduzo um time de 34 profissionais e 320 empresas. A régua continua igual: critério antes de comercial, clareza antes de complexidade.
+            Em vez de processar obrigação fiscal, comecei pela leitura técnica do negócio. O que a empresa faz, como cobra, onde sangra margem, qual decisão depende de qual número.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-0 mt-10 border-tech">
             {[
@@ -446,8 +600,8 @@ export function Cases() {
           </article>
           <div className="lg:col-span-5 grid grid-rows-2 gap-6">
             {[
-              { tag: "ENGENHARIA · CONTABILIDADE", t: "Reestruturação tributária pré-aquisição", m: "R$ 480k em tributos diferidos legalmente" },
-              { tag: "TECNOLOGIA · LEGALIZAÇÃO", t: "Holding e separação patrimonial em 90 dias", m: "90d do diagnóstico ao registro final" },
+              { tag: "ENGENHARIA · CONTROLADORIA", t: "Reestruturação tributária pré-aquisição", m: "R$ 480k em tributos diferidos legalmente" },
+              { tag: "TECNOLOGIA · BPO", t: "Régua de caixa e cobrança em 90 dias", m: "Inadimplência de 14% para 3,2%" },
             ].map((c) => (
               <article key={c.t} className="border-tech p-7 lg:p-8 flex flex-col bg-[#f4f1ec]">
                 <span className="label-mono text-[#005a54] mb-4">{c.tag}</span>
@@ -501,111 +655,194 @@ export function Depoimentos() {
   );
 }
 
+/* ============= COMPARATIVO CLT vs BPO ============= */
 export function Calculadora() {
-  const [fat, setFat] = useState(8);
-  const [col, setCol] = useState(20);
-  const [regime, setRegime] = useState<"sn" | "lp" | "lr">("lp");
-  const [setor, setSetor] = useState<"servicos"|"tech"|"comercio"|"industria">("servicos");
-  const [bpo, setBpo] = useState(true);
-  const [control, setControl] = useState(false);
+  const [salario, setSalario] = useState(6500);
+  const [nivel, setNivel] = useState<"jr" | "pl" | "sr">("pl");
+
+  const niveisAjuste = { jr: 0.7, pl: 1, sr: 1.45 }[nivel];
 
   const calc = useMemo(() => {
-    const baseFat = Math.pow(fat / 5, 0.55);
-    const baseCol = Math.pow(col / 20, 0.45);
-    const multRegime = { sn: 0.85, lp: 1.0, lr: 1.18 }[regime];
-    const multSetor = { industria: 1.15, tech: 1.05, comercio: 1.08, servicos: 1.0 }[setor];
-    const bpoVal = bpo ? Math.round((3800 * baseFat * baseCol * multRegime * multSetor) / 100) * 100 : 0;
-    const controlVal = control ? Math.round((5400 * baseFat * multRegime * multSetor) / 100) * 100 : 0;
-    const desconto = (bpo && control) ? Math.round((bpoVal + controlVal) * 0.15 / 100) * 100 : 0;
-    const total = bpoVal + controlVal - desconto;
-    const score = Math.min(95, Math.round(40 + fat * 1.5 + col * 0.3 + (bpo ? 6 : 0) + (control ? 8 : 0)));
-    const reco = score < 55 ? "BPO Financeiro" : score < 75 ? "Controladoria" : "BPO + Controladoria";
-    return { bpoVal, controlVal, desconto, total, score, reco };
-  }, [fat, col, regime, setor, bpo, control]);
+    const salBase = Math.round(salario * niveisAjuste);
+    // Encargos CLT (~estimativa Brasil): INSS patronal 20% + FGTS 8% + 13º + férias + 1/3 + RAT/SAT/Sistema S ~5,8%
+    const encargos = Math.round(salBase * 0.72);
+    const beneficios = Math.round(800 + salBase * 0.08); // VR, VT, plano de saúde
+    const estrutura = Math.round(450); // posto de trabalho, software, equipamento
+    const rescisaoMes = Math.round(salBase * 0.12); // provisão multa + aviso
+    const cltTotal = salBase + encargos + beneficios + estrutura + rescisaoMes;
+
+    const bpoTotal = 4800;
+    const economia = cltTotal - bpoTotal;
+    const economiaPct = Math.round((economia / cltTotal) * 100);
+    const economiaAno = economia * 12;
+
+    return { salBase, encargos, beneficios, estrutura, rescisaoMes, cltTotal, bpoTotal, economia, economiaPct, economiaAno };
+  }, [salario, niveisAjuste]);
 
   const fmt = (n: number) => `R$ ${n.toLocaleString("pt-BR")}`;
 
+  const dores = [
+    { t: "Rotatividade", d: "Analista pediu demissão? Você reabsorve a operação até contratar o próximo." },
+    { t: "Férias e licenças", d: "30 dias por ano sem cobertura técnica — ou paga dobrado por substituto." },
+    { t: "Curva de aprendizado", d: "3 a 6 meses até o profissional dominar a sua operação." },
+    { t: "Escalabilidade", d: "Crescer significa contratar mais — e gerir mais gente." },
+    { t: "Erro humano", d: "Sem segunda camada de revisão técnica nas conciliações." },
+    { t: "Risco trabalhista", d: "Passivo trabalhista entra no balanço, processos podem aparecer anos depois." },
+  ];
+
+  const beneficiosBpo = [
+    { t: "Time multidisciplinar", d: "Analista, controller, contador e tributarista em um único contrato." },
+    { t: "Cobertura contínua", d: "Operação rodando 12 meses por ano, sem férias, sem licenças, sem rotatividade." },
+    { t: "Método consolidado", d: "Régua técnica aplicada do dia 1 — sem curva de aprendizado." },
+    { t: "Sem passivo trabalhista", d: "Contrato de prestação de serviços, zero risco trabalhista." },
+    { t: "Escalabilidade plana", d: "Faturamento dobrou? O contrato se ajusta, você não precisa contratar." },
+    { t: "Tecnologia inclusa", d: "ERP, automações e dashboards no escopo, sem investimento adicional." },
+  ];
+
   return (
-    <section id="calculadora" className="py-24 lg:py-32 border-b border-[rgba(26,26,26,0.1)]">
+    <section id="calculadora" className="py-24 lg:py-32 border-b border-[rgba(26,26,26,0.1)] bg-[#f4f1ec]">
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
-        <h2 className="font-display text-[40px] lg:text-[56px] leading-[1.05] text-[#1F3D2E] mb-16 max-w-3xl">
-          Quanto custa <span className="italic text-[#005a54]">/ ter Cluny</span> dentro<br />da sua empresa?
-        </h2>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 border-tech">
-          <div className="p-8 lg:p-12 bg-[#f4f1ec] space-y-8">
+        <div className="mb-16 max-w-3xl">
+          <span className="label-mono text-[#005a54]">· Comparativo · CLT vs BPO Financeiro</span>
+          <h2 className="font-display text-[40px] lg:text-[56px] leading-[1.05] text-[#1F3D2E] mt-4">
+            Quanto custa, de fato, <span className="italic text-[#005a54]">um financeiro CLT</span> dentro da sua empresa?
+          </h2>
+          <p className="text-[16px] text-[#1A1A1A]/80 mt-6 leading-relaxed">
+            Simule um analista financeiro CLT e compare com o custo de terceirizar o financeiro com a Cluny. A diferença vai além do salário.
+          </p>
+        </div>
+
+        {/* Controles */}
+        <div className="border-tech bg-[#f4f1ec] p-8 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
-              <div className="flex justify-between mb-3"><span className="label-mono text-[#005a54]">FATURAMENTO ANUAL</span><span className="font-mono-tech text-[15px] text-[#1F3D2E]">R$ {fat}M</span></div>
-              <input type="range" min={2} max={80} step={1} value={fat} onChange={(e)=>setFat(+e.target.value)} className="w-full accent-[#005a54]" />
+              <div className="flex justify-between mb-3">
+                <span className="label-mono text-[#005a54]">SALÁRIO BASE (CLT)</span>
+                <span className="font-mono-tech text-[15px] text-[#1F3D2E]">{fmt(salario)}</span>
+              </div>
+              <input type="range" min={3500} max={15000} step={250} value={salario} onChange={(e)=>setSalario(+e.target.value)} className="w-full accent-[#005a54]" />
+              <div className="flex justify-between mt-1 label-mono text-[#6e7b7c]"><span>R$ 3,5k</span><span>R$ 15k</span></div>
             </div>
             <div>
-              <div className="flex justify-between mb-3"><span className="label-mono text-[#005a54]">COLABORADORES (CLT)</span><span className="font-mono-tech text-[15px] text-[#1F3D2E]">{col}</span></div>
-              <input type="range" min={3} max={300} step={1} value={col} onChange={(e)=>setCol(+e.target.value)} className="w-full accent-[#005a54]" />
-            </div>
-            <div>
-              <div className="label-mono text-[#005a54] mb-3">REGIME TRIBUTÁRIO</div>
+              <div className="label-mono text-[#005a54] mb-3">NÍVEL DO PROFISSIONAL</div>
               <div className="flex gap-2">
-                {[["sn","Simples"],["lp","Presumido"],["lr","Real"]].map(([k,l])=>(
-                  <button key={k} onClick={()=>setRegime(k as any)} className="flex-1 py-3 text-[13px] rounded-[2px] transition-colors"
-                    style={{ background: regime===k?"#005a54":"transparent", color: regime===k?"#f4f1ec":"#1A1A1A", border: "1px solid #005a54" }}>{l}</button>
+                {[["jr","Júnior"],["pl","Pleno"],["sr","Sênior"]].map(([k,l])=>(
+                  <button key={k} onClick={()=>setNivel(k as any)} className="flex-1 py-3 text-[13px] rounded-[2px] transition-all"
+                    style={{ background: nivel===k?"#005a54":"transparent", color: nivel===k?"#f4f1ec":"#1A1A1A", border: "1px solid #005a54" }}>{l}</button>
                 ))}
               </div>
             </div>
-            <div>
-              <div className="label-mono text-[#005a54] mb-3">SETOR PRINCIPAL</div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                {[["servicos","Serviços"],["tech","Tech"],["comercio","Comércio"],["industria","Indústria"]].map(([k,l])=>(
-                  <button key={k} onClick={()=>setSetor(k as any)} className="py-3 text-[13px] rounded-[2px]"
-                    style={{ background: setor===k?"#005a54":"transparent", color: setor===k?"#f4f1ec":"#1A1A1A", border: "1px solid #005a54" }}>{l}</button>
-                ))}
-              </div>
+          </div>
+        </div>
+
+        {/* Comparativo lado a lado */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 border-tech">
+          {/* CLT */}
+          <div className="p-8 lg:p-10 bg-[#f4f1ec] border-b lg:border-b-0 lg:border-r border-[rgba(26,26,26,0.1)]">
+            <div className="flex items-center justify-between mb-8">
+              <span className="label-mono text-[#6e7b7c]">CENÁRIO A</span>
+              <span className="label-mono text-[#1A1A1A]/60">CLT INTERNO</span>
             </div>
-            <div>
-              <div className="label-mono text-[#005a54] mb-3">ESCOPO DESEJADO</div>
-              <label className="flex items-start gap-3 p-4 border border-[rgba(26,26,26,0.1)] mb-2 cursor-pointer rounded-[2px]" style={{ background: bpo ? "rgba(0,90,84,0.05)" : "transparent" }}>
-                <input type="checkbox" checked={bpo} onChange={(e)=>setBpo(e.target.checked)} className="mt-1 accent-[#005a54]" />
-                <div><div className="text-[14px] font-medium">BPO Financeiro</div><div className="text-[12px] text-[#6e7b7c]">Execução: a pagar/receber, conciliação, fluxo</div></div>
-              </label>
-              <label className="flex items-start gap-3 p-4 border border-[rgba(26,26,26,0.1)] cursor-pointer rounded-[2px]" style={{ background: control ? "rgba(0,90,84,0.05)" : "transparent" }}>
-                <input type="checkbox" checked={control} onChange={(e)=>setControl(e.target.checked)} className="mt-1 accent-[#005a54]" />
-                <div><div className="text-[14px] font-medium">Controladoria</div><div className="text-[12px] text-[#6e7b7c]">Tese: KPIs, leitura técnica, projeção</div></div>
-              </label>
+            <h3 className="font-display text-[28px] text-[#1F3D2E] mb-2">Analista financeiro CLT</h3>
+            <p className="text-[14px] text-[#1A1A1A]/70 mb-8">Custo total mensal embarcado.</p>
+
+            <div className="space-y-3 text-[14px] mb-8">
+              {[
+                ["Salário base", calc.salBase],
+                ["Encargos (INSS/FGTS/13º/férias)", calc.encargos],
+                ["Benefícios (VR/VT/saúde)", calc.beneficios],
+                ["Estrutura (posto, software, equip.)", calc.estrutura],
+                ["Provisão de rescisão", calc.rescisaoMes],
+              ].map(([k,v]) => (
+                <div key={k as string} className="flex justify-between py-2 border-b border-[rgba(26,26,26,0.08)]">
+                  <span className="text-[#1A1A1A]/80">{k}</span>
+                  <span className="font-mono-tech text-[#1F3D2E]">{fmt(v as number)}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="p-5 bg-[rgba(26,26,26,0.04)] rounded-[2px] mb-6">
+              <div className="label-mono text-[#6e7b7c] mb-2">CUSTO TOTAL MENSAL</div>
+              <div className="font-mono-tech text-[40px] text-[#1F3D2E] leading-none">{fmt(calc.cltTotal)}</div>
+              <div className="label-mono text-[#6e7b7c] mt-2">{fmt(calc.cltTotal * 12)} / ANO</div>
+            </div>
+
+            <div className="space-y-3">
+              <div className="label-mono text-[#1A1A1A]/70 mb-2">DORES E RISCOS</div>
+              {dores.slice(0,4).map((d) => (
+                <div key={d.t} className="flex gap-3 text-[13px]">
+                  <span className="text-[#c48b30] font-mono-tech mt-0.5">!</span>
+                  <div>
+                    <span className="font-medium text-[#1F3D2E]">{d.t}.</span>{" "}
+                    <span className="text-[#1A1A1A]/70">{d.d}</span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
-          <div className="p-8 lg:p-12 bg-[#1F3D2E] text-[#f4f1ec]">
-            <span className="label-mono text-[#c48b30]">· Estimativa técnica</span>
-            <div className="mt-6 flex items-baseline gap-3">
-              <div className="font-mono-tech text-[44px] lg:text-[64px] leading-none">{fmt(calc.total)}</div>
-              <div className="label-mono text-[#cec9b8]">/MÊS</div>
+          {/* BPO */}
+          <div className="p-8 lg:p-10 bg-[#1F3D2E] text-[#f4f1ec] relative overflow-hidden">
+            <div className="absolute top-0 right-0 px-3 py-1.5 bg-[#c48b30] text-[#1F3D2E] label-mono">RECOMENDADO</div>
+            <div className="flex items-center justify-between mb-8">
+              <span className="label-mono text-[#c48b30]">CENÁRIO B</span>
+              <span className="label-mono text-[#cec9b8]">BPO CLUNY</span>
             </div>
-            <div className="label-mono text-[#cec9b8] mt-3">± 12% · CONFIRMADO APÓS DIAGNÓSTICO · 12 MESES MÍNIMO</div>
+            <h3 className="font-display text-[28px] text-[#f4f1ec] mb-2">BPO Financeiro Cluny</h3>
+            <p className="text-[14px] text-[#cec9b8] mb-8">Time completo, contrato único, custo previsível.</p>
 
-            <div className="mt-8 space-y-2 text-[13px]">
-              <div className="flex justify-between py-2 border-b border-[rgba(244,241,236,0.18)]"><span>BPO Financeiro</span><span className="font-mono-tech">{fmt(calc.bpoVal)}</span></div>
-              <div className="flex justify-between py-2 border-b border-[rgba(244,241,236,0.18)]"><span>Controladoria</span><span className="font-mono-tech">{fmt(calc.controlVal)}</span></div>
-              {calc.desconto > 0 && (
-                <div className="flex justify-between py-2 px-3" style={{ background: "rgba(196,139,48,0.12)" }}><span>Desconto combo (15%)</span><span className="font-mono-tech text-[#c48b30]">−{fmt(calc.desconto)}</span></div>
-              )}
-            </div>
-
-            <div className="mt-8 p-5" style={{ background: "rgba(244,241,236,0.06)", border: "1px solid rgba(244,241,236,0.18)" }}>
-              <div className="label-mono text-[#c48b30] mb-2">PLANO INDICADO</div>
-              <div className="font-display text-[24px]">{calc.reco}</div>
-              <div className="text-[13px] text-[#cec9b8] mt-2">Combinação técnica adequada ao porte e maturidade da operação.</div>
-            </div>
-
-            <div className="mt-8">
-              <div className="flex justify-between mb-2"><span className="label-mono text-[#cec9b8]">FIT TÉCNICO COM CLUNY</span><span className="font-mono-tech text-[#c48b30]">{calc.score}</span></div>
-              <div className="h-1.5 rounded-full" style={{ background: "rgba(244,241,236,0.15)" }}>
-                <div className="h-full rounded-full transition-all duration-500" style={{ width: `${calc.score}%`, background: "linear-gradient(90deg, #005a54, #c48b30)" }} />
-              </div>
+            <div className="space-y-3 text-[14px] mb-8">
+              {[
+                ["Time multidisciplinar (analista + controller + contador)", "incluso"],
+                ["ERP, automações e dashboards", "incluso"],
+                ["Reuniões quinzenais com gestor de conta", "incluso"],
+                ["Cobertura 12 meses (sem férias/licenças)", "incluso"],
+                ["Provisão de rescisão", "R$ 0"],
+              ].map(([k,v]) => (
+                <div key={k as string} className="flex justify-between gap-4 py-2 border-b border-[rgba(244,241,236,0.18)]">
+                  <span className="text-[#f4f1ec]/85">{k}</span>
+                  <span className="font-mono-tech text-[#c48b30] whitespace-nowrap">✓ {v}</span>
+                </div>
+              ))}
             </div>
 
-            <div className="mt-10 flex flex-wrap gap-3">
-              <a href="#cadastro" className="btn-primary" style={{ background: "#c48b30", color: "#1F3D2E" }}>Quero esta proposta →</a>
-              <button className="btn-secondary" style={{ borderColor: "#f4f1ec", color: "#f4f1ec" }}>↓ Receber PDF</button>
+            <div className="p-5 rounded-[2px] mb-6" style={{ background: "rgba(196,139,48,0.12)", border: "1px solid rgba(196,139,48,0.3)" }}>
+              <div className="label-mono text-[#cec9b8] mb-2">INVESTIMENTO MENSAL</div>
+              <div className="font-mono-tech text-[40px] text-[#f4f1ec] leading-none">{fmt(calc.bpoTotal)}</div>
+              <div className="label-mono text-[#cec9b8] mt-2">{fmt(calc.bpoTotal * 12)} / ANO · CONTRATO 12 MESES</div>
+            </div>
+
+            <div className="space-y-3">
+              <div className="label-mono text-[#cec9b8] mb-2">BENEFÍCIOS DIRETOS</div>
+              {beneficiosBpo.slice(0,4).map((b) => (
+                <div key={b.t} className="flex gap-3 text-[13px]">
+                  <span className="text-[#c48b30] font-mono-tech mt-0.5">→</span>
+                  <div>
+                    <span className="font-medium text-[#f4f1ec]">{b.t}.</span>{" "}
+                    <span className="text-[#f4f1ec]/75">{b.d}</span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
+        </div>
+
+        {/* Resultado da economia */}
+        <div className="mt-6 p-8 lg:p-12 grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 items-center" style={{ background: "linear-gradient(135deg, #c48b30, #b07820)", color: "#1F3D2E" }}>
+          <div>
+            <span className="label-mono text-[#1F3D2E]/70">· Economia ao terceirizar com Cluny</span>
+            <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2 mt-3">
+              <div className="font-mono-tech text-[56px] lg:text-[80px] leading-none text-[#1F3D2E]">{fmt(calc.economia)}</div>
+              <div className="font-display text-[24px] text-[#1F3D2E]/80">/mês · {calc.economiaPct}% menos</div>
+            </div>
+            <p className="font-display text-[20px] lg:text-[24px] text-[#1F3D2E] mt-4 max-w-2xl leading-snug">
+              Em 12 meses, você economiza <strong>{fmt(calc.economiaAno)}</strong> — sem rotatividade, sem passivo trabalhista, com time técnico completo.
+            </p>
+          </div>
+          <a href="#cadastro" className="btn-primary group" style={{ background: "#1F3D2E", color: "#f4f1ec" }}>
+            Solicite uma proposta
+            <span className="transition-transform group-hover:translate-x-1">→</span>
+          </a>
         </div>
       </div>
     </section>
@@ -614,12 +851,12 @@ export function Calculadora() {
 
 export function Conteudo() {
   const POSTS = [
-    ["ED. 042", "TRIBUTÁRIO", "7 min", "02.MAI.2026", "Quando a reforma tributária deixa de ser hipótese e vira régua operacional"],
-    ["ED. 041", "GESTÃO", "5 min", "24.ABR.2026", "DRE gerencial: a diferença entre relatório bonito e leitura útil"],
-    ["ED. 040", "SOCIETÁRIO", "9 min", "17.ABR.2026", "Holding patrimonial: três armadilhas comuns na constituição"],
+    { ed: "ED. 042", cat: "TRIBUTÁRIO", min: "7 min", date: "02.MAI.2026", t: "Quando a reforma tributária deixa de ser hipótese e vira régua operacional", img: blogTrib },
+    { ed: "ED. 041", cat: "GESTÃO", min: "5 min", date: "24.ABR.2026", t: "DRE gerencial: a diferença entre relatório bonito e leitura útil", img: blogDre },
+    { ed: "ED. 040", cat: "SOCIETÁRIO", min: "9 min", date: "17.ABR.2026", t: "Holding patrimonial: três armadilhas comuns na constituição", img: blogHolding },
   ];
   return (
-    <section className="py-24 lg:py-32 bg-[#ece7dc] border-b border-[rgba(26,26,26,0.1)]">
+    <section id="conteudo" className="py-24 lg:py-32 bg-[#ece7dc] border-b border-[rgba(26,26,26,0.1)]">
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
         <div className="flex justify-between items-end mb-12">
           <h2 className="font-display text-[40px] lg:text-[56px] text-[#1F3D2E]">
@@ -629,12 +866,27 @@ export function Conteudo() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {POSTS.map((p) => (
-            <article key={p[0]} className="bg-[#f4f1ec] border-tech p-7 flex flex-col min-h-[280px]">
-              <div className="label-mono text-[#005a54] mb-5">{p[0]} · {p[1]} · {p[2]}</div>
-              <h3 className="font-display text-[22px] text-[#1F3D2E] flex-1">{p[4]}</h3>
-              <div className="flex justify-between mt-6 pt-4 border-t border-[rgba(26,26,26,0.1)]">
-                <span className="label-mono text-[#6e7b7c]">{p[3]}</span>
-                <span className="label-mono text-[#005a54]">LER →</span>
+            <article key={p.ed} className="group bg-[#f4f1ec] border-tech flex flex-col overflow-hidden cursor-pointer transition-all duration-500 hover:scale-[1.015] hover:shadow-[0_30px_60px_-30px_rgba(31,61,46,0.3)]">
+              <div className="relative aspect-[16/10] overflow-hidden bg-[#cec9b8]">
+                <img
+                  src={p.img}
+                  alt={p.t}
+                  loading="lazy"
+                  width={896}
+                  height={640}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute top-4 left-4 px-3 py-1.5 bg-[#1F3D2E]/90 backdrop-blur text-[#f4f1ec] label-mono">
+                  {p.cat}
+                </div>
+              </div>
+              <div className="p-7 flex flex-col flex-1">
+                <div className="label-mono text-[#005a54] mb-4">{p.ed} · {p.min}</div>
+                <h3 className="font-display text-[22px] text-[#1F3D2E] flex-1 leading-snug">{p.t}</h3>
+                <div className="flex justify-between mt-6 pt-4 border-t border-[rgba(26,26,26,0.1)]">
+                  <span className="label-mono text-[#6e7b7c]">{p.date}</span>
+                  <span className="label-mono text-[#005a54] transition-transform group-hover:translate-x-1">LER →</span>
+                </div>
               </div>
             </article>
           ))}
@@ -650,30 +902,77 @@ const FAQS = [
   ["O que diferencia a Cluny de uma contabilidade tradicional?", "A leitura. A contabilidade tradicional gera relatório; a Cluny entrega tese. Você recebe o número junto com a leitura técnica do que ele significa para a decisão do mês."],
   ["Há contrato mínimo?", "Sim. 12 meses, com possibilidade de revisão técnica a cada trimestre. O período mínimo existe porque o método precisa de tempo para se acomodar à operação."],
   ["Os sócios falam direto com você ou com um time?", "Os sócios falam diretamente comigo nas reuniões trimestrais de tese. No dia a dia, há um gestor de conta dedicado — sempre com acesso direto a mim por canal técnico."],
+  ["Por que terceirizar o financeiro ao invés de contratar CLT?", "Por previsibilidade. CLT envolve encargos, rotatividade, férias, passivo trabalhista e curva de aprendizado. O BPO entrega time completo, contrato único e custo plano."],
 ];
 
 export function FAQ() {
+  const [open, setOpen] = useState<number | null>(0);
   return (
-    <section className="py-24 lg:py-32 border-b border-[rgba(26,26,26,0.1)]">
-      <div className="max-w-[1320px] mx-auto px-6 lg:px-10 grid grid-cols-1 lg:grid-cols-3 gap-12">
-        <div>
-          <span className="label-mono text-[#005a54]">· FAQ</span>
-          <h2 className="font-display text-[40px] lg:text-[48px] mt-4 leading-[1.05] text-[#1F3D2E]">
-            Perguntas <em className="italic text-[#005a54]">técnicas</em> que ouvi neste mês.
-          </h2>
-        </div>
-        <div className="lg:col-span-2 border-t border-[rgba(26,26,26,0.1)]">
-          {FAQS.map(([q, a], i) => (
-            <details key={i} className="group border-b border-[rgba(26,26,26,0.1)] py-6">
-              <summary className="flex justify-between items-center cursor-pointer list-none gap-6">
-                <span className="font-display text-[18px] lg:text-[20px] text-[#1F3D2E]">
-                  <span className="font-mono-tech text-[#6e7b7c] text-[12px] mr-3">0{i+1}.</span>{q}
-                </span>
-                <span className="font-mono-tech text-[#005a54] text-[20px] group-open:rotate-45 transition-transform">+</span>
-              </summary>
-              <p className="text-[14.5px] text-[#1A1A1A]/80 mt-4 leading-relaxed pl-9">→ {a}</p>
-            </details>
-          ))}
+    <section id="faq" className="py-24 lg:py-32 border-b border-[rgba(26,26,26,0.1)] bg-[#f4f1ec]">
+      <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+          {/* Coluna esquerda: título + ilustração */}
+          <div className="lg:col-span-5 flex flex-col">
+            <span className="label-mono text-[#005a54]">· FAQ</span>
+            <h2 className="font-display text-[40px] lg:text-[52px] mt-4 leading-[1.05] text-[#1F3D2E]">
+              Perguntas <em className="italic text-[#005a54]">técnicas</em><br />que ouvi neste mês.
+            </h2>
+            <p className="text-[15px] text-[#1A1A1A]/75 mt-6 max-w-md leading-relaxed">
+              Reuni as dúvidas mais frequentes de sócios e diretores antes de iniciar o método. Se não encontrar a sua, escreva diretamente.
+            </p>
+
+            <div className="relative mt-10 rounded-[4px] overflow-hidden bg-[#1F3D2E]">
+              <img src={faqIllu} alt="" loading="lazy" width={768} height={1024} className="w-full h-[280px] object-cover opacity-90" />
+              <div className="absolute inset-0 flex flex-col justify-end p-6 bg-gradient-to-t from-[#1F3D2E] via-[#1F3D2E]/40 to-transparent">
+                <div className="label-mono text-[#c48b30] mb-2">SUA DÚVIDA NÃO ESTÁ AQUI?</div>
+                <a href="#cadastro" className="font-display text-[22px] text-[#f4f1ec] hover:text-[#c48b30] transition-colors">
+                  Pergunte diretamente →
+                </a>
+              </div>
+            </div>
+
+            <div className="mt-6 grid grid-cols-3 gap-3 text-center">
+              {[["12+","ANOS"],["320","CLIENTES"],["98%","RETENÇÃO"]].map(([v,k])=>(
+                <div key={k} className="p-4 border-tech bg-[#f4f1ec]">
+                  <div className="font-mono-tech text-[20px] text-[#005a54]">{v}</div>
+                  <div className="label-mono text-[#6e7b7c] mt-1">{k}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Coluna direita: perguntas */}
+          <div className="lg:col-span-7">
+            <div className="border-tech bg-[#f4f1ec] divide-y divide-[rgba(26,26,26,0.08)]">
+              {FAQS.map(([q, a], i) => {
+                const isOpen = open === i;
+                return (
+                  <div key={i} className="group">
+                    <button
+                      onClick={() => setOpen(isOpen ? null : i)}
+                      className={`w-full flex justify-between items-center text-left gap-6 px-6 py-6 transition-colors ${isOpen ? "bg-[rgba(0,90,84,0.04)]" : "hover:bg-[rgba(0,90,84,0.02)]"}`}
+                    >
+                      <span className="font-display text-[18px] lg:text-[20px] text-[#1F3D2E] flex items-start gap-4">
+                        <span className="font-mono-tech text-[#005a54] text-[12px] mt-1.5">0{i+1}</span>
+                        <span>{q}</span>
+                      </span>
+                      <span className={`flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center font-mono-tech text-[18px] transition-all duration-300 ${isOpen ? "bg-[#005a54] text-[#f4f1ec] rotate-45" : "bg-[rgba(0,90,84,0.08)] text-[#005a54]"}`}>
+                        +
+                      </span>
+                    </button>
+                    <div
+                      className="overflow-hidden transition-[max-height,opacity] duration-500 ease-out"
+                      style={{ maxHeight: isOpen ? 320 : 0, opacity: isOpen ? 1 : 0 }}
+                    >
+                      <p className="text-[14.5px] text-[#1A1A1A]/80 leading-relaxed px-6 pb-6 pl-[78px]">
+                        → {a}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -687,7 +986,7 @@ export function Cadastro() {
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 bg-[#f4f1ec] border-tech">
           <div className="p-10 lg:p-14 border-b lg:border-b-0 lg:border-r border-[rgba(26,26,26,0.1)]">
-            <span className="label-mono text-[#005a54]">· Cadastro</span>
+            <span className="label-mono text-[#005a54]">· Solicite uma proposta</span>
             <h2 className="font-display text-[40px] lg:text-[52px] leading-[1.05] mt-6 text-[#1F3D2E]">
               Inicie pela <em className="italic text-[#005a54]">conversa.</em>
             </h2>
@@ -734,12 +1033,10 @@ export function Cadastro() {
                     <option value="">Selecione...</option>
                     <option>BPO Financeiro</option>
                     <option>Controladoria</option>
-                    <option>Contabilidade</option>
-                    <option>Legalização</option>
-                    <option>Educação Corporativa</option>
+                    <option>BPO + Controladoria (Combo)</option>
                   </select>
                 </div>
-                <button type="submit" className="btn-primary w-full justify-center mt-4">Quero conversar com a Cluny →</button>
+                <button type="submit" className="btn-primary w-full justify-center mt-4">Solicite uma proposta →</button>
                 <p className="text-[12px] text-[#6e7b7c]">Resposta em até 1 dia útil. Seus dados não são compartilhados.</p>
               </form>
             )}
@@ -761,3 +1058,6 @@ export function Footer() {
     </footer>
   );
 }
+
+// Compat: mantém export Atuacao caso seja referenciado em outro lugar (no-op)
+export function Atuacao() { return null; }
