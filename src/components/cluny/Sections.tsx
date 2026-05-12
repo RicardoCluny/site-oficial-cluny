@@ -49,19 +49,45 @@ function CounterMetric({ value, format }: { value: number; format: (n: number) =
   return <span ref={ref}>{format(val)}</span>;
 }
 
-type NavItem = { label: string; href: string; mega?: { n: string; t: string; sub: string }[] };
-const NAV_MEGA = [
+type MegaItem = { n: string; t: string; sub: string };
+type MaterialItem = { t: string; sub: string; icon: JSX.Element };
+type NavItem = {
+  label: string;
+  href?: string;     // hash (cross-route via Link to="/" hash=...)
+  to?: string;       // route path
+  mega?: MegaItem[];
+  materiais?: MaterialItem[];
+};
+
+const NAV_MEGA_ATUACAO: MegaItem[] = [
   { n: "BU-01", t: "Finanças", sub: "Gestão financeira sob método" },
   { n: "BU-02", t: "Contabilidade", sub: "Contabilidade consultiva" },
   { n: "BU-03", t: "Legalização", sub: "Constituição e regularização" },
   { n: "BU-04", t: "Educação Corporativa", sub: "Capacitação técnica aplicada" },
 ];
+
+const IconStroke = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg width={32} height={32} viewBox="0 0 32 32" fill="none" stroke="#005a54" strokeWidth={1.4} strokeLinecap="round" strokeLinejoin="round" {...props} />
+);
+const NAV_MATERIAIS: MaterialItem[] = [
+  { t: "Aulas Financeiras", sub: "Trilhas técnicas em vídeo", icon: (
+    <IconStroke><polygon points="13,10 22,16 13,22" fill="#005a54" stroke="#005a54" /><rect x="4" y="6" width="24" height="20" rx="2" /></IconStroke>
+  ) },
+  { t: "Ferramentas", sub: "Planilhas e templates aplicáveis", icon: (
+    <IconStroke><path d="M14 4l-2 2 6 6 2-2-6-6z" /><path d="M6 26l8-8" /><path d="M20 12l6 6-4 4-6-6" /></IconStroke>
+  ) },
+  { t: "E-Book", sub: "Guias técnicos para download", icon: (
+    <IconStroke><path d="M6 5h14a4 4 0 0 1 4 4v18H10a4 4 0 0 1-4-4V5z" /><path d="M6 23a4 4 0 0 1 4-4h14" /></IconStroke>
+  ) },
+];
+
 const NAV: NavItem[] = [
-  { label: "Atuação", href: "#atuacao", mega: NAV_MEGA },
-  { label: "Planos", href: "#planos" },
-  { label: "Método", href: "#metodo" },
-  { label: "Diagnóstico", href: "#diagnostico" },
-  { label: "Cases", href: "#cases" },
+  { label: "Atuação", href: "atuacao", mega: NAV_MEGA_ATUACAO },
+  { label: "Método", href: "metodo" },
+  { label: "Diagnóstico", href: "diagnostico" },
+  { label: "Planos", to: "/planos" },
+  { label: "Blog", href: "blog" },
+  { label: "Materiais", materiais: NAV_MATERIAIS },
 ];
 
 export function Nav() {
@@ -76,7 +102,7 @@ export function Nav() {
   useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 12);
-      const ids = NAV.map((n) => n.href.replace("#", ""));
+      const ids = NAV.filter((n) => n.href).map((n) => n.href!);
       let current = "";
       for (const id of ids) {
         const el = document.getElementById(id);
@@ -103,6 +129,21 @@ export function Nav() {
     closeTimer.current = window.setTimeout(() => setMegaOpen(null), 100);
   };
 
+  const renderTrigger = (n: NavItem, isActive: boolean, hasDropdown: boolean) => {
+    const cls = `relative inline-flex items-center gap-1 px-4 py-2 text-[13.5px] font-medium transition-all duration-200 border-b-2 ${
+      isActive ? "border-[#005a54] opacity-100" : `border-transparent ${inactiveOpacity} hover:opacity-100`
+    }`;
+    const inner = (
+      <>
+        {n.label}
+        {hasDropdown && <span className="text-[9px] opacity-60">▾</span>}
+      </>
+    );
+    if (n.to) return <Link to={n.to} style={{ color: txtColor }} className={cls}>{inner}</Link>;
+    if (n.href) return <Link to="/" hash={n.href} style={{ color: txtColor }} className={cls}>{inner}</Link>;
+    return <span style={{ color: txtColor }} className={cls + " cursor-default"}>{inner}</span>;
+  };
+
   return (
     <header
       className={`sticky top-0 z-50 transition-all duration-300 ${
@@ -114,40 +155,30 @@ export function Nav() {
       <div className="bg-[#1A1A1A] border-b border-[rgba(255,255,255,0.06)]">
         <div className="max-w-[1320px] mx-auto px-6 lg:px-10 h-7 flex items-center justify-between gap-6">
           <span className="label-tech text-[#6e7b7c] truncate">
-            INDEX / HOME · REGISTRO CRC-SP 2SP-000000 · ATUALIZADO 11.MAI.2026 · LATITUDE -23.5505, -46.6333
+            CLUNY GESTÃO EMPRESARIAL · CRC-SP 2SP-000000 · OPERANDO DESDE 2013
           </span>
         </div>
       </div>
 
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10 h-[68px] flex items-center justify-between gap-6">
-        <a href="#" className="flex items-center gap-2 group">
+        <Link to="/" className="flex items-center gap-2 group">
           <Logo size={28} color={logoColor} />
-        </a>
+        </Link>
 
         <nav className="hidden lg:flex items-center gap-1">
           {NAV.map((n) => {
-            const isActive = active === n.href.replace("#", "");
-            const hasMega = !!n.mega;
+            const isActive = !!n.href && active === n.href;
+            const hasDropdown = !!(n.mega || n.materiais);
             return (
               <div
-                key={n.href}
+                key={n.label}
                 className="relative"
-                onMouseEnter={hasMega ? () => handleEnter(n.label) : undefined}
-                onMouseLeave={hasMega ? handleLeave : undefined}
+                onMouseEnter={hasDropdown ? () => handleEnter(n.label) : undefined}
+                onMouseLeave={hasDropdown ? handleLeave : undefined}
               >
-                <a
-                  href={n.href}
-                  style={{ color: txtColor }}
-                  className={`relative inline-flex items-center gap-1 px-4 py-2 text-[13.5px] font-medium transition-all duration-200 border-b-2 ${
-                    isActive
-                      ? "border-[#005a54] opacity-100"
-                      : `border-transparent ${inactiveOpacity} hover:opacity-100`
-                  }`}
-                >
-                  {n.label}
-                  {hasMega && <span className="text-[9px] opacity-60">▾</span>}
-                </a>
-                {hasMega && megaOpen === n.label && (
+                {renderTrigger(n, isActive, hasDropdown)}
+
+                {hasDropdown && megaOpen === n.label && n.mega && (
                   <div
                     className="mega-in absolute left-0 top-full mt-0 z-50 bg-white rounded-[4px] p-6 min-w-[520px]"
                     style={{ boxShadow: "0 8px 40px rgba(0,0,0,0.12)", borderTop: "3px solid #005a54" }}
@@ -155,10 +186,10 @@ export function Nav() {
                     onMouseLeave={handleLeave}
                   >
                     <div className="grid grid-cols-2 gap-2">
-                      {n.mega!.map((m) => (
-                        <a
+                      {n.mega.map((m) => (
+                        <Link
                           key={m.n}
-                          href="#atuacao"
+                          to="/planos"
                           onClick={() => setMegaOpen(null)}
                           className="group/item flex items-start gap-3 p-3 rounded-[2px] hover:bg-[#f4f1ec] transition-colors"
                         >
@@ -175,14 +206,43 @@ export function Nav() {
                             </div>
                             <div className="text-[12px] text-[#6e7b7c] leading-snug mt-0.5">{m.sub}</div>
                           </div>
-                        </a>
+                        </Link>
                       ))}
                     </div>
                     <div className="mt-2 pt-4 border-t border-[#e8e4db] flex justify-between items-center">
-                      <a href="#atuacao" onClick={() => setMegaOpen(null)} className="text-[12px] font-bold text-[#005a54] tracking-wide">
+                      <Link to="/planos" onClick={() => setMegaOpen(null)} className="text-[12px] font-bold text-[#005a54] tracking-wide">
                         Ver todas as frentes →
-                      </a>
+                      </Link>
                       <span className="text-[11px] text-[#6e7b7c]">· Diagnóstico gratuito em 60s</span>
+                    </div>
+                  </div>
+                )}
+
+                {hasDropdown && megaOpen === n.label && n.materiais && (
+                  <div
+                    className="mega-in absolute right-0 top-full mt-0 z-50 bg-white rounded-[4px] p-4 min-w-[320px]"
+                    style={{ boxShadow: "0 8px 40px rgba(0,0,0,0.12)", borderTop: "3px solid #005a54" }}
+                    onMouseEnter={() => { if (closeTimer.current) window.clearTimeout(closeTimer.current); }}
+                    onMouseLeave={handleLeave}
+                  >
+                    <div className="flex flex-col gap-1">
+                      {n.materiais.map((m) => (
+                        <a
+                          key={m.t}
+                          href="#"
+                          onClick={(e) => { e.preventDefault(); setMegaOpen(null); }}
+                          className="group/item flex items-start gap-3 p-3 rounded-[2px] hover:bg-[#f4f1ec] transition-colors"
+                        >
+                          <span className="flex-shrink-0">{m.icon}</span>
+                          <div className="flex-1 min-w-0">
+                            <div className="font-display font-semibold text-[15px] text-[#1A1A1A] flex items-center gap-2">
+                              {m.t}
+                              <span className="text-[12px] text-[#005a54] opacity-0 group-hover/item:opacity-100 transition-all group-hover/item:translate-x-0.5">→</span>
+                            </div>
+                            <div className="text-[12px] text-[#6e7b7c] leading-snug mt-0.5">{m.sub}</div>
+                          </div>
+                        </a>
+                      ))}
                     </div>
                   </div>
                 )}
@@ -192,10 +252,6 @@ export function Nav() {
         </nav>
 
         <div className="hidden lg:flex items-center gap-3">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-[4px] bg-[#005a54]">
-            <span className="pulse-dot-light" />
-            <span className="label-mono text-[#f4f1ec]">STATUS · OPERANDO</span>
-          </div>
           <a href="#cadastro" className="btn-primary btn-primary-sm group">
             Cadastre-se
             <span className="transition-transform group-hover:translate-x-0.5">→</span>
@@ -215,10 +271,11 @@ export function Nav() {
 
       {open && (
         <div className="lg:hidden border-t border-[rgba(255,255,255,0.08)] px-6 py-6 flex flex-col gap-1 bg-[#1F3D2E] animate-fade-in">
-          {NAV.map((n) => (
-            <div key={n.href}>
-              {n.mega ? (
-                <>
+          {NAV.map((n) => {
+            const hasDropdown = !!(n.mega || n.materiais);
+            if (hasDropdown) {
+              return (
+                <div key={n.label}>
                   <button
                     onClick={() => setMobileSub(mobileSub === n.label ? null : n.label)}
                     className="w-full flex justify-between items-center text-[15px] py-3 px-3 rounded-md hover:bg-[rgba(255,255,255,0.06)] text-[#f4f1ec]"
@@ -228,22 +285,33 @@ export function Nav() {
                   </button>
                   {mobileSub === n.label && (
                     <div className="pl-4 pb-2 flex flex-col gap-1">
-                      {n.mega.map((m) => (
-                        <a key={m.n} href="#atuacao" onClick={() => setOpen(false)} className="flex items-center gap-3 py-2 px-3 text-[13px] text-[#cec9b8] hover:bg-[rgba(255,255,255,0.06)] rounded-md">
+                      {n.mega && n.mega.map((m) => (
+                        <Link key={m.n} to="/planos" onClick={() => setOpen(false)} className="flex items-center gap-3 py-2 px-3 text-[13px] text-[#cec9b8] hover:bg-[rgba(255,255,255,0.06)] rounded-md">
                           <span className="font-mono-tech text-[#c48b30] text-[11px]">{m.n.replace("BU-", "")}</span>
                           <span>{m.t}</span>
+                        </Link>
+                      ))}
+                      {n.materiais && n.materiais.map((m) => (
+                        <a key={m.t} href="#" onClick={() => setOpen(false)} className="block py-2 px-3 text-[13px] text-[#cec9b8] hover:bg-[rgba(255,255,255,0.06)] rounded-md">
+                          {m.t}
                         </a>
                       ))}
                     </div>
                   )}
-                </>
-              ) : (
-                <a href={n.href} onClick={() => setOpen(false)} className="block text-[15px] py-3 px-3 rounded-md hover:bg-[rgba(255,255,255,0.06)] text-[#f4f1ec]">
-                  {n.label}
-                </a>
-              )}
-            </div>
-          ))}
+                </div>
+              );
+            }
+            if (n.to) return (
+              <Link key={n.label} to={n.to} onClick={() => setOpen(false)} className="block text-[15px] py-3 px-3 rounded-md hover:bg-[rgba(255,255,255,0.06)] text-[#f4f1ec]">
+                {n.label}
+              </Link>
+            );
+            return (
+              <Link key={n.label} to="/" hash={n.href!} onClick={() => setOpen(false)} className="block text-[15px] py-3 px-3 rounded-md hover:bg-[rgba(255,255,255,0.06)] text-[#f4f1ec]">
+                {n.label}
+              </Link>
+            );
+          })}
           <a href="#cadastro" onClick={() => setOpen(false)} className="btn-primary mt-3 justify-center">
             Cadastre-se →
           </a>
