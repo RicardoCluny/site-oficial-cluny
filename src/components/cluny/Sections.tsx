@@ -579,6 +579,8 @@ export function ComoFunciona() {
     </section>
   );
 }
+
+const QUESTIONS = [
   { q: "Qual o faturamento anual atual da sua empresa?", opts: ["Até R$ 2M", "Entre R$ 2M e R$ 8M", "Entre R$ 8M e R$ 30M", "Acima de R$ 30M"] },
   { q: "Quantos colaboradores CLT você tem hoje?", opts: ["Até 5 pessoas", "Entre 6 e 20 pessoas", "Entre 21 e 50 pessoas", "Acima de 50 pessoas"] },
   { q: "Você tem DRE gerencial atualizado todo mês?", opts: ["Sim, recebo e leio mensalmente", "Tenho, mas não entendo direito", "Não tenho DRE gerencial", "Não sei o que é DRE gerencial"] },
