@@ -902,7 +902,7 @@ const FAQS = [
 export function FAQ() {
   const [open, setOpen] = useState<number | null>(0);
   return (
-    <section id="faq" className="py-24 lg:py-32 border-b border-[rgba(26,26,26,0.1)] bg-[#f4f1ec]">
+    <section id="faq" className="py-24 lg:py-32 border-b border-[rgba(26,26,26,0.1)] bg-[#ffffff]">
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
           {/* Coluna esquerda: título + ilustração */}
