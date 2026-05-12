@@ -432,7 +432,7 @@ export function Planos() {
   const PlanCard = ({ dark, tag, camada, price, tagline, escopo, items, indicado, nota, cta }: any) => (
     <div
       className={`group relative p-8 lg:p-10 flex flex-col transition-all duration-500 cursor-pointer rounded-[4px]
-        ${dark ? "bg-[#1F3D2E] text-[#f4f1ec]" : "bg-[#f4f1ec] text-[#1A1A1A]"}
+        ${dark ? "bg-[#1F3D2E] text-[#f4f1ec]" : "bg-[#ffffff] text-[#1A1A1A]"}
         border border-[rgba(26,26,26,0.1)]
         hover:scale-[1.02] hover:shadow-[0_30px_80px_-30px_rgba(31,61,46,0.4)]
         hover:border-[#c48b30]
