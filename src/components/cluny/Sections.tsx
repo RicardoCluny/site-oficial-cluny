@@ -827,7 +827,7 @@ export function Metodo() {
           <div>
             <span className="label-mono text-[#005a54]">· MÉTODO / LEITURA TÉCNICA</span>
             <h2 className="font-display text-[40px] lg:text-[56px] leading-[1.05] text-[#1F3D2E] mt-4">
-              Como leio<br />uma empresa em<br /><span className="italic text-[#005a54]">6 etapas.</span>
+              Como leio<br />uma empresa em<br /><span className="italic text-[#c48b30]">6 etapas.</span>
             </h2>
           </div>
           <p className="text-[16px] text-[#1A1A1A]/80 leading-relaxed max-w-md">
