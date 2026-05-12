@@ -516,41 +516,42 @@ export function Planos() {
 
 export function Manifesto() {
   return (
-    <section className="border-b border-[rgba(26,26,26,0.1)]">
-      <div className="max-w-[1320px] mx-auto px-6 lg:px-10 grid grid-cols-1 lg:grid-cols-12 gap-0 border-tech my-24">
-        <div className="lg:col-span-5 bg-[#1F3D2E] text-[#f4f1ec] p-10 lg:p-14 min-h-[520px] flex flex-col">
-          <span className="label-mono text-[#c48b30]">· Sobre · /02</span>
-          <h2 className="font-display text-[44px] lg:text-[56px] leading-[1.05] mt-8 text-[#f4f1ec] flex-1">
-            Há 12 anos<br /><span className="italic text-[#cec9b8]">lendo empresas.</span>
+    <section className="bg-[#1F3D2E] text-[#f4f1ec]">
+      <div className="max-w-[1320px] mx-auto px-6 lg:px-10 grid grid-cols-1 lg:grid-cols-12 gap-0 py-24">
+        <div className="lg:col-span-5 bg-[#1A1A1A] text-[#f4f1ec] p-10 lg:p-14 min-h-[520px] flex flex-col rounded-l-[4px]">
+          <span className="label-mono text-[#6e7b7c]">· SOBRE · /02</span>
+          <h2 className="font-display font-semibold text-[36px] lg:text-[40px] leading-[1.1] mt-8 text-[#f4f1ec] flex-1">
+            Há 12 anos<br /><span className="italic font-normal text-[#c48b30]">lendo empresas.</span>
           </h2>
-          <div className="grid grid-cols-2 gap-6 pt-8 border-t border-[rgba(244,241,236,0.18)]">
+          <div className="grid grid-cols-2 gap-6 pt-8 border-t border-[rgba(255,255,255,0.1)]">
             <div>
-              <div className="label-mono text-[#cec9b8] mb-2">FUNDAÇÃO</div>
-              <div className="font-mono-tech text-[20px]">2013</div>
+              <div className="label-mono text-[#6e7b7c] mb-2">FUNDAÇÃO</div>
+              <div className="font-mono-tech text-[20px] text-[#f4f1ec]">2013</div>
             </div>
             <div>
-              <div className="label-mono text-[#cec9b8] mb-2">EQUIPE</div>
-              <div className="font-mono-tech text-[20px]">34 profissionais</div>
+              <div className="label-mono text-[#6e7b7c] mb-2">EQUIPE</div>
+              <div className="font-mono-tech text-[20px] text-[#f4f1ec]">34 profissionais</div>
             </div>
           </div>
         </div>
-        <div className="lg:col-span-7 bg-[#f4f1ec] p-10 lg:p-14">
-          <span className="label-mono text-[#005a54]">· Manifesto</span>
-          <p className="font-display text-[24px] lg:text-[28px] text-[#1F3D2E] leading-snug mt-6">
-            A Cluny nasceu de uma <em className="italic">insatisfação técnica</em>: contadores que entregavam guia de imposto, mas nunca explicavam o que os números diziam. Decidi inverter a ordem.
+        <div className="lg:col-span-7 p-10 lg:p-14 border border-[rgba(255,255,255,0.06)] rounded-r-[4px]">
+          <span className="label-mono text-[#6e7b7c]">· MANIFESTO</span>
+          <p className="text-[16px] text-[#f4f1ec]/85 leading-[1.7] mt-6">
+            A Cluny nasceu de uma <em className="font-display italic text-[#c48b30]">insatisfação técnica</em>: contadores que entregavam guia de imposto, mas nunca explicavam o que os números diziam. Decidi inverter a ordem.
           </p>
-          <p className="text-[15.5px] text-[#1A1A1A]/85 mt-6 leading-relaxed">
-            Em vez de processar obrigação fiscal, comecei pela leitura técnica do negócio. O que a empresa faz, como cobra, onde sangra margem, qual decisão depende de qual número.
+          <p className="text-[16px] text-[#f4f1ec]/85 mt-6 leading-[1.7]">
+            Em vez de processar obrigação fiscal, comecei pela <em className="font-display italic text-[#c48b30]">leitura técnica do negócio</em>. O que a empresa faz, como cobra, onde sangra margem, qual decisão depende de qual número.
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 mt-10 border-tech">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 mt-10 border-t border-[rgba(255,255,255,0.1)]">
             {[
               ["01", "Critério", "Decisão técnica antes de comercial."],
               ["02", "Clareza", "Linguagem que o sócio entende."],
               ["03", "Continuidade", "Operação que sobrevive ao mês."],
             ].map(([n, t, d]) => (
-              <div key={n} className="p-5 border-r border-b md:border-b-0 border-[rgba(26,26,26,0.1)] last:border-r-0">
-                <div className="label-mono text-[#005a54] mb-2">{n} · {t}</div>
-                <div className="text-[13px] text-[#1A1A1A]/80">{d}</div>
+              <div key={n} className="p-5 border-r border-b md:border-b-0 border-[rgba(255,255,255,0.1)] last:border-r-0">
+                <div className="label-mono text-[#6e7b7c] mb-2">{n}</div>
+                <div className="font-display font-semibold text-[16px] text-[#f4f1ec] mb-2">{t}</div>
+                <div className="text-[13px] text-[#cec9b8]">{d}</div>
               </div>
             ))}
           </div>
