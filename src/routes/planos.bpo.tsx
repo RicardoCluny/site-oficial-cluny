@@ -427,8 +427,8 @@ function BpoPage() {
                 </thead>
                 <tbody>
                   {COMPARATIVO.map((g) => (
-                    <>
-                      <tr key={g.cat} className="bg-[#f4f1ec]" style={{ borderBottom: "2px solid #c48b30" }}>
+                    <Fragment key={g.cat}>
+                      <tr className="bg-[#f4f1ec]" style={{ borderBottom: "2px solid #c48b30" }}>
                         <td colSpan={4} className="px-5 py-2 text-[11px] font-bold uppercase tracking-wider text-[#6e7b7c]">{g.cat}</td>
                       </tr>
                       {g.rows.map(([n, s, gestao, prem], i) => {
