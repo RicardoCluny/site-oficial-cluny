@@ -587,7 +587,7 @@ export function Planos() {
             items={["Contas a pagar e a receber (rotina diária)","Conciliação bancária e cartões","Emissão de NF e cobrança ativa","Fluxo de caixa diário e projetado 90 dias","Gestor de conta dedicado","Reunião quinzenal de operação (60 min)","Integração com ERP do cliente"]}
             indicado={["Faturamento R$ 2M – 15M","Sem analista financeiro dedicado","Sócio ainda na operação"]}
             nota="Não substitui Controladoria. Foco em execução, não em tese."
-            cta="Quero o BPO Financeiro"
+            cta="Quero o BPO Financeiro" interesse="BPO Financeiro"
           />
           <PlanCard dark
             tag="SERVIÇO 02" camada="CAMADA · TESE"
