@@ -517,30 +517,28 @@ export function Atuacao({ showModulos = true }: { showModulos?: boolean } = {}) 
   return (
     <section id={sectionId} className="py-24 lg:py-32 bg-[#f4f1ec] border-b border-[rgba(26,26,26,0.1)]">
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
-        {showModulos && (<>
-        </>)}{showModulos ? null : null}
-        {void 0}
-        {(() => null)()}
-        {/* placeholder removed below */}
-    <section id="atuacao" className="py-24 lg:py-32 bg-[#f4f1ec] border-b border-[rgba(26,26,26,0.1)]">
-      <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
-        <div className="flex justify-between items-end mb-12 flex-wrap gap-4">
-          <h2 className="font-display text-[40px] lg:text-[56px] text-[#1F3D2E]">
-            Atuação <span className="italic text-[#6e7b7c] text-[28px]">/ 4 módulos</span>
-          </h2>
-          <span className="label-mono text-[#6e7b7c]">BU-01 → BU-04</span>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0 border-tech">
-          {BUS.map((b, i) => (
-            <article key={b.n} className={`p-8 bg-[#f4f1ec] flex flex-col min-h-[340px] ${i < BUS.length - 1 ? "border-b md:border-b-0 md:border-r border-[rgba(26,26,26,0.1)] lg:border-b-0" : ""}`}>
-              <span className="label-mono text-[#005a54] mb-6">{b.n}</span>
-              <h3 className="font-display text-[24px] text-[#1F3D2E]">{b.t}</h3>
-              <p className="font-display italic text-[#6e7b7c] mt-1 text-[14px]">{b.sub}</p>
-              <p className="text-[14px] text-[#1A1A1A]/80 mt-5 leading-relaxed flex-1">{b.d}</p>
-              <div className="mt-6 pt-4 border-t border-[rgba(26,26,26,0.1)] label-mono text-[#005a54]">3 ENTREGÁVEIS · VER →</div>
-            </article>
-          ))}
-        </div>
+        {showModulos && (
+          <>
+            <div className="flex justify-between items-end mb-12 flex-wrap gap-4">
+              <h2 className="font-display text-[40px] lg:text-[56px] text-[#1F3D2E]">
+                Atuação <span className="italic text-[#6e7b7c] text-[28px]">/ 4 módulos</span>
+              </h2>
+              <span className="label-mono text-[#6e7b7c]">BU-01 → BU-04</span>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0 border-tech">
+              {BUS.map((b, i) => (
+                <article key={b.n} className={`p-8 bg-[#f4f1ec] flex flex-col min-h-[340px] ${i < BUS.length - 1 ? "border-b md:border-b-0 md:border-r border-[rgba(26,26,26,0.1)] lg:border-b-0" : ""}`}>
+                  <span className="label-mono text-[#005a54] mb-6">{b.n}</span>
+                  <h3 className="font-display text-[24px] text-[#1F3D2E]">{b.t}</h3>
+                  <p className="font-display italic text-[#6e7b7c] mt-1 text-[14px]">{b.sub}</p>
+                  <p className="text-[14px] text-[#1A1A1A]/80 mt-5 leading-relaxed flex-1">{b.d}</p>
+                  <div className="mt-6 pt-4 border-t border-[rgba(26,26,26,0.1)] label-mono text-[#005a54]">3 ENTREGÁVEIS · VER →</div>
+                </article>
+              ))}
+            </div>
+          </>
+        )}
+
 
         {/* BLOCO A — Pills de entregáveis */}
         <div className="mt-16 rounded-[8px] px-8 py-10 lg:px-12 lg:py-12" style={{ background: "#1F3D2E" }}>
