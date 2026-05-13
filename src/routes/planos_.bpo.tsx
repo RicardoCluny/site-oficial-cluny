@@ -462,6 +462,8 @@ function CalculadoraCLT() {
 /* ── Page ── */
 function BpoPage() {
   const [modalidade, setModalidade] = useState<"full" | "assistido">("full");
+  const [salario, setSalario] = useState(5000);
+  const [bpo, setBpo] = useState(3500);
 
   const promessas: [string, string][] = [
     ["Operação rodando sem CLT", "Fluxo de caixa diário e DRE gerencial mensal entregues no prazo, sem depender de profissional interno."],
@@ -716,6 +718,70 @@ function BpoPage() {
             <a href="/#diagnostico" style={{ background: "#c48b30", color: "#1A1A1A", fontFamily: "Inter", fontWeight: 700, fontSize: 13, padding: "12px 24px", borderRadius: 2, textDecoration: "none", whiteSpace: "nowrap" }}>
               Diagnóstico gratuito →
             </a>
+          </div>
+        </div>
+      </section>
+
+      <section style={{ background: "#cec9b8", padding: "80px 0" }} id="calculadora">
+        <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 40px" }}>
+          <p style={{ fontFamily: "Inter", fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#6e7b7c", margin: "0 0 16px" }}>· CALCULADORA / CLT vs BPO CLUNY</p>
+          <h2 style={{ fontFamily: "Fraunces,Georgia,serif", fontWeight: 600, fontSize: 44, color: "#1A1A1A", margin: "0 0 12px", lineHeight: 1.1 }}>
+            Contratar CLT ou <em style={{ fontStyle: "italic", fontWeight: 400, color: "#c48b30" }}>terceirizar com a Cluny?</em>
+          </h2>
+          <p style={{ fontFamily: "Inter", fontSize: 15, color: "rgba(26,26,26,0.75)", marginBottom: 48, maxWidth: 520 }}>Simule o custo real de um analista financeiro CLT versus o BPO Financeiro Cluny.</p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32, alignItems: "start" }}>
+            <div style={{ background: "white", borderRadius: 4, padding: 32, border: "1px solid #e8e4db" }}>
+              <div style={{ marginBottom: 32 }}>
+                <p style={{ fontFamily: "Inter", fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#6e7b7c", margin: "0 0 6px" }}>Salário bruto do analista (R$)</p>
+                <p style={{ fontFamily: "Inter", fontSize: 11, color: "#6e7b7c", margin: "0 0 12px" }}>Salário mensal sem encargos</p>
+                <input type="range" min={2000} max={15000} step={500} value={salario} onChange={e => setSalario(+e.target.value)} style={{ width: "100%", accentColor: "#005a54" }} />
+                <div style={{ display: "flex", justifyContent: "space-between", marginTop: 6 }}>
+                  <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: 10, color: "#6e7b7c" }}>R$2.000</span>
+                  <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: 18, color: "#005a54", fontWeight: 600 }}>R$ {salario.toLocaleString("pt-BR")}</span>
+                  <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: 10, color: "#6e7b7c" }}>R$15.000</span>
+                </div>
+              </div>
+              <div style={{ marginBottom: 32 }}>
+                <p style={{ fontFamily: "Inter", fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#6e7b7c", margin: "0 0 6px" }}>Honorário BPO Cluny estimado (R$)</p>
+                <p style={{ fontFamily: "Inter", fontSize: 11, color: "#6e7b7c", margin: "0 0 12px" }}>Ajuste conforme o plano de interesse</p>
+                <input type="range" min={2800} max={12000} step={100} value={bpo} onChange={e => setBpo(+e.target.value)} style={{ width: "100%", accentColor: "#c48b30" }} />
+                <div style={{ display: "flex", justifyContent: "space-between", marginTop: 6 }}>
+                  <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: 10, color: "#6e7b7c" }}>R$2.800</span>
+                  <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: 18, color: "#c48b30", fontWeight: 600 }}>R$ {bpo.toLocaleString("pt-BR")}</span>
+                  <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: 10, color: "#6e7b7c" }}>R$12.000</span>
+                </div>
+              </div>
+              <div style={{ background: "#f4f1ec", borderRadius: 4, padding: 16, fontSize: 12, color: "#6e7b7c", lineHeight: 1.6 }}>
+                <strong style={{ color: "#1A1A1A" }}>Encargos considerados no CLT (~72%):</strong><br />
+                INSS patronal, FGTS, férias + 1/3, 13º salário, aviso prévio provisionado e benefícios médios (VT + VR).
+              </div>
+            </div>
+            <div style={{ background: "#1F3D2E", borderRadius: 4, padding: 32 }}>
+              <p style={{ fontFamily: "Inter", fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#6e7b7c", margin: "0 0 24px" }}>· COMPARATIVO MENSAL</p>
+              <div style={{ borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: 16, marginBottom: 16, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ fontFamily: "Inter", fontSize: 14, color: "#f4f1ec" }}>Custo CLT total/mês</span>
+                <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: 22, color: "#f4f1ec" }}>R$ {Math.round(salario * 1.72).toLocaleString("pt-BR")}</span>
+              </div>
+              <div style={{ borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: 16, marginBottom: 24, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ fontFamily: "Inter", fontSize: 14, color: "#f4f1ec" }}>BPO Financeiro Cluny/mês</span>
+                <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: 22, color: "#c48b30" }}>R$ {bpo.toLocaleString("pt-BR")}</span>
+              </div>
+              <div style={{ background: "#1A1A1A", borderRadius: 4, padding: 24, marginBottom: 24 }}>
+                <p style={{ fontFamily: "Inter", fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#6e7b7c", margin: "0 0 8px" }}>ECONOMIA MENSAL</p>
+                <p style={{ fontFamily: "JetBrains Mono,monospace", fontSize: 48, color: "#c48b30", margin: "0 0 8px", lineHeight: 1 }}>R$ {Math.max(0, Math.round(salario * 1.72) - bpo).toLocaleString("pt-BR")}</p>
+                <p style={{ fontFamily: "Inter", fontSize: 12, color: "#6e7b7c", margin: 0 }}>R$ {Math.max(0, (Math.round(salario * 1.72) - bpo) * 12).toLocaleString("pt-BR")}/ano · {Math.round(Math.max(0, (Math.round(salario * 1.72) - bpo)) / Math.round(salario * 1.72) * 100)}% de redução de custo</p>
+              </div>
+              <p style={{ fontFamily: "Inter", fontWeight: 700, fontSize: 13, color: "#f4f1ec", margin: "0 0 12px" }}>Com o BPO Cluny você ainda tem:</p>
+              {["Equipe estruturada — não dependência de 1 pessoa", "Backup automático em caso de ausência", "Metodologia documentada e auditável", "Integração nativa com a Contabilidade Cluny", "Sem encargos trabalhistas e rescisória"].map(i => (
+                <div key={i} style={{ display: "flex", gap: 8, marginBottom: 6, fontFamily: "Inter", fontSize: 12, color: "#6e7b7c" }}>
+                  <span style={{ color: "#c48b30", fontWeight: 700 }}>→</span><span>{i}</span>
+                </div>
+              ))}
+              <button onClick={() => document.getElementById("cadastro")?.scrollIntoView({ behavior: "smooth" })} style={{ width: "100%", marginTop: 24, padding: "14px", background: "#c48b30", color: "#1A1A1A", fontFamily: "Inter", fontWeight: 700, fontSize: 13, borderRadius: 2, border: "none", cursor: "pointer" }}>
+                Quero agendar uma conversa →
+              </button>
+              <p style={{ fontFamily: "Inter", fontSize: 10, color: "#6e7b7c", marginTop: 12, textAlign: "center" }}>Estimativa ilustrativa. Encargos reais variam por regime e benefícios contratados.</p>
+            </div>
           </div>
         </div>
       </section>
