@@ -619,6 +619,107 @@ function BpoPage() {
       </section>
 
       <FAQ />
+
+      <section style={{ background: "#f4f1ec", padding: "80px 0" }}>
+        <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 40px" }}>
+          <p style={{ fontFamily: "Inter", fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#6e7b7c", margin: "0 0 16px" }}>· PLANOS / ESCOLHA O NÍVEL</p>
+          <h2 style={{ fontFamily: "Fraunces,Georgia,serif", fontWeight: 600, fontSize: 44, color: "#1A1A1A", margin: "0 0 16px", lineHeight: 1.1 }}>
+            Três níveis. <em style={{ fontStyle: "italic", fontWeight: 400, color: "#c48b30" }}>Um único método.</em>
+          </h2>
+          <p style={{ fontFamily: "Inter", fontSize: 15, color: "#6e7b7c", marginBottom: 48, maxWidth: 560 }}>A metodologia Cluny é a mesma nos três. O escopo e a profundidade de entrega variam conforme o faturamento e a maturidade da operação.</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 24, alignItems: "start" }}>
+            {/* START */}
+            <div style={{ background: "white", border: "1px solid #e8e4db", borderRadius: 4, padding: 32, display: "flex", flexDirection: "column" }}>
+              <p style={{ fontFamily: "Inter", fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#6e7b7c", margin: "0 0 8px" }}>BPO · START</p>
+              <p style={{ fontFamily: "JetBrains Mono,monospace", fontSize: 11, color: "#6e7b7c", margin: "0 0 16px" }}>Faturamento R$ 2M a R$ 4,8M/ano</p>
+              <h3 style={{ fontFamily: "Fraunces,Georgia,serif", fontWeight: 600, fontSize: 28, color: "#1A1A1A", margin: "0 0 6px" }}>BPO Start</h3>
+              <p style={{ fontFamily: "Fraunces,Georgia,serif", fontStyle: "italic", fontSize: 14, color: "#6e7b7c", margin: "0 0 24px" }}>{modalidade === "full" ? "Operação completa com programação bancária" : "Operação completa — você executa no banco"}</p>
+              <div style={{ height: 1, background: "#e8e4db", margin: "0 0 24px" }} />
+              {([["CONTAS A PAGAR", ["Cadastro e classificação de fornecedores", "Programação e agendamento de pagamentos", "Gestão de contratos recorrentes (básica)"]], ["CONTAS A RECEBER", ["Emissão de NF e boletos", "Régua de cobrança automatizada padrão", "Gestão de inadimplência — relatório mensal"]], ["TESOURARIA", ["Conciliação bancária diária (até 3 contas)", "Fluxo de caixa realizado semanal", "Fluxo de caixa projetado 30 dias"]], ["RELATÓRIOS", ["DRE gerencial mensal padrão", "5 KPIs financeiros padrão", "Relatório de inadimplência mensal"]], ["ATENDIMENTO", ["SLA de resposta: 24h úteis", "Reunião operacional semanal (20 min)", "Reunião de resultado mensal (60 min)"]]] as [string, string[]][]).map(([g, items]) => (
+                <div key={g} style={{ marginBottom: 16 }}>
+                  <p style={{ fontFamily: "Inter", fontSize: 9, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6e7b7c", margin: "0 0 8px" }}>{g}</p>
+                  {items.map((item) => (
+                    <div key={item} style={{ display: "flex", gap: 8, marginBottom: 4, fontFamily: "Inter", fontSize: 12, color: "#1A1A1A" }}>
+                      <span style={{ color: "#c48b30", fontWeight: 700, flexShrink: 0 }}>→</span><span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              ))}
+              <div style={{ height: 1, background: "#e8e4db", margin: "16px 0" }} />
+              <p style={{ fontFamily: "JetBrains Mono,monospace", fontSize: 11, color: "#6e7b7c", margin: "0 0 4px" }}>Até 150 lançamentos/mês · até 3 contas</p>
+              <p style={{ fontFamily: "Inter", fontSize: 11, color: "#6e7b7c", margin: "0 0 20px" }}>Setup de implantação: R$ 3.500 (one-time)</p>
+              <button onClick={() => document.getElementById("cadastro")?.scrollIntoView({ behavior: "smooth" })} style={{ width: "100%", padding: "12px", border: "2px solid #005a54", background: "transparent", color: "#005a54", fontFamily: "Inter", fontWeight: 700, fontSize: 13, borderRadius: 2, cursor: "pointer" }}>
+                Quero conversar sobre o Start →
+              </button>
+            </div>
+
+            {/* GESTÃO */}
+            <div style={{ background: "#1F3D2E", borderRadius: 4, padding: 32, display: "flex", flexDirection: "column", position: "relative", overflow: "hidden" }}>
+              <div style={{ position: "absolute", top: 0, right: 0, width: 100, height: 100, borderRadius: "50%", background: "rgba(196,139,48,0.08)", transform: "translate(30%,-30%)", pointerEvents: "none" }} />
+              <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 8, flexWrap: "wrap" }}>
+                <p style={{ fontFamily: "Inter", fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#6e7b7c", margin: 0 }}>BPO · GESTÃO</p>
+                <span style={{ background: "#c48b30", color: "#1A1A1A", fontFamily: "Inter", fontSize: 9, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", padding: "2px 8px", borderRadius: 2 }}>· MAIS CONTRATADO</span>
+              </div>
+              <p style={{ fontFamily: "JetBrains Mono,monospace", fontSize: 11, color: "#6e7b7c", margin: "0 0 16px" }}>Faturamento R$ 4,8M a R$ 8M/ano</p>
+              <h3 style={{ fontFamily: "Fraunces,Georgia,serif", fontWeight: 600, fontSize: 28, color: "#f4f1ec", margin: "0 0 6px" }}>BPO Gestão</h3>
+              <p style={{ fontFamily: "Fraunces,Georgia,serif", fontStyle: "italic", fontSize: 14, color: "#6e7b7c", margin: "0 0 24px" }}>{modalidade === "full" ? "Operação completa com programação bancária" : "Operação completa — você executa no banco"}</p>
+              <div style={{ height: 1, background: "rgba(255,255,255,0.1)", margin: "0 0 24px" }} />
+              {([["CONTAS A PAGAR", ["Tudo do Start", "Workflow de aprovação dupla", "Gestão de contratos recorrentes completa"]], ["CONTAS A RECEBER", ["Régua de cobrança customizada", "Gestão ativa de inadimplência (D+30)"]], ["TESOURARIA", ["Fluxo de caixa realizado diário", "Fluxo de caixa projetado 60 dias", "Gestão básica de aplicações financeiras", "Até 6 contas bancárias"]], ["RELATÓRIOS", ["DRE gerencial por centro de custo", "Balanço gerencial trimestral", "10 KPIs customizados", "Relatório de inadimplência quinzenal"]], ["ATENDIMENTO", ["SLA de resposta: 8h úteis", "Reunião mensal 90 min (analista + coordenador)"]]] as [string, string[]][]).map(([g, items]) => (
+                <div key={g} style={{ marginBottom: 16 }}>
+                  <p style={{ fontFamily: "Inter", fontSize: 9, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6e7b7c", margin: "0 0 8px" }}>{g}</p>
+                  {items.map((item) => (
+                    <div key={item} style={{ display: "flex", gap: 8, marginBottom: 4, fontFamily: "Inter", fontSize: 12, color: "#f4f1ec" }}>
+                      <span style={{ color: "#c48b30", fontWeight: 700, flexShrink: 0 }}>→</span><span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              ))}
+              <div style={{ height: 1, background: "rgba(255,255,255,0.1)", margin: "16px 0" }} />
+              <p style={{ fontFamily: "JetBrains Mono,monospace", fontSize: 11, color: "#6e7b7c", margin: "0 0 4px" }}>Até 400 lançamentos/mês · até 6 contas</p>
+              <p style={{ fontFamily: "Inter", fontSize: 11, color: "#6e7b7c", margin: "0 0 20px" }}>Setup de implantação: R$ 6.000 (one-time)</p>
+              <button onClick={() => document.getElementById("cadastro")?.scrollIntoView({ behavior: "smooth" })} style={{ width: "100%", padding: "12px", border: "none", background: "#c48b30", color: "#1A1A1A", fontFamily: "Inter", fontWeight: 700, fontSize: 13, borderRadius: 2, cursor: "pointer" }}>
+                Quero conversar sobre o Gestão →
+              </button>
+            </div>
+
+            {/* PREMIUM */}
+            <div style={{ background: "white", border: "1px solid #e8e4db", borderRadius: 4, padding: 32, display: "flex", flexDirection: "column" }}>
+              <p style={{ fontFamily: "Inter", fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#6e7b7c", margin: "0 0 8px" }}>BPO · PREMIUM</p>
+              <p style={{ fontFamily: "JetBrains Mono,monospace", fontSize: 11, color: "#6e7b7c", margin: "0 0 16px" }}>Faturamento R$ 8M a R$ 30M/ano</p>
+              <h3 style={{ fontFamily: "Fraunces,Georgia,serif", fontWeight: 600, fontSize: 28, color: "#1A1A1A", margin: "0 0 6px" }}>BPO Premium</h3>
+              <p style={{ fontFamily: "Fraunces,Georgia,serif", fontStyle: "italic", fontSize: 14, color: "#6e7b7c", margin: "0 0 24px" }}>{modalidade === "full" ? "Operação dedicada com programação bancária" : "Operação dedicada — você executa no banco"}</p>
+              <div style={{ height: 1, background: "#e8e4db", margin: "0 0 24px" }} />
+              {([["CONTAS A PAGAR", ["Tudo do Gestão", "Workflow de aprovação multi-nível com trilha de auditoria"]], ["CONTAS A RECEBER", ["Régua de cobrança customizada + ativa", "Gestão ativa de inadimplência + apoio jurídico"]], ["TESOURARIA", ["Conciliação bancária diária multi-conta (até 15)", "Fluxo de caixa projetado 90 dias rolante", "Gestão completa de aplicações financeiras"]], ["RELATÓRIOS", ["DRE gerencial por projeto e por cliente", "Balanço gerencial mensal", "15+ KPIs em dashboard Power BI / Looker", "Relatório de inadimplência semanal"]], ["EXCLUSIVO PREMIUM", ["Analista financeiro dedicado", "Coordenador de conta dedicado", "Manual de processos do cliente", "Auditoria interna trimestral"]], ["ATENDIMENTO", ["SLA de resposta: 4h úteis", "Reunião quinzenal 60 min + sócio Cluny trimestral"]]] as [string, string[]][]).map(([g, items]) => (
+                <div key={g} style={{ marginBottom: 16 }}>
+                  <p style={{ fontFamily: "Inter", fontSize: 9, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6e7b7c", margin: "0 0 8px" }}>{g}</p>
+                  {items.map((item) => (
+                    <div key={item} style={{ display: "flex", gap: 8, marginBottom: 4, fontFamily: "Inter", fontSize: 12, color: "#1A1A1A" }}>
+                      <span style={{ color: "#c48b30", fontWeight: 700, flexShrink: 0 }}>→</span><span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              ))}
+              <div style={{ height: 1, background: "#e8e4db", margin: "16px 0" }} />
+              <p style={{ fontFamily: "JetBrains Mono,monospace", fontSize: 11, color: "#6e7b7c", margin: "0 0 4px" }}>Até 1.000 lançamentos/mês · até 15 contas</p>
+              <p style={{ fontFamily: "Inter", fontSize: 11, color: "#6e7b7c", margin: "0 0 20px" }}>Setup de implantação: R$ 12.000 (one-time)</p>
+              <button onClick={() => document.getElementById("cadastro")?.scrollIntoView({ behavior: "smooth" })} style={{ width: "100%", padding: "12px", border: "none", background: "#005a54", color: "#f4f1ec", fontFamily: "Inter", fontWeight: 700, fontSize: 13, borderRadius: 2, cursor: "pointer" }}>
+                Quero conversar sobre o Premium →
+              </button>
+            </div>
+          </div>
+
+          <div style={{ marginTop: 40, background: "#1A1A1A", borderRadius: 4, padding: "32px 40px", display: "grid", gridTemplateColumns: "1fr auto", gap: 24, alignItems: "center" }}>
+            <div>
+              <h3 style={{ fontFamily: "Fraunces,Georgia,serif", fontWeight: 600, fontSize: 22, color: "#f4f1ec", margin: "0 0 8px" }}>Não sabe qual plano escolher?</h3>
+              <p style={{ fontFamily: "Inter", fontSize: 14, color: "#6e7b7c", margin: 0 }}>Faça o diagnóstico gratuito em 60 segundos e indicamos o caminho técnico correto para a sua operação.</p>
+            </div>
+            <a href="/#diagnostico" style={{ background: "#c48b30", color: "#1A1A1A", fontFamily: "Inter", fontWeight: 700, fontSize: 13, padding: "12px 24px", borderRadius: 2, textDecoration: "none", whiteSpace: "nowrap" }}>
+              Diagnóstico gratuito →
+            </a>
+          </div>
+        </div>
+      </section>
+
       <Cadastro />
       <Footer />
     </div>
