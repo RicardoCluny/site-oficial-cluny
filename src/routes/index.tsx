@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
-  Nav, Hero, Metodo, Atuacao, Diagnostico, Manifesto, Cases,
-  Conteudo, FAQ, Cadastro, Footer, StickyBar,
+  Nav, Hero, Indicadores, Metodo, Diagnostico, Manifesto, Cases,
+  Conteudo, Materiais, FAQ, Cadastro, Footer, StickyBar,
 } from "@/components/cluny/Sections";
 
 export const Route = createFileRoute("/")({
@@ -14,12 +14,13 @@ function Index() {
       <Nav />
       <main>
         <Hero />
+        <Indicadores />
         <Metodo />
-        <Atuacao showModulos={false} />
         <Diagnostico />
         <Manifesto />
         <Cases />
         <Conteudo />
+        <Materiais />
         <Cadastro />
         <FAQ />
       </main>
