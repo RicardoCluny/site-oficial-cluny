@@ -129,7 +129,7 @@ export function Nav() {
   const onLight = !scrolled;
   const txtColor = onLight ? "#1A1A1A" : "#f4f1ec";
   const inactiveOpacity = onLight ? "opacity-70" : "opacity-75";
-  const logoColor = onLight ? "#1A1A1A" : "#f4f1ec";
+  const logoVariant: "preto" | "branco" = onLight ? "preto" : "branco";
 
   const handleEnter = (label: string) => {
     if (closeTimer.current) window.clearTimeout(closeTimer.current);
@@ -172,8 +172,12 @@ export function Nav() {
       </div>
 
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10 h-[68px] flex items-center justify-between gap-6">
-        <Link to="/" className="flex items-center gap-2 group">
-          <Logo size={28} color={logoColor} />
+        <Link
+          to="/"
+          aria-label="Cluny — página inicial"
+          className="flex items-center group transition-opacity duration-200 hover:opacity-80"
+        >
+          <Logo variant={logoVariant} height={28} />
         </Link>
 
         <nav className="hidden lg:flex items-center gap-1">
@@ -1676,7 +1680,7 @@ export function Footer() {
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10 py-16">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-[rgba(255,255,255,0.06)]">
           <div className="md:col-span-4">
-            <Logo size={26} color="#f4f1ec" />
+            <Logo variant="branco" height={34} />
             <p className="text-[13px] text-[#6e7b7c] mt-5 leading-relaxed max-w-xs">
               Cluny Gestão Empresarial. Contabilidade, finanças, legalização e educação corporativa — desde 2013.
             </p>
