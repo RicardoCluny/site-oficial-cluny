@@ -986,6 +986,12 @@ export function Planos() {
   );
 }
 
+const TESTIMONIALS: [string, string, string, string][] = [
+  ["#001", "A Cluny não entrega planilha. Entrega leitura. Foi a primeira vez que entendi o que de fato acontecia dentro da minha empresa.", "Marina Vasconcelos", "Sócia-fundadora, Estúdio Ímpar"],
+  ["#002", "Migrei três contadores em cinco anos antes da Cluny. O critério técnico e o tom direto fizeram a diferença.", "Eduardo Tavares", "CEO, Tavares Engenharia"],
+  ["#003", "O que me fideliza não é o serviço — é a forma de pensar. A Cluny pensa como sócia, não como prestadora.", "Helena Khoury", "Diretora, Khoury Participações"],
+];
+
 export function Depoimentos() {
   return (
     <section className="py-24 lg:py-32 border-b border-[rgba(26,26,26,0.1)]">
