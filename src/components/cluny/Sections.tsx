@@ -2,6 +2,14 @@ import * as React from "react";
 import { useState, useMemo, useEffect, useRef } from "react";
 import { Link } from "@tanstack/react-router";
 import { Logo } from "@/components/cluny/Logo";
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+import {
+  Accordion, AccordionItem, AccordionTrigger, AccordionContent,
+} from "@/components/ui/accordion";
+import {
+  PlayCircle, Table as TableIcon, BookOpen, CheckCircle2, AlertTriangle, Construction,
+  Instagram, Linkedin, Youtube, Mail, Phone, MapPin, X as XIcon,
+} from "lucide-react";
 import blogTrib from "@/assets/blog-tributario.jpg";
 import blogDre from "@/assets/blog-dre.jpg";
 import blogHolding from "@/assets/blog-holding.jpg";
@@ -416,75 +424,239 @@ function HeroCard() {
   );
 }
 
+/* ================================================================
+   ============== HERO (REESCRITO — V.2026.05) ===================
+   ================================================================ */
 export function Hero() {
-  const METRICS = [
-    { n: "01", value: 12, fmt: (v: number) => `+${Math.round(v)}`, small: "anos", d: "de mercado consolidado" },
-    { n: "02", value: 320, fmt: (v: number) => `${Math.round(v)}`, small: "empresas", d: "atendidas em todo o país" },
-    { n: "03", value: 1.2, fmt: (v: number) => `R$ ${v.toFixed(1)}M`, small: "", d: "economizados em tributos em 2024" },
-    { n: "04", value: 98, fmt: (v: number) => `${Math.round(v)}%`, small: "", d: "de retenção de clientes" },
-  ];
   return (
-    <section id="home" className="bg-[#f4f1ec] text-[#1A1A1A]">
-      <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-[55fr_45fr] gap-12 lg:gap-20 py-20 items-center">
-          <div className="flex flex-col justify-center animate-fade-in">
-            <span className="label-mono text-[#6e7b7c] border border-[#6e7b7c] px-2 py-1 self-start mb-8">
-              [ CLUNY GESTÃO EMPRESARIAL · V.2026 ]
-            </span>
-            <h1 className="font-display font-semibold text-[40px] sm:text-[56px] lg:text-[72px] leading-[1] text-[#1A1A1A]">
-              Gestão técnica<br />
-              operada como<br />
-              <span className="italic font-normal">sistema.</span>
-            </h1>
-            <p className="mt-8 text-[16px] max-w-[560px] leading-relaxed" style={{ color: "rgba(26,26,26,0.7)" }}>
-              Contabilidade, BPO Financeiro, Controladoria e legalização em uma única operação. Quatro frentes técnicas, um único método de leitura.
-            </p>
-            <div className="mt-10 flex flex-wrap gap-4">
-              <a
-                href="#cadastro"
-                className="group inline-flex items-center gap-2 px-7 py-[14px] rounded-[2px] text-[13px] font-bold tracking-wide transition-all"
-                style={{ background: "#005a54", color: "#f4f1ec", border: "2px solid #005a54" }}
-              >
-                Cadastre-se
-                <span className="transition-transform group-hover:translate-x-1">→</span>
-              </a>
-              <a
-                href="#diagnostico"
-                className="inline-flex items-center gap-2 px-7 py-[13px] rounded-[2px] text-[13px] font-bold tracking-wide transition-all hover:bg-[#005a54] hover:text-[#f4f1ec]"
-                style={{ background: "transparent", color: "#005a54", border: "2px solid #005a54" }}
-              >
-                Diagnóstico em 60s ↓
-              </a>
-            </div>
-            <p className="mt-5 text-[11px] text-[#6e7b7c]">
-              · Resposta em até 1 dia útil · Sem SDR · Sem funil de qualificação
-            </p>
+    <section
+      id="home"
+      className="relative overflow-hidden"
+      style={{ background: "#1F3D2E", minHeight: "92vh" }}
+    >
+      {/* glow decorativo */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(900px 500px at 80% 20%, rgba(0,90,84,0.35), transparent 60%), radial-gradient(700px 500px at 10% 90%, rgba(196,139,48,0.10), transparent 60%)",
+        }}
+      />
+      <div className="relative max-w-[1320px] mx-auto px-6 lg:px-10 py-16 lg:py-0 lg:min-h-[92vh] grid grid-cols-1 lg:grid-cols-[60fr_40fr] gap-12 lg:gap-16 items-center">
+        {/* Coluna esquerda — texto */}
+        <div className="animate-fade-in">
+          <span
+            className="inline-block"
+            style={{
+              fontFamily: "Inter, system-ui, sans-serif",
+              fontSize: 12,
+              fontWeight: 600,
+              letterSpacing: "0.16em",
+              textTransform: "uppercase",
+              color: "#c48b30",
+            }}
+          >
+            BPO Financeiro &amp; Controladoria
+          </span>
+
+          <h1
+            className="font-display font-semibold mt-6 leading-[1] text-[40px] sm:text-[56px] lg:text-[72px]"
+            style={{ color: "#f4f1ec" }}
+          >
+            Você sabe, hoje,<br />
+            qual é o estado real<br />
+            <span className="italic font-normal" style={{ color: "#c48b30" }}>do seu financeiro.</span>
+          </h1>
+
+          <p
+            className="mt-8 max-w-[560px] leading-relaxed"
+            style={{ color: "rgba(244,241,236,0.78)", fontSize: 18 }}
+          >
+            Eu organizo, estruturo e opero o financeiro da sua empresa — para que você tome decisão baseada em dado, não em sensação.
+          </p>
+
+          <div className="mt-10 flex flex-wrap gap-4">
+            <a
+              href="#diagnostico"
+              className="group inline-flex items-center justify-center gap-2 transition-all hover:opacity-90"
+              style={{
+                background: "#005a54",
+                color: "#f4f1ec",
+                height: 56,
+                padding: "0 28px",
+                borderRadius: 12,
+                fontFamily: "Inter, system-ui, sans-serif",
+                fontWeight: 700,
+                fontSize: 14,
+                letterSpacing: "0.02em",
+              }}
+            >
+              Quero meu diagnóstico gratuito
+              <span className="transition-transform group-hover:translate-x-1">→</span>
+            </a>
           </div>
-          <div className="relative px-4 lg:px-8 flex justify-center">
-            <HeroCard />
-          </div>
+
+          <p
+            className="mt-6"
+            style={{ color: "rgba(244,241,236,0.55)", fontSize: 12, fontFamily: "Inter, system-ui, sans-serif" }}
+          >
+            +350 empresas organizadas · 12 anos de operação · Método proprietário
+          </p>
         </div>
 
-        {/* Métricas em linha horizontal */}
-        <div className="border-t border-[#e8e4db] grid grid-cols-2 lg:grid-cols-4 py-2">
-          {METRICS.map((m, i) => (
-            <div
-              key={m.n}
-              className={`p-6 lg:px-8 lg:py-8 ${i < METRICS.length - 1 ? "lg:border-r border-[#e8e4db]" : ""} ${i % 2 === 0 ? "border-r lg:border-r" : ""} ${i < 2 ? "border-b lg:border-b-0" : ""} border-[#e8e4db]`}
-            >
-              <span className="label-mono text-[#6e7b7c]">MÉTRICA · {m.n}</span>
-              <div className="font-mono-tech text-[36px] leading-none text-[#c48b30] mt-3">
-                <CounterMetric value={m.value} format={m.fmt} />
-                {m.small && <span className="text-[14px] text-[#6e7b7c] ml-1">{m.small}</span>}
-              </div>
-              <p className="text-[12px] text-[#1A1A1A]/70 mt-3 leading-snug">{m.d}</p>
-            </div>
-          ))}
-        </div>
+        {/* Coluna direita — visual com badges flutuantes */}
+        <HeroVisual />
       </div>
     </section>
   );
 }
+
+function HeroVisual() {
+  return (
+    <div className="relative w-full" style={{ minHeight: 480 }}>
+      {/* card base */}
+      <div
+        className="relative mx-auto"
+        style={{
+          background: "#f4f1ec",
+          borderRadius: 24,
+          padding: 28,
+          boxShadow: "0 32px 80px rgba(0,0,0,0.35)",
+          maxWidth: 460,
+          minHeight: 360,
+        }}
+      >
+        {/* dashboard mini centro */}
+        <div
+          className="float-card-1"
+          style={{
+            background: "#ffffff",
+            borderRadius: 16,
+            padding: 24,
+            boxShadow: "0 12px 28px rgba(0,0,0,0.06)",
+          }}
+        >
+          <div style={{ fontFamily: "Inter, system-ui, sans-serif", fontSize: 11, color: "#6e7b7c", fontWeight: 500 }}>
+            Resultado Mensal
+          </div>
+          <div
+            style={{
+              fontFamily: "JetBrains Mono, ui-monospace, monospace",
+              fontSize: 30,
+              fontWeight: 700,
+              color: "#005a54",
+              marginTop: 6,
+              lineHeight: 1.1,
+            }}
+          >
+            R$ 284.500
+          </div>
+          <div
+            style={{
+              fontFamily: "Inter, system-ui, sans-serif",
+              fontSize: 11,
+              color: "#005a54",
+              marginTop: 4,
+              fontWeight: 500,
+            }}
+          >
+            ▲ 12,4% vs mês anterior
+          </div>
+          {/* mini gráfico de barras */}
+          <div className="flex items-end gap-2 mt-5" style={{ height: 56 }}>
+            {[24, 32, 28, 38, 50, 56].map((h, i) => (
+              <div
+                key={i}
+                style={{
+                  flex: 1,
+                  height: h,
+                  background: i >= 4 ? "#005a54" : "#cec9b8",
+                  borderRadius: 3,
+                }}
+              />
+            ))}
+          </div>
+          <div className="flex items-center gap-2 mt-4">
+            <span className="pulse-dot" />
+            <span style={{ fontFamily: "Inter, system-ui, sans-serif", fontSize: 10, color: "#6e7b7c" }}>
+              Operação ativa
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* badge flutuante superior direito — DRE D+5 */}
+      <div
+        className="absolute hidden md:flex items-center gap-2 float-card-2"
+        style={{
+          top: -10,
+          right: -10,
+          background: "#ffffff",
+          border: "1px solid #cec9b8",
+          borderRadius: 12,
+          padding: "8px 12px",
+          boxShadow: "0 8px 20px rgba(0,0,0,0.10)",
+        }}
+      >
+        <CheckCircle2 size={14} color="#005a54" strokeWidth={2.5} />
+        <span style={{ fontFamily: "Inter, system-ui, sans-serif", fontSize: 11, color: "#1A1A1A", fontWeight: 600 }}>
+          DRE fechado em D+5
+        </span>
+      </div>
+
+      {/* badge flutuante inferior esquerdo — caixa projetado */}
+      <div
+        className="absolute hidden md:block float-card-3"
+        style={{
+          bottom: -8,
+          left: -8,
+          background: "#005a54",
+          borderRadius: 12,
+          padding: "10px 14px",
+          boxShadow: "0 12px 24px rgba(0,0,0,0.18)",
+        }}
+      >
+        <span
+          style={{
+            fontFamily: "Inter, system-ui, sans-serif",
+            fontSize: 11,
+            color: "#f4f1ec",
+            fontWeight: 700,
+            letterSpacing: "0.02em",
+          }}
+        >
+          Caixa projetado: R$ 127K
+        </span>
+      </div>
+
+      {/* mini card flutuante superior esquerdo — inadimplência */}
+      <div
+        className="absolute hidden md:block float-card-1"
+        style={{
+          top: 28,
+          left: -28,
+          background: "#ffffff",
+          borderRadius: 12,
+          padding: "10px 14px",
+          boxShadow: "0 10px 24px rgba(0,0,0,0.12)",
+          animationDelay: "0.8s",
+        }}
+      >
+        <div style={{ fontFamily: "Inter, system-ui, sans-serif", fontSize: 10, color: "#6e7b7c", fontWeight: 500 }}>
+          Inadimplência
+        </div>
+        <div className="flex items-center gap-1 mt-1">
+          <span style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 18, fontWeight: 700, color: "#1A1A1A" }}>
+            2,1%
+          </span>
+          <span style={{ color: "#005a54", fontSize: 12 }}>▼</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ============= ATUAÇÃO · 4 MÓDULOS ============= */
 const BUS = [
   { n: "BU-01", t: "Finanças", sub: "Gestão financeira sob método", d: "Estruturo o fluxo de caixa, custos e indicadores para que a sua decisão pare de depender da intuição." },
@@ -1269,7 +1441,7 @@ export function Calculadora() {
                 <span className="font-mono-tech text-[15px] text-[#1F3D2E]">{fmt(salario)}</span>
               </div>
               <input type="range" min={3500} max={15000} step={250} value={salario} onChange={(e)=>setSalario(+e.target.value)} className="w-full accent-[#005a54]" />
-              <div className="flex justify-between mt-1 label-mono text-[#6e7b7c]"><span>R$ 3,5k</span><span>R$ 15k</span></div>
+              <div className="flex justify-between label-mono text-[#6e7b7c]"><span>R$ 3,5k</span><span>R$ 15k</span></div>
             </div>
             <div>
               <div className="label-mono text-[#005a54] mb-3">NÍVEL DO PROFISSIONAL</div>
@@ -1705,6 +1877,1414 @@ export function Footer() {
         <div className="pt-6 flex flex-col md:flex-row md:items-center justify-between gap-3">
           <span className="font-mono-tech text-[10px] text-[#6e7b7c] uppercase tracking-[0.1em]">© 2026 CLUNY GESTÃO EMPRESARIAL · CNPJ 36.440.582/0001-74</span>
           <span className="font-mono-tech text-[10px] text-[#6e7b7c] uppercase tracking-[0.1em]">v.2026.05 · SÃO PAULO / SP</span>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+/* ============ Sticky CTA Bar (desktop) ============ */
+export function StickyBar() {
+  const [show, setShow] = useState(false);
+  const [closed, setClosed] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (sessionStorage.getItem("cluny:sticky-closed") === "1") setClosed(true);
+    const onScroll = () => {
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = h > 0 ? window.scrollY / h : 0;
+      const cad = document.getElementById("cadastro");
+      const cadVisible = cad ? cad.getBoundingClientRect().top < window.innerHeight * 0.8 : false;
+      setShow(pct > 0.6 && !cadVisible);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  if (closed || !show) return null;
+  return (
+    <div
+      className="hidden md:flex fixed bottom-0 left-0 right-0 z-50 bg-[#1F3D2E] border-t border-[rgba(255,255,255,0.08)] items-center justify-between gap-4 px-6 lg:px-10"
+      style={{ height: 56, animation: "fade-in 0.3s ease-out" }}
+      role="region"
+      aria-label="Chamada para cadastro"
+    >
+      <span className="text-[14px] text-[#f4f1ec]">Pronto para organizar sua operação?</span>
+      <div className="flex items-center gap-4">
+        <button
+          onClick={() => requestCadastro("")}
+          className="text-[13px] font-bold text-[#f4f1ec]"
+          style={{ background: "#005a54", padding: "10px 20px", borderRadius: 2 }}
+        >
+          Cadastre-se →
+        </button>
+        <button
+          onClick={() => { setClosed(true); sessionStorage.setItem("cluny:sticky-closed", "1"); }}
+          aria-label="Fechar barra"
+          className="text-[#cec9b8] hover:text-[#f4f1ec] text-[20px] leading-none"
+        >
+          ×
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ================================================================
+   ============== INDICADORES (NOVO — fundo verde escuro) =============
+   ================================================================ */
+export function Indicadores() {
+  const items = [
+    { v: 12, fmt: (n: number) => `+${Math.round(n)}`, small: "anos", d: "de mercado consolidado" },
+    { v: 350, fmt: (n: number) => `${Math.round(n)}`, small: "empresas", d: "organizadas pela Cluny" },
+    { v: 98, fmt: (n: number) => `${Math.round(n)}%`, small: "", d: "de retenção de clientes" },
+  ];
+  return (
+    <section style={{ background: "#1F3D2E" }} className="py-20 lg:py-24">
+      <div className="max-w-[1320px] mx-auto px-6 lg:px-10 grid grid-cols-1 md:grid-cols-3 gap-8">
+        {items.map((m, i) => (
+          <div key={i} className="text-center md:text-left">
+            <div className="flex items-baseline gap-2 justify-center md:justify-start">
+              <span
+                style={{
+                  fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                  fontSize: 56,
+                  color: "#c48b30",
+                  fontWeight: 700,
+                  lineHeight: 1,
+                }}
+              >
+                <CounterMetric value={m.v} format={m.fmt} />
+              </span>
+              {m.small && (
+                <span style={{ fontFamily: "Inter, system-ui, sans-serif", fontSize: 14, color: "#cec9b8", fontWeight: 600 }}>
+                  {m.small}
+                </span>
+              )}
+            </div>
+            <p
+              className="mt-3"
+              style={{ fontFamily: "Fraunces, Georgia, serif", fontSize: 18, color: "#f4f1ec" }}
+            >
+              {m.d}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ================================================================
+   ============= DIAGNÓSTICO (REESCRITO — wizard 8q) =============
+   ================================================================ */
+
+type DOpt = { label: string; pts: number };
+type DQ = { etapa: string; q: string; opts: DOpt[] };
+
+const DIAG_QUESTIONS: DQ[] = [
+  // Etapa 1 — Controle
+  { etapa: "Controle", q: "Você consegue saber hoje, com exatidão, quanto sua empresa lucrou no mês passado?", opts: [
+    { label: "Sim, sei exatamente", pts: 12 },
+    { label: "Tenho uma estimativa", pts: 7 },
+    { label: "Não sei ao certo", pts: 3 },
+    { label: "Nunca calculei", pts: 0 },
+  ]},
+  { etapa: "Controle", q: "Você tem um fluxo de caixa projetado para os próximos 30 dias?", opts: [
+    { label: "Sim, atualizado", pts: 12 },
+    { label: "Tenho, mas desatualizado", pts: 6 },
+    { label: "Não tenho", pts: 2 },
+    { label: "Não sei o que é isso", pts: 0 },
+  ]},
+  // Etapa 2 — Processo
+  { etapa: "Processo", q: "Como são aprovados os pagamentos na sua empresa?", opts: [
+    { label: "Processo formal com alçadas", pts: 12 },
+    { label: "Aprovo tudo pessoalmente", pts: 7 },
+    { label: "Qualquer um pode pagar", pts: 2 },
+    { label: "Sem processo definido", pts: 0 },
+  ]},
+  { etapa: "Processo", q: "Você tem separação total entre finanças pessoais e empresariais?", opts: [
+    { label: "Sim, totalmente separado", pts: 12 },
+    { label: "Às vezes misturo", pts: 6 },
+    { label: "Misturo com frequência", pts: 2 },
+    { label: "Nunca pensei nisso", pts: 0 },
+  ]},
+  // Etapa 3 — Relatórios
+  { etapa: "Relatórios", q: "Com que frequência você recebe um DRE (resultado da empresa)?", opts: [
+    { label: "Todo mês", pts: 12 },
+    { label: "A cada 3 meses", pts: 7 },
+    { label: "Uma vez por ano", pts: 3 },
+    { label: "Nunca tive um DRE", pts: 0 },
+  ]},
+  { etapa: "Relatórios", q: "Você toma decisões de investimento baseado em qual informação?", opts: [
+    { label: "Dashboard com dados reais", pts: 12 },
+    { label: "Extrato bancário", pts: 6 },
+    { label: "Sensação e experiência", pts: 2 },
+    { label: "Não tenho base para decidir", pts: 0 },
+  ]},
+  // Etapa 4 — Contexto
+  { etapa: "Contexto", q: "Qual o faturamento médio mensal da sua empresa?", opts: [
+    { label: "Até R$ 100K", pts: 4 },
+    { label: "R$ 100K a R$ 300K", pts: 6 },
+    { label: "R$ 300K a R$ 1M", pts: 8 },
+    { label: "Acima de R$ 1M", pts: 10 },
+  ]},
+  { etapa: "Contexto", q: "Qual é o seu maior desafio financeiro hoje?", opts: [
+    { label: "Falta de previsibilidade", pts: 6 },
+    { label: "Sangria de caixa", pts: 4 },
+    { label: "Decisões sem informação", pts: 6 },
+    { label: "Equipe financeira despreparada", pts: 8 },
+  ]},
+];
+
+const DIAG_ETAPAS = ["Controle", "Processo", "Relatórios", "Contexto"];
+
+type Perfil = {
+  key: "A" | "B" | "C";
+  cor: string;
+  bg: string;
+  Icon: React.ComponentType<{ size?: number; color?: string }>;
+  titulo: string;
+  texto: string;
+  cta: string;
+};
+
+const PERFIS: Record<"A" | "B" | "C", Perfil> = {
+  A: {
+    key: "A",
+    cor: "#b94a3a",
+    bg: "rgba(185,74,58,0.08)",
+    Icon: AlertTriangle,
+    titulo: "Seu financeiro precisa de intervenção urgente.",
+    texto: "Identifiquei pontos críticos que expõem sua empresa a riscos sérios. O próximo passo é um diagnóstico completo — presencial ou online — para mapear o que precisa ser corrigido primeiro.",
+    cta: "Agendar diagnóstico gratuito agora",
+  },
+  B: {
+    key: "B",
+    cor: "#c48b30",
+    bg: "rgba(196,139,48,0.10)",
+    Icon: Construction,
+    titulo: "Você tem base, mas falta estrutura para crescer com segurança.",
+    texto: "Sua empresa tem alguns controles, mas ainda opera sem a visão estratégica que permite tomar decisões com confiança. Posso mostrar o que está faltando em 30 minutos.",
+    cta: "Quero ver o que está faltando",
+  },
+  C: {
+    key: "C",
+    cor: "#005a54",
+    bg: "rgba(0,90,84,0.08)",
+    Icon: CheckCircle2,
+    titulo: "Seu financeiro está no caminho certo. Vamos otimizá-lo.",
+    texto: "Você já tem controles. O próximo nível é usar esses dados para decisões mais inteligentes e crescimento previsível. Posso mostrar como a Controladoria pode fazer isso.",
+    cta: "Conhecer a Controladoria Cluny",
+  },
+};
+
+export function Diagnostico() {
+  const [step, setStep] = useState(0); // 0..3 etapas; 4 = resultado
+  const [answers, setAnswers] = useState<(number | null)[]>(Array(8).fill(null));
+
+  const perStep = 2;
+  const isResult = step === 4;
+  const baseQ = step * perStep;
+  const stepAnswered = !isResult && answers[baseQ] !== null && answers[baseQ + 1] !== null;
+  const progress = isResult ? 100 : ((step) / 4) * 100 + (stepAnswered ? 25 / 4 : 0);
+
+  const setAns = (idx: number, optIdx: number) => {
+    const next = [...answers];
+    next[idx] = optIdx;
+    setAnswers(next);
+  };
+
+  const totalPts = useMemo(() => {
+    let s = 0;
+    answers.forEach((a, i) => { if (a !== null) s += DIAG_QUESTIONS[i].opts[a].pts; });
+    return s; // max ~96
+  }, [answers]);
+
+  const perfil: Perfil = useMemo(() => {
+    const pct = (totalPts / 96) * 100;
+    if (pct < 35) return PERFIS.A;
+    if (pct < 65) return PERFIS.B;
+    return PERFIS.C;
+  }, [totalPts]);
+
+  const reset = () => { setStep(0); setAnswers(Array(8).fill(null)); };
+
+  return (
+    <section id="diagnostico" className="py-24 lg:py-32" style={{ background: "#f4f1ec" }}>
+      <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
+        <div className="text-center mb-12">
+          <span className="label-mono" style={{ color: "#c48b30" }}>· DIAGNÓSTICO RÁPIDO</span>
+          <h2 className="font-display font-semibold text-[36px] lg:text-[52px] mt-4 leading-tight" style={{ color: "#1F3D2E" }}>
+            Em 3 minutos, eu identifico<br />os maiores riscos do <em className="italic" style={{ color: "#005a54" }}>seu financeiro.</em>
+          </h2>
+          <p className="mt-5 text-[16px]" style={{ color: "#6e7b7c" }}>
+            Responda 8 perguntas. Veja onde sua empresa está exposta.
+          </p>
+        </div>
+
+        <div
+          className="mx-auto"
+          style={{
+            maxWidth: 760,
+            background: "#ffffff",
+            borderRadius: 20,
+            padding: 32,
+            boxShadow: "0 24px 60px rgba(31,61,46,0.10)",
+          }}
+        >
+          {/* Barra de progresso */}
+          <div className="flex items-center justify-between mb-6">
+            <span className="label-mono" style={{ color: "#6e7b7c" }}>
+              {isResult ? "RESULTADO" : `ETAPA ${step + 1} / 4 · ${DIAG_ETAPAS[step]}`}
+            </span>
+            <span className="label-mono" style={{ color: "#005a54" }}>
+              {Math.round(progress)}%
+            </span>
+          </div>
+          <div style={{ height: 4, background: "#e8e4db", borderRadius: 4, overflow: "hidden" }}>
+            <div
+              style={{
+                width: `${progress}%`,
+                height: "100%",
+                background: "#005a54",
+                transition: "width 400ms ease",
+              }}
+            />
+          </div>
+
+          {/* Conteúdo */}
+          <div key={step} className="mt-8 animate-fade-in">
+            {!isResult ? (
+              <div className="space-y-10">
+                {[0, 1].map((qOffset) => {
+                  const qIdx = baseQ + qOffset;
+                  const q = DIAG_QUESTIONS[qIdx];
+                  return (
+                    <div key={qIdx}>
+                      <div className="label-mono mb-3" style={{ color: "#c48b30" }}>
+                        Pergunta {qIdx + 1} de 8
+                      </div>
+                      <h3 className="font-display text-[20px] lg:text-[22px] mb-5" style={{ color: "#1F3D2E" }}>
+                        {q.q}
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {q.opts.map((opt, oi) => {
+                          const selected = answers[qIdx] === oi;
+                          return (
+                            <button
+                              key={oi}
+                              onClick={() => setAns(qIdx, oi)}
+                              className="text-left transition-all"
+                              style={{
+                                padding: 14,
+                                borderRadius: 12,
+                                border: selected ? "2px solid #005a54" : "2px solid #e8e4db",
+                                background: selected ? "#e8f3f2" : "#ffffff",
+                                fontFamily: "Inter, system-ui, sans-serif",
+                                fontSize: 14,
+                                color: "#1A1A1A",
+                                cursor: "pointer",
+                              }}
+                            >
+                              {opt.label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
+
+                <div className="flex items-center justify-between pt-4">
+                  <button
+                    onClick={() => setStep(Math.max(0, step - 1))}
+                    disabled={step === 0}
+                    className="text-[13px] font-bold transition-opacity"
+                    style={{ color: "#6e7b7c", opacity: step === 0 ? 0.3 : 1 }}
+                  >
+                    ← Voltar
+                  </button>
+                  <button
+                    onClick={() => setStep(step + 1)}
+                    disabled={!stepAnswered}
+                    className="inline-flex items-center gap-2 transition-all"
+                    style={{
+                      background: stepAnswered ? "#005a54" : "#cec9b8",
+                      color: "#f4f1ec",
+                      padding: "12px 24px",
+                      borderRadius: 8,
+                      fontFamily: "Inter, system-ui, sans-serif",
+                      fontWeight: 700,
+                      fontSize: 13,
+                      cursor: stepAnswered ? "pointer" : "not-allowed",
+                    }}
+                  >
+                    {step === 3 ? "Ver resultado" : "Continuar"} →
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-4">
+                <div
+                  className="inline-flex items-center justify-center mb-5"
+                  style={{
+                    width: 72, height: 72, borderRadius: "50%",
+                    background: perfil.bg,
+                  }}
+                >
+                  <perfil.Icon size={36} color={perfil.cor} />
+                </div>
+                <div className="label-mono mb-3" style={{ color: perfil.cor }}>
+                  PERFIL {perfil.key}
+                </div>
+                <h3 className="font-display font-semibold text-[26px] lg:text-[30px] leading-tight" style={{ color: "#1F3D2E" }}>
+                  {perfil.titulo}
+                </h3>
+                <p className="mt-5 mx-auto max-w-[560px] text-[15px] leading-relaxed" style={{ color: "#1A1A1A" }}>
+                  {perfil.texto}
+                </p>
+                <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+                  <a
+                    href="#cadastro"
+                    className="inline-flex items-center gap-2"
+                    style={{
+                      background: "#005a54",
+                      color: "#f4f1ec",
+                      padding: "14px 28px",
+                      borderRadius: 8,
+                      fontFamily: "Inter, system-ui, sans-serif",
+                      fontWeight: 700,
+                      fontSize: 14,
+                    }}
+                  >
+                    {perfil.cta} →
+                  </a>
+                  <button
+                    onClick={reset}
+                    className="text-[13px] font-bold"
+                    style={{ color: "#6e7b7c" }}
+                  >
+                    ↺ Refazer diagnóstico
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ================================================================
+   ============= MÉTODO CLUNY (REESCRITO — 5 etapas) =============
+   ================================================================ */
+
+type Etapa = {
+  n: string;
+  titulo: string;
+  periodo: string;
+  desc: string;
+  fase: "implantacao" | "ciclo";
+  entregaveis: string[];
+};
+
+const METODO_ETAPAS: Etapa[] = [
+  {
+    n: "01", titulo: "Diagnóstico", periodo: "Semana 1", fase: "implantacao",
+    desc: "Raio-X completo do financeiro atual. Identifico o que está funcionando, o que está faltando e o que precisa ser reformado.",
+    entregaveis: [
+      "Mapeamento de contas bancárias, cartões e caixas",
+      "Levantamento de receitas, despesas fixas e variáveis",
+      "Análise do fluxo de caixa dos últimos 3 meses",
+      "Identificação de gargalos e riscos financeiros",
+      "Plano de implantação 30/60/90 dias personalizado",
+      "Relatório de diagnóstico entregue em até 5 dias úteis",
+    ],
+  },
+  {
+    n: "02", titulo: "Fundação", periodo: "Semanas 2 e 3", fase: "implantacao",
+    desc: "Estruturo as bases: plano de contas, políticas financeiras escritas e acessos organizados.",
+    entregaveis: [
+      "Plano de contas personalizado para o segmento",
+      "Políticas financeiras documentadas (aprovação, limites, alçadas)",
+      "POPs — Procedimentos Operacionais Padrão escritos",
+      "Configuração e organização de acessos bancários",
+      "Padronização de centros de custo e categorias",
+      "Treinamento da equipe envolvida no processo",
+    ],
+  },
+  {
+    n: "03", titulo: "Reforma", periodo: "Semanas 4 a 6", fase: "implantacao",
+    desc: "Opero ao lado da sua equipe durante a transição e entrego o primeiro fechamento mensal real.",
+    entregaveis: [
+      "Operação assistida com acompanhamento diário",
+      "Conciliação bancária do período de transição",
+      "Primeiro fechamento mensal completo",
+      "DRE (Demonstração de Resultado) do período",
+      "Ajustes e calibragem do plano de contas",
+      "Relatório de encerramento da implantação",
+    ],
+  },
+  {
+    n: "04", titulo: "Operação", periodo: "Cadência diária e semanal", fase: "ciclo",
+    desc: "Executo o financeiro do dia a dia: lançamentos, pagamentos, recebimentos e conciliação contínua.",
+    entregaveis: [
+      "Lançamentos diários de receitas e despesas",
+      "Gestão de contas a pagar e a receber",
+      "Conciliação bancária semanal",
+      "Controle de inadimplência e cobranças",
+      "Relatório semanal de posição de caixa",
+      "Atendimento e suporte à equipe operacional",
+    ],
+  },
+  {
+    n: "05", titulo: "Gestão", periodo: "Cadência mensal e trimestral", fase: "ciclo",
+    desc: "Entrego os relatórios estratégicos e participo das reuniões de decisão da empresa.",
+    entregaveis: [
+      "DRE mensal (Demonstração do Resultado do Exercício)",
+      "DFC (Demonstração do Fluxo de Caixa)",
+      "Dashboard gerencial atualizado",
+      "Reunião mensal de análise de resultado",
+      "Projeções e cenários para o próximo período",
+      "OKRs financeiros acompanhados trimestralmente",
+    ],
+  },
+];
+
+function FaseBadge({ fase }: { fase: "implantacao" | "ciclo" }) {
+  const isImpl = fase === "implantacao";
+  return (
+    <span
+      className="inline-flex items-center"
+      style={{
+        background: isImpl ? "rgba(196,139,48,0.12)" : "rgba(0,90,84,0.12)",
+        color: isImpl ? "#c48b30" : "#005a54",
+        fontFamily: "Inter, system-ui, sans-serif",
+        fontSize: 10,
+        fontWeight: 700,
+        letterSpacing: "0.08em",
+        textTransform: "uppercase",
+        padding: "4px 10px",
+        borderRadius: 4,
+      }}
+    >
+      {isImpl ? "Implantação · 45–60 dias" : "Ciclo Contínuo"}
+    </span>
+  );
+}
+
+function EntregaveisPopover({ etapa }: { etapa: Etapa }) {
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <button
+          className="inline-flex items-center gap-1.5 transition-all hover:opacity-80"
+          style={{
+            border: "2px solid #005a54",
+            color: "#005a54",
+            padding: "8px 14px",
+            borderRadius: 4,
+            fontFamily: "Inter, system-ui, sans-serif",
+            fontWeight: 600,
+            fontSize: 13,
+            background: "transparent",
+            cursor: "pointer",
+          }}
+        >
+          Ver o que fazemos →
+        </button>
+      </PopoverTrigger>
+      <PopoverContent
+        align="start"
+        sideOffset={8}
+        className="w-[340px] p-5"
+        style={{
+          background: "#ffffff",
+          border: "1px solid #e8e4db",
+          borderRadius: 16,
+          boxShadow: "0 24px 56px rgba(0,0,0,0.16)",
+        }}
+      >
+        <div className="flex items-start justify-between mb-3">
+          <div>
+            <div className="label-mono" style={{ color: "#c48b30" }}>Etapa · {etapa.n}</div>
+            <div className="font-display font-semibold text-[18px] mt-1" style={{ color: "#1F3D2E" }}>
+              {etapa.titulo}
+            </div>
+          </div>
+        </div>
+        <ul className="space-y-2 mt-2">
+          {etapa.entregaveis.map((it, i) => (
+            <li key={i} className="flex gap-2.5">
+              <span style={{ color: "#005a54", fontWeight: 700, fontSize: 13, lineHeight: 1.5 }}>·</span>
+              <span style={{ fontFamily: "Inter, system-ui, sans-serif", fontSize: 13, color: "#1A1A1A", lineHeight: 1.5 }}>
+                {it}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </PopoverContent>
+    </Popover>
+  );
+}
+
+export function Metodo() {
+  return (
+    <section id="metodo" className="py-24 lg:py-32" style={{ background: "#f4f1ec" }}>
+      <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <span className="label-mono" style={{ color: "#c48b30" }}>· COMO EU TRABALHO</span>
+          <h2 className="font-display font-semibold text-[40px] lg:text-[56px] leading-[1.05] mt-4" style={{ color: "#1F3D2E" }}>
+            O Método Cluny
+          </h2>
+          <p className="mt-6 text-[16px] leading-relaxed" style={{ color: "#1A1A1A" }}>
+            Inspirado na Ordem de Cluny — uma das instituições mais bem organizadas da história — o método estrutura o financeiro da sua empresa em 5 etapas com nome, cadência, papéis e entregáveis definidos. Nada acontece no improviso.
+          </p>
+        </div>
+
+        {/* Desktop — timeline horizontal */}
+        <div className="hidden lg:block">
+          <div className="grid grid-cols-5 gap-6 relative">
+            {/* linha base */}
+            <div className="absolute top-[14px] left-[10%] right-[10%] h-[2px]" style={{ background: "#cec9b8" }} />
+            {METODO_ETAPAS.map((e) => (
+              <div key={e.n} className="relative flex flex-col items-center text-center">
+                <div
+                  className="relative z-10 mb-5 flex items-center justify-center"
+                  style={{
+                    width: 30, height: 30, borderRadius: "50%",
+                    background: "#005a54", color: "#f4f1ec",
+                    fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                    fontWeight: 700, fontSize: 12,
+                  }}
+                >
+                  {e.n}
+                </div>
+                <div
+                  className="w-full bg-white p-6 flex flex-col items-center text-center"
+                  style={{ borderRadius: 12, boxShadow: "0 10px 24px rgba(0,0,0,0.05)", minHeight: 320 }}
+                >
+                  <h3 className="font-display font-semibold text-[20px]" style={{ color: "#1F3D2E" }}>
+                    {e.titulo}
+                  </h3>
+                  <div className="mt-1 mb-4" style={{ fontFamily: "Inter, system-ui, sans-serif", fontSize: 12, color: "#6e7b7c" }}>
+                    {e.periodo}
+                  </div>
+                  <p className="text-[14px] leading-relaxed mb-5 flex-1" style={{ color: "#1A1A1A" }}>
+                    {e.desc}
+                  </p>
+                  <FaseBadge fase={e.fase} />
+                  <div className="mt-4">
+                    <EntregaveisPopover etapa={e} />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Mobile — accordion */}
+        <div className="lg:hidden">
+          <Accordion type="single" collapsible defaultValue="01" className="space-y-3">
+            {METODO_ETAPAS.map((e) => (
+              <AccordionItem
+                key={e.n}
+                value={e.n}
+                className="bg-white border-0"
+                style={{ borderRadius: 12, boxShadow: "0 6px 16px rgba(0,0,0,0.04)" }}
+              >
+                <AccordionTrigger className="px-5 py-4 hover:no-underline">
+                  <div className="flex items-center gap-4 flex-1 text-left">
+                    <span
+                      style={{
+                        fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                        fontWeight: 700, fontSize: 14, color: "#c48b30",
+                      }}
+                    >
+                      {e.n}
+                    </span>
+                    <div className="flex-1">
+                      <div className="font-display font-semibold text-[18px]" style={{ color: "#1F3D2E" }}>
+                        {e.titulo}
+                      </div>
+                      <div style={{ fontFamily: "Inter, system-ui, sans-serif", fontSize: 12, color: "#6e7b7c" }}>
+                        {e.periodo}
+                      </div>
+                    </div>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="px-5 pb-5">
+                  <p className="text-[14px] leading-relaxed mb-4" style={{ color: "#1A1A1A" }}>
+                    {e.desc}
+                  </p>
+                  <FaseBadge fase={e.fase} />
+                  <div className="mt-4">
+                    <div className="label-mono mb-2" style={{ color: "#c48b30" }}>Entregáveis</div>
+                    <ul className="space-y-1.5">
+                      {e.entregaveis.map((it, i) => (
+                        <li key={i} className="flex gap-2 text-[13px]" style={{ color: "#1A1A1A" }}>
+                          <span style={{ color: "#005a54", fontWeight: 700 }}>·</span>{it}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ================================================================
+   ============= MANIFESTO (REESCRITO — vídeo grande) ============
+   ================================================================ */
+export function Manifesto({ videoUrl }: { videoUrl?: string } = {}) {
+  return (
+    <section id="manifesto" className="py-20 lg:py-24" style={{ background: "#1F3D2E" }}>
+      <div className="max-w-[1320px] mx-auto px-6 lg:px-10 text-center">
+        <span className="label-mono" style={{ color: "#c48b30" }}>· NOSSA CRENÇA</span>
+        <h2
+          className="font-display font-semibold mt-4 text-[36px] lg:text-[52px] leading-tight max-w-4xl mx-auto"
+          style={{ color: "#f4f1ec" }}
+        >
+          Gestão não é luxo de grande empresa.<br />
+          <span className="italic" style={{ color: "#c48b30" }}>É o direito de todo empresário.</span>
+        </h2>
+
+        {/* Vídeo */}
+        <div
+          className="relative mx-auto mt-16 mb-16 group cursor-pointer"
+          style={{
+            width: "80%",
+            maxWidth: 980,
+            aspectRatio: "16 / 9",
+            borderRadius: 16,
+            overflow: "hidden",
+            background: "linear-gradient(135deg, #1F3D2E, #005a54)",
+            boxShadow: "0 32px 80px rgba(0,0,0,0.45)",
+          }}
+        >
+          {videoUrl ? (
+            <iframe
+              className="absolute inset-0 w-full h-full"
+              src={videoUrl}
+              title="Manifesto Cluny"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div
+                className="flex items-center justify-center transition-transform group-hover:scale-110"
+                style={{
+                  width: 72, height: 72, borderRadius: "50%",
+                  background: "#ffffff",
+                  boxShadow: "0 12px 32px rgba(0,0,0,0.25)",
+                }}
+              >
+                <svg width={26} height={26} viewBox="0 0 24 24" fill="#005a54">
+                  <polygon points="6,4 20,12 6,20" />
+                </svg>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <p
+          className="mx-auto max-w-[680px]"
+          style={{
+            fontFamily: "Inter, system-ui, sans-serif",
+            fontSize: 18,
+            lineHeight: 1.7,
+            color: "#f4f1ec",
+          }}
+        >
+          Acredito que todo empresário merece saber onde está seu dinheiro. Não no fim do ano — no dia a dia, com clareza e precisão. Minha missão é transformar o financeiro de uma fonte de ansiedade em uma vantagem competitiva real.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+/* ================================================================
+   ============= CASES (REESCRITO — grid 3 colunas) ==============
+   ================================================================ */
+
+type Case = {
+  nome: string; cargo: string; setor: string;
+  iniciais: string; corFoto: string;
+  resultado: string; resultadoDesc: string;
+  depoimento: string;
+  porte: string;
+};
+
+const CASES: Case[] = [
+  {
+    nome: "Marina Vasconcelos", cargo: "Sócia-fundadora · Estúdio Ímpar",
+    setor: "Serviços", iniciais: "MV", corFoto: "#005a54",
+    resultado: "Fluxo de caixa zerado em 90 dias",
+    resultadoDesc: "do diagnóstico à operação previsível",
+    depoimento: "Pela primeira vez consigo abrir o sistema e entender, em 5 minutos, onde a empresa está. A clareza financeira virou rotina.",
+    porte: "32 funcionários · R$ 8M/ano",
+  },
+  {
+    nome: "Eduardo Tavares", cargo: "CEO · Tavares Comércio",
+    setor: "Varejo", iniciais: "ET", corFoto: "#c48b30",
+    resultado: "−38% em despesas improdutivas",
+    resultadoDesc: "identificadas no primeiro trimestre",
+    depoimento: "Parei de tomar decisão na base do achismo. Cada movimento agora passa pelo dashboard — e a margem reagiu na mesma proporção.",
+    porte: "58 funcionários · R$ 14M/ano",
+  },
+  {
+    nome: "Helena Khoury", cargo: "Diretora · Clínica Khoury",
+    setor: "Saúde", iniciais: "HK", corFoto: "#1F3D2E",
+    resultado: "DRE mensal em D+5",
+    resultadoDesc: "pela primeira vez na história da clínica",
+    depoimento: "Não preciso mais ligar para a contabilidade pedindo número. O relatório chega antes da reunião, com leitura — não com planilha crua.",
+    porte: "21 funcionários · R$ 5M/ano",
+  },
+];
+
+export function Cases() {
+  return (
+    <section id="cases" className="py-24 lg:py-32" style={{ background: "#f4f1ec" }}>
+      <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
+        <div className="text-center max-w-3xl mx-auto mb-14">
+          <span className="label-mono" style={{ color: "#c48b30" }}>· RESULTADOS REAIS</span>
+          <h2 className="font-display font-semibold text-[36px] lg:text-[52px] leading-tight mt-4" style={{ color: "#1F3D2E" }}>
+            Empresas que transformaram o financeiro com o <em className="italic" style={{ color: "#005a54" }}>Método Cluny.</em>
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {CASES.map((c) => (
+            <article
+              key={c.nome}
+              className="bg-white flex flex-col"
+              style={{ borderRadius: 20, padding: 32, boxShadow: "0 12px 32px rgba(31,61,46,0.06)" }}
+            >
+              {/* Linha 1: foto + nome + setor */}
+              <div className="flex items-center gap-4 mb-5">
+                <div
+                  className="flex items-center justify-center flex-shrink-0"
+                  style={{
+                    width: 60, height: 60, borderRadius: "50%",
+                    background: c.corFoto,
+                    color: "#f4f1ec",
+                    fontFamily: "Fraunces, Georgia, serif",
+                    fontSize: 22, fontWeight: 600,
+                  }}
+                >
+                  {c.iniciais}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="font-display font-semibold text-[16px]" style={{ color: "#1F3D2E" }}>
+                    {c.nome}
+                  </div>
+                  <div className="text-[12px] mt-0.5" style={{ color: "#6e7b7c" }}>
+                    {c.cargo}
+                  </div>
+                </div>
+              </div>
+              <span
+                className="self-start mb-5"
+                style={{
+                  background: "#cec9b8",
+                  color: "#1F3D2E",
+                  fontFamily: "Inter, system-ui, sans-serif",
+                  fontSize: 11, fontWeight: 600,
+                  padding: "4px 10px", borderRadius: 999,
+                }}
+              >
+                {c.setor}
+              </span>
+
+              {/* Resultado */}
+              <div
+                style={{
+                  fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                  fontSize: 22, fontWeight: 700, color: "#005a54", lineHeight: 1.2,
+                }}
+              >
+                {c.resultado}
+              </div>
+              <div className="text-[13px] mt-2 mb-5" style={{ color: "#6e7b7c" }}>
+                {c.resultadoDesc}
+              </div>
+
+              {/* Depoimento */}
+              <p
+                className="italic flex-1"
+                style={{ fontFamily: "Inter, system-ui, sans-serif", fontSize: 15, color: "#1A1A1A", lineHeight: 1.6 }}
+              >
+                "{c.depoimento}"
+              </p>
+
+              {/* Porte */}
+              <div
+                className="mt-6 pt-4"
+                style={{
+                  borderTop: "1px solid #e8e4db",
+                  fontFamily: "Inter, system-ui, sans-serif",
+                  fontSize: 11, color: "#6e7b7c",
+                }}
+              >
+                Empresa: {c.porte}
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ================================================================
+   ============= CONTEÚDO / BLOG (REESCRITO — 1 + 2) =============
+   ================================================================ */
+export function Conteudo() {
+  const POSTS = [
+    { cat: "Tributário", date: "02.MAI.2026", t: "Reforma tributária: o que muda para PMEs em 2026", sub: "O guia prático que separa hipótese de obrigação operacional.", img: blogTrib },
+    { cat: "Gestão", date: "24.ABR.2026", t: "DRE gerencial: relatório bonito vs. leitura útil", sub: "Como ler um DRE em 3 minutos.", img: blogDre },
+    { cat: "Controladoria", date: "17.ABR.2026", t: "Holding patrimonial: três armadilhas comuns", sub: "Erros que custam caro na constituição.", img: blogHolding },
+  ];
+  const [destaque, ...resto] = POSTS;
+
+  const Card = ({ p, large = false }: { p: typeof POSTS[number]; large?: boolean }) => (
+    <article
+      className="group bg-white flex flex-col overflow-hidden cursor-pointer h-full"
+      style={{ borderRadius: 16, border: "1px solid #e8e4db", transition: "all 200ms ease" }}
+      onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 16px 36px rgba(0,0,0,0.08)"; e.currentTarget.style.transform = "translateY(-3px)"; }}
+      onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.transform = "translateY(0)"; }}
+    >
+      <div
+        className="relative overflow-hidden"
+        style={{
+          height: large ? 320 : 160,
+          background: "linear-gradient(135deg, #1F3D2E, #005a54)",
+        }}
+      >
+        <img
+          src={p.img}
+          alt={p.t}
+          loading="lazy"
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          style={{ opacity: 0.85, mixBlendMode: "luminosity" }}
+        />
+        <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, rgba(31,61,46,0.45), rgba(0,90,84,0.35))" }} />
+        <span
+          className="absolute top-4 left-4"
+          style={{
+            background: "rgba(0,90,84,0.15)",
+            color: "#f4f1ec",
+            border: "1px solid rgba(244,241,236,0.3)",
+            fontFamily: "Inter, system-ui, sans-serif",
+            fontSize: 11, fontWeight: 600,
+            padding: "4px 10px", borderRadius: 999,
+          }}
+        >
+          {p.cat}
+        </span>
+      </div>
+      <div className="p-6 flex flex-col flex-1">
+        <h3
+          className="font-display font-semibold flex-1"
+          style={{ fontSize: large ? 24 : 18, color: "#1F3D2E", lineHeight: 1.3 }}
+        >
+          {p.t}
+        </h3>
+        <p className="mt-3 text-[14px]" style={{ color: "#6e7b7c", lineHeight: 1.5 }}>
+          {p.sub}
+        </p>
+        <div className="mt-5 pt-4 flex items-center justify-between" style={{ borderTop: "1px solid #e8e4db" }}>
+          <span style={{ fontFamily: "Inter, system-ui, sans-serif", fontSize: 11, color: "#6e7b7c" }}>{p.date}</span>
+          <span style={{ color: "#005a54", fontFamily: "Inter, system-ui, sans-serif", fontSize: 12, fontWeight: 700 }}>
+            Ler artigo →
+          </span>
+        </div>
+      </div>
+    </article>
+  );
+
+  return (
+    <section id="blog" className="py-24 lg:py-32" style={{ background: "#ffffff" }}>
+      <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
+        <div className="mb-12 max-w-3xl">
+          <span className="label-mono" style={{ color: "#c48b30" }}>· CONHECIMENTO GRATUITO</span>
+          <h2 className="font-display font-semibold text-[36px] lg:text-[52px] leading-tight mt-4" style={{ color: "#1F3D2E" }}>
+            Artigos que ajudam você a <em className="italic" style={{ color: "#005a54" }}>gerir melhor.</em>
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <Card p={destaque} large />
+          </div>
+          <div className="grid grid-rows-2 gap-6">
+            {resto.map((p) => <Card key={p.t} p={p} />)}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ================================================================
+   ============= MATERIAIS (NOVA) ================================
+   ================================================================ */
+export function Materiais() {
+  const items = [
+    {
+      Icon: PlayCircle,
+      titulo: "Vídeo Aulas Gratuitas",
+      desc: "Aulas práticas sobre fluxo de caixa, DRE, conciliação e gestão financeira para empresários — sem jargão técnico.",
+      tag: "Canal YouTube",
+      cta: "Assistir agora",
+    },
+    {
+      Icon: TableIcon,
+      titulo: "Ferramentas de Gestão",
+      desc: "Planilhas, templates e modelos prontos para você organizar o financeiro da sua empresa sem precisar de um sistema caro.",
+      tag: "Download gratuito",
+      cta: "Baixar agora",
+    },
+    {
+      Icon: BookOpen,
+      titulo: "E-books",
+      desc: "Guias completos sobre BPO Financeiro, Controladoria e gestão para PMEs. Escritos para quem decide, não para quem estuda.",
+      tag: "PDF gratuito",
+      cta: "Baixar agora",
+    },
+  ];
+  return (
+    <section id="materiais" className="py-24 lg:py-32" style={{ background: "#cec9b8" }}>
+      <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
+        <div className="text-center max-w-3xl mx-auto mb-14">
+          <span className="label-mono" style={{ color: "#c48b30" }}>· PARA VOCÊ APLICAR HOJE</span>
+          <h2 className="font-display font-semibold text-[36px] lg:text-[52px] leading-tight mt-4" style={{ color: "#1F3D2E" }}>
+            Materiais gratuitos para gestores que querem <em className="italic" style={{ color: "#005a54" }}>mais controle.</em>
+          </h2>
+          <p className="mt-5 text-[16px]" style={{ color: "#1A1A1A" }}>
+            Criados para quem não tem tempo a perder. Objetivos, práticos, aplicáveis no dia seguinte.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {items.map((it) => (
+            <div
+              key={it.titulo}
+              className="bg-white flex flex-col"
+              style={{ borderRadius: 20, padding: 32, boxShadow: "0 8px 24px rgba(31,61,46,0.06)" }}
+            >
+              <div
+                className="flex items-center justify-center mb-5"
+                style={{ width: 56, height: 56, borderRadius: 12, background: "rgba(0,90,84,0.10)" }}
+              >
+                <it.Icon size={28} color="#005a54" />
+              </div>
+              <h3 className="font-display font-semibold text-[22px] mb-3" style={{ color: "#1F3D2E" }}>
+                {it.titulo}
+              </h3>
+              <p className="text-[14px] flex-1" style={{ color: "#1A1A1A", lineHeight: 1.6 }}>
+                {it.desc}
+              </p>
+              <span
+                className="self-start mt-5 mb-5"
+                style={{
+                  background: "rgba(196,139,48,0.15)",
+                  color: "#c48b30",
+                  fontFamily: "Inter, system-ui, sans-serif",
+                  fontSize: 11, fontWeight: 700,
+                  padding: "4px 12px", borderRadius: 999,
+                }}
+              >
+                {it.tag}
+              </span>
+              <a
+                href="#cadastro"
+                className="inline-flex items-center justify-center"
+                style={{
+                  border: "2px solid #005a54",
+                  color: "#005a54",
+                  padding: "12px 20px",
+                  borderRadius: 8,
+                  fontFamily: "Inter, system-ui, sans-serif",
+                  fontWeight: 700, fontSize: 13,
+                  background: "transparent",
+                  transition: "all 200ms",
+                }}
+              >
+                {it.cta} →
+              </a>
+            </div>
+          ))}
+        </div>
+
+        {/* Faixa inferior */}
+        <div
+          className="mt-10 flex flex-col md:flex-row items-center justify-between gap-4"
+          style={{ background: "#005a54", borderRadius: 16, padding: "24px 32px" }}
+        >
+          <span style={{ color: "#f4f1ec", fontFamily: "Inter, system-ui, sans-serif", fontSize: 16, fontWeight: 500 }}>
+            Mais de 2.400 gestores já baixaram nossos materiais.
+          </span>
+          <a
+            href="#cadastro"
+            className="inline-flex items-center"
+            style={{
+              border: "2px solid #f4f1ec",
+              color: "#f4f1ec",
+              padding: "10px 22px",
+              borderRadius: 8,
+              fontFamily: "Inter, system-ui, sans-serif",
+              fontWeight: 700, fontSize: 13,
+              background: "transparent",
+            }}
+          >
+            Ver todos os recursos →
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ================================================================
+   ============= FAQ (REESCRITO — 8 perguntas, 2 colunas) ========
+   ================================================================ */
+
+const FAQS_NEW: { q: string; a: string }[] = [
+  { q: "O BPO Financeiro substitui o meu contador?", a: "Não. São serviços complementares. O contador cuida das obrigações fiscais e contábeis (guias, declarações, balanço). Eu cuido do financeiro operacional e estratégico — fluxo de caixa, DRE gerencial, pagamentos, recebimentos e análise de resultado. Aliás, a Cluny também oferece contabilidade completa, se quiser tudo integrado." },
+  { q: "Quanto tempo leva para eu ver os primeiros resultados?", a: "O Diagnóstico é entregue em até 5 dias úteis. A Fundação e a Reforma (implantação completa) levam de 45 a 60 dias. A partir daí, você já opera com DRE mensal, fluxo de caixa projetado e dashboard atualizado. A maioria dos clientes relata clareza real a partir do primeiro fechamento mensal." },
+  { q: "Funciona para empresas de qual tamanho?", a: "Atendo empresas com faturamento entre R$ 500K e R$ 30M ao ano, principalmente nos segmentos de serviços, saúde, educação, comércio e indústria leve. Se sua empresa está fora desse perfil, posso indicar o melhor caminho." },
+  { q: "Como funciona o acesso às informações da minha empresa?", a: "Trabalho com acesso controlado e formalizado. Tudo é documentado em contrato: quais acessos eu tenho, com qual finalidade e quem autoriza cada movimentação. Nenhum pagamento é executado sem autorização prévia e documentada do titular da empresa." },
+  { q: "Preciso ter uma equipe financeira para contratar o BPO?", a: "Não. Grande parte dos meus clientes não tem equipe financeira — e é exatamente por isso que me contratam. Eu estruturo, opero e entrego os relatórios. Se você já tem uma equipe, posso trabalhar em conjunto, assumindo a liderança técnica do processo." },
+  { q: "Qual é o investimento mensal?", a: "O valor varia conforme o volume de operações, complexidade da empresa e escopo do serviço contratado. Trabalho com proposta personalizada após o diagnóstico. O que posso adiantar: o custo do BPO é sistematicamente menor do que o custo de uma equipe interna qualificada — e com nível de qualidade superior." },
+  { q: "Vocês atendem fora de São Paulo?", a: "Sim. Atendo empresas em todo o Brasil de forma 100% remota. Todo o processo — desde o onboarding até as reuniões mensais — é conduzido online, com entregas digitais e comunicação assíncrona organizada." },
+  { q: "Como é feito o primeiro contato?", a: "Pelo botão de diagnóstico gratuito. Você agenda uma reunião de 30 a 40 minutos, onde eu faço um levantamento inicial da sua operação e apresento um parecer honesto sobre o que precisa ser feito — sem compromisso de contratação." },
+];
+
+export function FAQ() {
+  return (
+    <section id="faq" className="py-24 lg:py-32" style={{ background: "#f4f1ec" }}>
+      <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
+        <div className="text-center max-w-3xl mx-auto mb-14">
+          <h2 className="font-display font-semibold text-[36px] lg:text-[52px] leading-tight" style={{ color: "#1F3D2E" }}>
+            Perguntas que eu mais <em className="italic" style={{ color: "#005a54" }}>recebo.</em>
+          </h2>
+          <p className="mt-5 text-[16px]" style={{ color: "#6e7b7c" }}>
+            Se ainda restar alguma dúvida, é só chamar — respondo pessoalmente.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+          {[FAQS_NEW.slice(0, 4), FAQS_NEW.slice(4)].map((col, ci) => (
+            <Accordion key={ci} type="single" collapsible className="space-y-3">
+              {col.map((f, i) => (
+                <AccordionItem
+                  key={f.q}
+                  value={`${ci}-${i}`}
+                  className="bg-white border-0"
+                  style={{ borderRadius: 12, boxShadow: "0 4px 12px rgba(0,0,0,0.04)" }}
+                >
+                  <AccordionTrigger
+                    className="px-5 py-5 hover:no-underline text-left"
+                    style={{
+                      fontFamily: "Inter, system-ui, sans-serif",
+                      fontWeight: 600, fontSize: 16, color: "#1A1A1A",
+                    }}
+                  >
+                    {f.q}
+                  </AccordionTrigger>
+                  <AccordionContent
+                    className="px-5 pb-5"
+                    style={{
+                      fontFamily: "Inter, system-ui, sans-serif",
+                      fontSize: 15, color: "#6e7b7c", lineHeight: 1.7,
+                    }}
+                  >
+                    {f.a}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function Cadastro() {
+  const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [interesse, setInteresse] = useState("");
+  const selectRef = useRef<HTMLSelectElement | null>(null);
+
+  useEffect(() => {
+    const onPrefill = (e: Event) => {
+      const det = (e as CustomEvent).detail as { interesse?: string };
+      const map: Record<string, string> = {
+        "BPO Financeiro": "Finanças / BPO",
+        "Controladoria": "Não sei ainda",
+        "BPO + Controladoria": "Finanças / BPO",
+        "Contabilidade": "Contabilidade",
+        "Legalização": "Legalização",
+        "Educação Corporativa": "Educação Corporativa",
+      };
+      const v = det?.interesse ? (map[det.interesse] || det.interesse) : "";
+      if (v) setInteresse(v);
+    };
+    window.addEventListener("cluny:prefill", onPrefill as EventListener);
+    return () => window.removeEventListener("cluny:prefill", onPrefill as EventListener);
+  }, []);
+
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setTimeout(() => { setLoading(false); setSent(true); }, 1500);
+  };
+
+  return (
+    <section id="cadastro" className="py-24 lg:py-32 bg-[#1F3D2E] text-[#f4f1ec]">
+      <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
+          <div>
+            <span className="label-mono text-[#6e7b7c]">· CADASTRO / PRÓXIMO PASSO</span>
+            <h2 className="font-display font-semibold text-[40px] lg:text-[48px] leading-[1.05] mt-6 text-[#f4f1ec]">
+              Inicie pela<br /><em className="italic font-normal text-[#f4f1ec]">conversa certa.</em>
+            </h2>
+            <p className="text-[15px] text-[#f4f1ec]/80 mt-6 leading-relaxed max-w-md">
+              Respondo pessoalmente, por escrito, em até 1 dia útil. Sem funil de qualificação. Sem SDR. Apenas leitura técnica inicial da sua operação.
+            </p>
+
+            <div className="mt-10 space-y-3">
+              {[
+                "Atendimento técnico — não comercial em primeira camada",
+                "Diagnóstico inicial sem custo",
+                "Confidencialidade contratual antes de qualquer troca",
+                "Indicação honesta caso o caso não couber na Cluny",
+              ].map((b) => (
+                <div key={b} className="flex gap-3 text-[14px] text-[#f4f1ec]">
+                  <span className="text-[#c48b30] font-bold">→</span>
+                  <span>{b}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-10 grid grid-cols-1 gap-0">
+              {[
+                ["CONTATO","contato@cluny.com.br"],
+                ["TELEFONE","+55 11 4000-0000"],
+                ["ENDEREÇO","Av. Faria Lima, 0000 · São Paulo / SP"],
+                ["HORÁRIO","Seg-Sex · 09h às 18h"],
+              ].map(([k,v]) => (
+                <div key={k} className="grid grid-cols-[120px_1fr] py-4 border-b border-[rgba(255,255,255,0.1)] last:border-b-0">
+                  <span className="label-mono text-[#6e7b7c]">{k}</span>
+                  <span className="text-[14px] text-[#f4f1ec]">{v}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="bg-[#1A1A1A] rounded-[4px] p-8 lg:p-10 border border-[rgba(255,255,255,0.06)]">
+            {sent ? (
+              <div className="h-full flex flex-col justify-center items-start gap-4 min-h-[400px]">
+                <div className="w-12 h-12 rounded-full flex items-center justify-center text-[#f4f1ec] bg-[#005a54]">✓</div>
+                <h3 className="font-display text-[32px] text-[#f4f1ec]">Mensagem registrada.</h3>
+                <p className="text-[15px] text-[#f4f1ec]/80 max-w-md">Recebi sua solicitação. Respondo pessoalmente em até 1 dia útil, por escrito.</p>
+              </div>
+            ) : (
+              <form onSubmit={submit} className="space-y-6">
+                {[
+                  { n: "nome", l: "Nome completo" },
+                  { n: "email", l: "E-mail corporativo", t: "email" },
+                  { n: "empresa", l: "Empresa" },
+                  { n: "tel", l: "Telefone" },
+                ].map((f) => (
+                  <div key={f.n}>
+                    <label htmlFor={f.n} className="label-mono text-[#6e7b7c] block mb-2">{f.l}</label>
+                    <input id={f.n} required aria-required="true" type={f.t || "text"} name={f.n} placeholder={f.l} className="w-full bg-transparent border-b border-[rgba(255,255,255,0.2)] py-2 outline-none focus:border-[#c48b30] text-[15px] text-[#f4f1ec] placeholder:text-[#6e7b7c] transition-colors" />
+                  </div>
+                ))}
+                <div>
+                  <label htmlFor="interesse" className="label-mono text-[#6e7b7c] block mb-2">Interesse principal</label>
+                  <select
+                    id="interesse"
+                    ref={selectRef}
+                    required
+                    aria-required="true"
+                    value={interesse}
+                    onChange={(e) => setInteresse(e.target.value)}
+                    className="w-full bg-transparent border-b border-[rgba(255,255,255,0.2)] py-2 outline-none focus:border-[#c48b30] text-[15px] text-[#f4f1ec]"
+                  >
+                    <option value="" className="bg-[#1A1A1A]">Selecione...</option>
+                    <option className="bg-[#1A1A1A]">Finanças / BPO</option>
+                    <option className="bg-[#1A1A1A]">Contabilidade</option>
+                    <option className="bg-[#1A1A1A]">Legalização</option>
+                    <option className="bg-[#1A1A1A]">Educação Corporativa</option>
+                    <option className="bg-[#1A1A1A]">Não sei ainda</option>
+                  </select>
+                </div>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="btn-primary w-full justify-center mt-4 disabled:opacity-60 disabled:cursor-not-allowed"
+                  style={{ height: 52 }}
+                >
+                  {loading ? (
+                    <>
+                      <span>Enviando...</span>
+                      <span className="ml-2 inline-block w-4 h-4 border-2 border-[#f4f1ec] border-t-transparent rounded-full animate-spin" />
+                    </>
+                  ) : (
+                    <>Quero conversar com a Cluny →</>
+                  )}
+                </button>
+                <p className="text-[11px] text-[#6e7b7c] flex items-center gap-2">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#6e7b7c" strokeWidth="2" aria-hidden="true">
+                    <rect x="4" y="11" width="16" height="10" rx="1" />
+                    <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+                  </svg>
+                  Resposta em até 1 dia útil. Seus dados não são compartilhados.
+                </p>
+              </form>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ================================================================
+   ============= FOOTER (REESCRITO — 4 colunas) ==================
+   ================================================================ */
+export function Footer() {
+  const solucoes = [
+    ["BPO Financeiro", "/planos/bpo"],
+    ["Controladoria", "/planos/controladoria"],
+    ["Contabilidade", "/planos/contabilidade"],
+    ["Departamento Pessoal", "/planos"],
+    ["Inteligência Tributária", "/planos"],
+    ["Legalização", "/planos"],
+    ["Cursos Online", "/"],
+    ["Mentorias", "/"],
+  ];
+  const empresa = [
+    ["Sobre a Cluny", "/"],
+    ["Método Cluny", "/#metodo"],
+    ["Cases de Sucesso", "/#cases"],
+    ["Blog", "/#blog"],
+    ["Materiais Gratuitos", "/#materiais"],
+    ["Trabalhe Conosco", "/"],
+  ];
+
+  return (
+    <footer style={{ background: "#1F3D2E", color: "#f4f1ec" }}>
+      <div className="max-w-[1320px] mx-auto px-6 lg:px-10 py-16">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 pb-12">
+          {/* Coluna 1 — Marca */}
+          <div className="col-span-2 lg:col-span-1">
+            <Logo variant="branco" height={36} />
+            <p className="mt-5 max-w-xs" style={{ fontFamily: "Inter, system-ui, sans-serif", fontSize: 14, color: "rgba(244,241,236,0.75)", lineHeight: 1.6 }}>
+              Clareza financeira para empresas que decidem com dados.
+            </p>
+            <div className="mt-6 flex items-center gap-4">
+              {[
+                { Icon: Instagram, href: "https://instagram.com" },
+                { Icon: Linkedin, href: "https://linkedin.com" },
+                { Icon: Youtube, href: "https://youtube.com" },
+              ].map(({ Icon, href }, i) => (
+                <a key={i} href={href} aria-label="Rede social" className="hover:opacity-70 transition-opacity">
+                  <Icon size={20} color="#f4f1ec" />
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Coluna 2 — Soluções */}
+          <div>
+            <h3 style={{ fontFamily: "Inter, system-ui, sans-serif", fontWeight: 700, fontSize: 13, color: "#c48b30", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 16 }}>
+              Soluções
+            </h3>
+            <ul className="space-y-2.5">
+              {solucoes.map(([l, h]) => (
+                <li key={l}>
+                  <Link to={h} className="hover:opacity-70 transition-opacity" style={{ fontFamily: "Inter, system-ui, sans-serif", fontSize: 13, color: "rgba(244,241,236,0.85)" }}>
+                    {l}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Coluna 3 — Empresa */}
+          <div>
+            <h3 style={{ fontFamily: "Inter, system-ui, sans-serif", fontWeight: 700, fontSize: 13, color: "#c48b30", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 16 }}>
+              Empresa
+            </h3>
+            <ul className="space-y-2.5">
+              {empresa.map(([l, h]) => (
+                <li key={l}>
+                  <a href={h} className="hover:opacity-70 transition-opacity" style={{ fontFamily: "Inter, system-ui, sans-serif", fontSize: 13, color: "rgba(244,241,236,0.85)" }}>
+                    {l}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Coluna 4 — Contato */}
+          <div className="col-span-2 lg:col-span-1">
+            <h3 style={{ fontFamily: "Inter, system-ui, sans-serif", fontWeight: 700, fontSize: 13, color: "#c48b30", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 16 }}>
+              Contato
+            </h3>
+            <ul className="space-y-3 mb-5">
+              <li className="flex items-center gap-2.5" style={{ fontFamily: "Inter, system-ui, sans-serif", fontSize: 13, color: "rgba(244,241,236,0.85)" }}>
+                <Phone size={14} color="#c48b30" /> +55 11 4000-0000
+              </li>
+              <li className="flex items-center gap-2.5" style={{ fontFamily: "Inter, system-ui, sans-serif", fontSize: 13, color: "rgba(244,241,236,0.85)" }}>
+                <Mail size={14} color="#c48b30" /> contato@cluny.com.br
+              </li>
+              <li className="flex items-center gap-2.5" style={{ fontFamily: "Inter, system-ui, sans-serif", fontSize: 13, color: "rgba(244,241,236,0.85)" }}>
+                <MapPin size={14} color="#c48b30" /> São Paulo / SP
+              </li>
+            </ul>
+            <a
+              href="#cadastro"
+              className="block w-full text-center"
+              style={{
+                background: "#005a54", color: "#f4f1ec",
+                padding: "12px 20px", borderRadius: 8,
+                fontFamily: "Inter, system-ui, sans-serif", fontWeight: 700, fontSize: 13,
+              }}
+            >
+              Diagnóstico gratuito →
+            </a>
+          </div>
+        </div>
+
+        {/* Linha legal */}
+        <div
+          className="pt-6 flex flex-col md:flex-row md:items-center justify-between gap-3"
+          style={{ borderTop: "1px solid #cec9b8" }}
+        >
+          <span style={{ fontFamily: "Inter, system-ui, sans-serif", fontSize: 11, color: "rgba(244,241,236,0.5)" }}>
+            © 2026 Cluny Gestão Empresarial · CNPJ 36.440.582/0001-74 · Todos os direitos reservados
+          </span>
+          <div className="flex items-center gap-4">
+            <a href="/" style={{ fontFamily: "Inter, system-ui, sans-serif", fontSize: 11, color: "rgba(244,241,236,0.5)" }} className="hover:opacity-80">Política de Privacidade</a>
+            <span style={{ color: "rgba(244,241,236,0.3)" }}>·</span>
+            <a href="/" style={{ fontFamily: "Inter, system-ui, sans-serif", fontSize: 11, color: "rgba(244,241,236,0.5)" }} className="hover:opacity-80">Termos de Uso</a>
+          </div>
         </div>
       </div>
     </footer>
