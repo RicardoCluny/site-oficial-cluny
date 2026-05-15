@@ -1693,6 +1693,324 @@ const DIAG12: DiagQ[] = [
     ]},
 ];
 
+/* ============= CONTEXTOS EDUCATIVOS DO PAINEL DIREITO ============= */
+type DiagContextBlock =
+  | { kind: "metrics2x2"; items: { k: string; v: string }[] }
+  | { kind: "insight"; label: string; text: string }
+  | { kind: "quote"; text: string; source: string }
+  | { kind: "checklist"; items: string[] }
+  | { kind: "checklistAlert"; items: string[] };
+
+type DiagContextData = {
+  tag: string;
+  titulo: string;
+  corpo: string;
+  blocks: DiagContextBlock[];
+};
+
+// Mapeado por categoria (4 categorias = 4 contextos durante perguntas)
+const DIAG_CONTEXTS: DiagContextData[] = [
+  // Categoria 0 — Estrutura / Faturamento (Q1)
+  {
+    tag: "POR QUE ISSO IMPORTA",
+    titulo: "O faturamento revela o estágio de gestão que sua empresa exige",
+    corpo:
+      "Empresas de diferentes tamanhos precisam de estruturas financeiras diferentes. Uma empresa que fatura R$ 50k/mês pode funcionar com planilha. Acima de R$ 200k, a falta de controle começa a custar caro — e acima de R$ 1M, é questão de tempo até uma crise de caixa.",
+    blocks: [
+      {
+        kind: "metrics2x2",
+        items: [
+          { k: "82%", v: "das PMEs fecham em 5 anos por problemas financeiros (Sebrae)" },
+          { k: "3x", v: "mais chance de sobrevivência com controle financeiro formal" },
+          { k: "R$ 200k", v: "faturamento mínimo onde gestão estruturada se paga no 1º mês" },
+          { k: "60d", v: "tempo médio entre o problema surgir e o empresário perceber sem controle" },
+        ],
+      },
+    ],
+  },
+  // Categoria 1 — Controle Financeiro / Margem (Q2)
+  {
+    tag: "POR QUE ISSO IMPORTA",
+    titulo: "Não conhecer a margem é o erro financeiro mais comum — e mais caro",
+    corpo:
+      "A maioria dos empresários conhece o faturamento, mas desconhece a margem real. A diferença entre receita e lucro pode ser de 30 a 60% — e esse gap é onde o dinheiro desaparece.",
+    blocks: [
+      {
+        kind: "insight",
+        label: "DADO DE MERCADO",
+        text:
+          "Segundo a FGV, 71% dos empresários de PME superestimam a própria margem de lucro em pelo menos 15 pontos percentuais. Precificar sem margem real significa trabalhar para pagar custos, não para lucrar.",
+      },
+      {
+        kind: "checklist",
+        items: [
+          "O que grandes empresas fazem: fechamento mensal de DRE com margem por produto, canal e cliente.",
+          "O que PMEs bem geridas fazem: acompanham margem semanalmente — não só no balanço anual do contador.",
+        ],
+      },
+    ],
+  },
+  // Categoria 2 — Operação & Equipe / Controle (Q3)
+  {
+    tag: "POR QUE ISSO IMPORTA",
+    titulo: "A ferramenta não é o problema — a ausência de processo é",
+    corpo:
+      "Planilhas não são erradas. ERPs não são garantia. O que define se o controle funciona é se alguém competente está olhando os números com frequência e tomando decisão com base neles.",
+    blocks: [
+      {
+        kind: "quote",
+        text:
+          "Empresas que revisam indicadores financeiros semanalmente têm 40% menos chance de enfrentar crise de liquidez nos 12 meses seguintes.",
+        source: "— McKinsey Global Institute, Small Business Financial Health Report",
+      },
+      {
+        kind: "checklist",
+        items: [
+          "Empresas saudáveis têm alguém dedicado ao financeiro — interno ou terceirizado.",
+          "Contador ≠ gestor financeiro. Contador cuida do passado fiscal. Gestor financeiro cuida do futuro do caixa.",
+        ],
+      },
+    ],
+  },
+  // Categoria 3 — Estratégia / Dor (Q4)
+  {
+    tag: "POR QUE ISSO IMPORTA",
+    titulo: "Cada dor financeira tem uma causa raiz — e uma solução específica",
+    corpo:
+      "As situações mais comuns não são azar. São sintomas de estágios diferentes de desorganização. Identificar qual é a sua dor principal acelera em 3x a velocidade de resolução.",
+    blocks: [
+      {
+        kind: "checklistAlert",
+        items: [
+          "'Não sobrou dinheiro' → saídas não mapeadas, capital de giro consumindo resultado.",
+          "'Não sei se posso investir' → ausência de projeção de fluxo de caixa e cenários.",
+          "'Contador sumiu' → confusão entre obrigação fiscal e gestão financeira.",
+          "'Não tenho relatórios' → dados existem mas não estão estruturados para decisão.",
+        ],
+      },
+    ],
+  },
+];
+
+// Painel da tela de resultado
+const DIAG_RESULT_CONTEXT: DiagContextData = {
+  tag: "O QUE OS DADOS DIZEM",
+  titulo: "Empresas no seu estágio que estruturam a gestão crescem diferente",
+  corpo:
+    "Com base nas suas respostas, você está no estágio onde a estruturação financeira gera o maior retorno — porque os processos ainda são simples o suficiente para reorganizar rápido, mas o faturamento já justifica o investimento.",
+  blocks: [
+    {
+      kind: "insight",
+      label: "REFERÊNCIA DE MERCADO",
+      text:
+        "Empresas que implantam BPO Financeiro entre R$ 500k e R$ 3M/ano identificam, em média, de 8% a 18% de redução de custos ocultos nos primeiros 90 dias de operação estruturada.",
+    },
+    {
+      kind: "checklist",
+      items: [
+        "O próximo passo é mapear as saídas não controladas — que na maioria das empresas neste estágio representam 12 a 20% do faturamento.",
+        "Uma conversa de 30 minutos já é suficiente para identificar os 3 pontos críticos do seu financeiro.",
+      ],
+    },
+  ],
+};
+
+function DiagContextPanel({ data }: { data: DiagContextData }) {
+  return (
+    <div
+      key={data.titulo}
+      className="animate-slide-in-right"
+      style={{
+        background: "#1F3D2E",
+        color: "#f4f1ec",
+        borderRadius: 16,
+        padding: "32px 28px",
+        height: "100%",
+      }}
+    >
+      <span
+        style={{
+          fontFamily: "JetBrains Mono, ui-monospace, monospace",
+          fontSize: 10,
+          color: "#c48b30",
+          fontWeight: 700,
+          textTransform: "uppercase",
+          letterSpacing: "0.12em",
+        }}
+      >
+        · {data.tag}
+      </span>
+      <h4
+        className="font-display"
+        style={{
+          fontSize: 19,
+          lineHeight: 1.25,
+          color: "#f4f1ec",
+          fontWeight: 600,
+          marginTop: 14,
+        }}
+      >
+        {data.titulo}
+      </h4>
+      <p
+        style={{
+          fontFamily: "Inter, system-ui, sans-serif",
+          fontSize: 12.5,
+          lineHeight: 1.65,
+          color: "#9fb8b5",
+          marginTop: 14,
+        }}
+      >
+        {data.corpo}
+      </p>
+
+      <div style={{ marginTop: 22, display: "flex", flexDirection: "column", gap: 16 }}>
+        {data.blocks.map((b, bi) => {
+          if (b.kind === "metrics2x2") {
+            return (
+              <div
+                key={bi}
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: 10,
+                }}
+              >
+                {b.items.map((it, ii) => (
+                  <div
+                    key={ii}
+                    style={{
+                      background: "rgba(244,241,236,0.06)",
+                      border: "1px solid rgba(244,241,236,0.08)",
+                      borderRadius: 10,
+                      padding: "14px 14px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                        fontSize: 22,
+                        color: "#c48b30",
+                        fontWeight: 700,
+                        lineHeight: 1.1,
+                      }}
+                    >
+                      {it.k}
+                    </div>
+                    <div
+                      style={{
+                        fontFamily: "Inter, system-ui, sans-serif",
+                        fontSize: 11,
+                        color: "#cec9b8",
+                        marginTop: 6,
+                        lineHeight: 1.45,
+                      }}
+                    >
+                      {it.v}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            );
+          }
+          if (b.kind === "insight") {
+            return (
+              <div
+                key={bi}
+                style={{
+                  background: "rgba(196,139,48,0.10)",
+                  border: "1px solid rgba(196,139,48,0.25)",
+                  borderRadius: 10,
+                  padding: 14,
+                }}
+              >
+                <div
+                  style={{
+                    fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                    fontSize: 9,
+                    color: "#c48b30",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.12em",
+                    fontWeight: 700,
+                  }}
+                >
+                  {b.label}
+                </div>
+                <div
+                  style={{
+                    fontFamily: "Inter, system-ui, sans-serif",
+                    fontSize: 12,
+                    color: "#e8d5a8",
+                    marginTop: 8,
+                    lineHeight: 1.6,
+                  }}
+                >
+                  {b.text}
+                </div>
+              </div>
+            );
+          }
+          if (b.kind === "quote") {
+            return (
+              <div key={bi} style={{ borderLeft: "2px solid #c48b30", paddingLeft: 14 }}>
+                <div
+                  className="font-display"
+                  style={{
+                    fontStyle: "italic",
+                    fontSize: 14,
+                    color: "#cec9b8",
+                    lineHeight: 1.5,
+                  }}
+                >
+                  {b.text}
+                </div>
+                <div
+                  style={{
+                    fontFamily: "Inter, system-ui, sans-serif",
+                    fontSize: 10.5,
+                    color: "#6e9e9a",
+                    marginTop: 8,
+                  }}
+                >
+                  {b.source}
+                </div>
+              </div>
+            );
+          }
+          if (b.kind === "checklist" || b.kind === "checklistAlert") {
+            const isAlert = b.kind === "checklistAlert";
+            return (
+              <ul key={bi} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                {b.items.map((it, ii) => (
+                  <li
+                    key={ii}
+                    style={{
+                      display: "flex",
+                      gap: 10,
+                      fontFamily: "Inter, system-ui, sans-serif",
+                      fontSize: 12,
+                      color: "#cec9b8",
+                      lineHeight: 1.55,
+                    }}
+                  >
+                    {isAlert ? (
+                      <AlertTriangle size={14} color="#c48b30" strokeWidth={2} style={{ flexShrink: 0, marginTop: 2 }} />
+                    ) : (
+                      <CheckCircle2 size={14} color="#c48b30" strokeWidth={2} style={{ flexShrink: 0, marginTop: 2 }} />
+                    )}
+                    <span>{it}</span>
+                  </li>
+                ))}
+              </ul>
+            );
+          }
+          return null;
+        })}
+      </div>
+    </div>
+  );
+}
+
 function diagResultado(answers: (number | null)[]) {
   const total = answers.reduce<number>((s, a, i) => s + (a === null ? 0 : DIAG12[i].opts[a].risco), 0);
   const max = DIAG12.length * 3;
@@ -1787,9 +2105,9 @@ export function Diagnostico() {
         </div>
 
         {!isResult ? (
-          <div style={{ maxWidth: 780, margin: "0 auto" }}>
+          <div style={{ maxWidth: 1180, margin: "0 auto" }}>
             {/* Progress bar */}
-            <div style={{ marginBottom: 32 }}>
+            <div style={{ marginBottom: 32, maxWidth: 780 }}>
               <div className="flex items-center justify-between mb-2">
                 <span className="label-mono" style={{ color: "#c48b30" }}>
                   · {DIAG_CATEGORIAS[currentQ!.categoria].titulo}
@@ -1826,16 +2144,17 @@ export function Diagnostico() {
               </div>
             </div>
 
-            {/* Card de pergunta */}
-            <div
-              style={{
-                background: "#ffffff",
-                borderRadius: 16,
-                padding: 32,
-                boxShadow: "0 4px 20px rgba(0,90,84,0.08)",
-                width: "100%",
-              }}
-            >
+            <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-6 lg:gap-8 items-stretch">
+              {/* Card de pergunta */}
+              <div
+                style={{
+                  background: "#ffffff",
+                  borderRadius: 16,
+                  padding: 32,
+                  boxShadow: "0 4px 20px rgba(0,90,84,0.08)",
+                  width: "100%",
+                }}
+              >
               <div key={step} className="animate-fade-in">
                 <h3 className="font-display text-[22px] lg:text-[28px] leading-[1.2]" style={{ color: "#1F3D2E" }}>
                   {currentQ!.q}
@@ -1904,96 +2223,106 @@ export function Diagnostico() {
                 </button>
               </div>
             </div>
+
+            {/* Painel educativo direito */}
+            <DiagContextPanel data={DIAG_CONTEXTS[currentQ!.categoria]} />
+            </div>
           </div>
         ) : (
           // RESULTADO
-          <div
-            className="mx-auto rounded-2xl bg-white border border-[#e8e4db] overflow-hidden animate-fade-in"
-            style={{ maxWidth: 780, boxShadow: "0 24px 60px rgba(31,61,46,0.12)" }}
-          >
-            <div className="grid grid-cols-1 lg:grid-cols-5">
-              {/* Lateral score */}
-              <div className="lg:col-span-2 p-8 lg:p-10" style={{ background: "#1F3D2E", color: "#f4f1ec" }}>
-                <span className="label-mono" style={{ color: "#c48b30" }}>· ANÁLISE GERADA</span>
-                <div className="mt-6">
-                  <div style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 64, lineHeight: 1, color: resultado.cor, fontWeight: 700 }}>
-                    {resultado.score}
-                    <span style={{ fontSize: 22, color: "#cec9b8", fontWeight: 500 }}> / {resultado.max}</span>
+          <div style={{ maxWidth: 1180, margin: "0 auto" }} className="animate-fade-in">
+            <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-6 lg:gap-8 items-stretch">
+              <div
+                className="rounded-2xl bg-white border border-[#e8e4db] overflow-hidden"
+                style={{ boxShadow: "0 24px 60px rgba(31,61,46,0.12)" }}
+              >
+                <div className="p-8 lg:p-10">
+                  <div className="flex items-start justify-between gap-6 flex-wrap">
+                    <div>
+                      <span className="label-mono" style={{ color: "#c48b30" }}>· ANÁLISE GERADA</span>
+                      <div className="mt-3">
+                        <div style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 56, lineHeight: 1, color: resultado.cor, fontWeight: 700 }}>
+                          {resultado.score}
+                          <span style={{ fontSize: 20, color: "#6e7b7c", fontWeight: 500 }}> / {resultado.max}</span>
+                        </div>
+                        <div style={{ fontFamily: "Inter", fontSize: 12, color: "#6e7b7c", marginTop: 6 }}>Pontuação de risco</div>
+                      </div>
+                    </div>
+                    <span
+                      className="inline-block label-mono"
+                      style={{
+                        color: resultado.cor, background: `${resultado.cor}15`,
+                        padding: "6px 14px", borderRadius: 999,
+                      }}
+                    >
+                      · RESULTADO
+                    </span>
                   </div>
-                  <div style={{ fontFamily: "Inter", fontSize: 12, color: "#cec9b8", marginTop: 6 }}>Pontuação de risco</div>
-                </div>
-                <div className="mt-8">
-                  <div className="label-mono" style={{ color: "#cec9b8" }}>POR DIMENSÃO</div>
-                  <ul className="mt-3 space-y-3">
-                    {DIAG_CATEGORIAS.map((c, ci) => {
-                      const idxs = DIAG12.map((q, i) => (q.categoria === ci ? i : -1)).filter((x) => x >= 0);
-                      const sc = idxs.reduce((s, i) => s + (answers[i] === null ? 0 : DIAG12[i].opts[answers[i]!].risco), 0);
-                      const m = idxs.length * 3;
-                      const p = (sc / m) * 100;
-                      return (
-                        <li key={c.titulo}>
-                          <div className="flex justify-between" style={{ fontFamily: "Inter", fontSize: 12 }}>
-                            <span style={{ color: "#f4f1ec", fontWeight: 600 }}>{c.titulo}</span>
-                            <span style={{ color: "#c48b30", fontFamily: "JetBrains Mono, ui-monospace, monospace" }}>{sc}/{m}</span>
-                          </div>
-                          <div className="mt-1 h-1 rounded-full overflow-hidden" style={{ background: "rgba(244,241,236,0.12)" }}>
-                            <div style={{ width: `${p}%`, height: "100%", background: "#c48b30" }} />
-                          </div>
-                        </li>
-                      );
-                    })}
+
+                  <div className="mt-6">
+                    <div className="label-mono" style={{ color: "#6e7b7c" }}>POR DIMENSÃO</div>
+                    <ul className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {DIAG_CATEGORIAS.map((c, ci) => {
+                        const idxs = DIAG12.map((q, i) => (q.categoria === ci ? i : -1)).filter((x) => x >= 0);
+                        const sc = idxs.reduce((s, i) => s + (answers[i] === null ? 0 : DIAG12[i].opts[answers[i]!].risco), 0);
+                        const m = idxs.length * 3;
+                        const p = (sc / m) * 100;
+                        return (
+                          <li key={c.titulo}>
+                            <div className="flex justify-between" style={{ fontFamily: "Inter", fontSize: 12 }}>
+                              <span style={{ color: "#1F3D2E", fontWeight: 600 }}>{c.titulo}</span>
+                              <span style={{ color: "#c48b30", fontFamily: "JetBrains Mono, ui-monospace, monospace" }}>{sc}/{m}</span>
+                            </div>
+                            <div className="mt-1 h-1 rounded-full overflow-hidden" style={{ background: "rgba(31,61,46,0.10)" }}>
+                              <div style={{ width: `${p}%`, height: "100%", background: "#c48b30" }} />
+                            </div>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+
+                  <h3 className="font-display font-semibold text-[26px] lg:text-[32px] leading-tight mt-8" style={{ color: "#1F3D2E" }}>
+                    {resultado.titulo}
+                  </h3>
+                  <ul className="mt-5 space-y-3">
+                    {resultado.linhas.map((l, i) => (
+                      <li key={i} className="flex gap-3">
+                        <span style={{ color: resultado.cor, fontWeight: 700, fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 14 }}>
+                          0{i + 1}
+                        </span>
+                        <span style={{ fontFamily: "Inter", fontSize: 14.5, color: "#1A1A1A", lineHeight: 1.6 }}>{l}</span>
+                      </li>
+                    ))}
                   </ul>
+                  <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-4">
+                    <a
+                      href="#cadastro"
+                      className="inline-flex items-center gap-2 transition-all hover:opacity-90"
+                      style={{
+                        background: "#005a54", color: "#f4f1ec",
+                        padding: "16px 26px", borderRadius: 12,
+                        fontFamily: "Inter", fontWeight: 700, fontSize: 14, minHeight: 56,
+                      }}
+                    >
+                      Agendar diagnóstico completo →
+                    </a>
+                    <a href="#metodo" style={{ color: "#005a54", fontSize: 13, fontWeight: 600, textDecoration: "underline", textUnderlineOffset: 4 }}>
+                      Ver o Método Cluny
+                    </a>
+                  </div>
+                  <button
+                    onClick={reset}
+                    className="mt-6"
+                    style={{ color: "#6e7b7c", fontSize: 12, background: "transparent", border: 0, cursor: "pointer" }}
+                  >
+                    ↺ Refazer diagnóstico
+                  </button>
                 </div>
               </div>
 
-              {/* Conteúdo principal do resultado */}
-              <div className="lg:col-span-3 p-8 lg:p-10">
-                <span
-                  className="inline-block label-mono"
-                  style={{
-                    color: resultado.cor, background: `${resultado.cor}15`,
-                    padding: "6px 14px", borderRadius: 999,
-                  }}
-                >
-                  · RESULTADO
-                </span>
-                <h3 className="font-display font-semibold text-[26px] lg:text-[34px] leading-tight mt-4" style={{ color: "#1F3D2E" }}>
-                  {resultado.titulo}
-                </h3>
-                <ul className="mt-6 space-y-4">
-                  {resultado.linhas.map((l, i) => (
-                    <li key={i} className="flex gap-3">
-                      <span style={{ color: resultado.cor, fontWeight: 700, fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 14 }}>
-                        0{i + 1}
-                      </span>
-                      <span style={{ fontFamily: "Inter", fontSize: 15, color: "#1A1A1A", lineHeight: 1.6 }}>{l}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-4">
-                  <a
-                    href="#cadastro"
-                    className="inline-flex items-center gap-2 transition-all hover:opacity-90"
-                    style={{
-                      background: "#005a54", color: "#f4f1ec",
-                      padding: "16px 26px", borderRadius: 12,
-                      fontFamily: "Inter", fontWeight: 700, fontSize: 14, minHeight: 56,
-                    }}
-                  >
-                    Agendar diagnóstico completo →
-                  </a>
-                  <a href="#metodo" style={{ color: "#005a54", fontSize: 13, fontWeight: 600, textDecoration: "underline", textUnderlineOffset: 4 }}>
-                    Ver o Método Cluny
-                  </a>
-                </div>
-                <button
-                  onClick={reset}
-                  className="mt-6"
-                  style={{ color: "#6e7b7c", fontSize: 12, background: "transparent", border: 0, cursor: "pointer" }}
-                >
-                  ↺ Refazer diagnóstico
-                </button>
-              </div>
+              {/* Painel educativo direito */}
+              <DiagContextPanel data={DIAG_RESULT_CONTEXT} />
             </div>
           </div>
         )}
