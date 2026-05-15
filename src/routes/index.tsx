@@ -17,6 +17,7 @@ function Index() {
         <Indicadores />
         <Metodo />
         <Diagnostico />
+        <CalculadoraCLT />
         <Manifesto />
         <Cases />
         <Conteudo />
