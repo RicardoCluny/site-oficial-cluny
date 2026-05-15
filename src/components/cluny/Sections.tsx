@@ -2580,12 +2580,26 @@ export function Metodo() {
       />
       <div className="relative max-w-[1320px] mx-auto px-6 lg:px-10">
         {/* Cabeçalho */}
-        <div className="max-w-3xl mb-14 lg:mb-20">
+        <div className="max-w-3xl mb-14 lg:mb-20 relative">
           <span className="label-mono text-[#c48b30]">· O MÉTODO CLUNY</span>
           <h2
-            className="font-display font-semibold mt-4 leading-[1.05] text-[#1F3D2E]"
+            className="font-display font-semibold mt-4 leading-[1.05] text-[#1F3D2E] relative inline-block"
             style={{ fontSize: "clamp(32px, 5vw, 56px)" }}
           >
+            {/* Elemento flutuante decorativo conectado ao texto */}
+            <span
+              aria-hidden
+              className="hidden lg:flex absolute -left-32 top-2 items-center gap-3 float-card-2 pointer-events-none"
+            >
+              <span className="bg-white shadow-xl border border-[#e8e4db] rounded-xl px-3 py-2 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#005a54] animate-pulse" />
+                <span className="font-mono-tech text-[10px] uppercase tracking-widest text-[#1F3D2E]">5 fases</span>
+              </span>
+              <svg width="56" height="20" viewBox="0 0 56 20" className="text-[#c48b30]">
+                <path d="M2 10 Q 28 -4, 54 10" fill="none" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 3" />
+                <path d="M48 6 L54 10 L48 14" fill="none" stroke="currentColor" strokeWidth="1.5" />
+              </svg>
+            </span>
             5 etapas que transformam caos financeiro em <span className="italic text-[#005a54]">clareza estratégica</span>.
           </h2>
           <p className="mt-5 text-[17px] leading-relaxed text-[#1F3D2E]/70 max-w-2xl">
