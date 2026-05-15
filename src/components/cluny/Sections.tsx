@@ -638,26 +638,19 @@ export function Hero() {
         }}
       />
 
-      <div className="relative max-w-[1320px] w-full mx-auto px-6 lg:px-10 pt-2 lg:pt-3 pb-16 lg:pb-24">
+      <div className="relative max-w-[1320px] w-full mx-auto px-6 lg:px-10 pt-10 lg:pt-20 pb-16 lg:pb-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-0 items-start lg:items-start">
           {/* Tipografia — esquerda */}
           <div className="lg:col-span-6 z-10 relative">
             <h1 className="flex flex-col">
-              <span className="font-display text-[#1F3D2E] text-[44px] sm:text-6xl md:text-7xl lg:text-[6.5rem] leading-[0.9] tracking-tight font-semibold">
-                Sua empresa
+              <span className="font-display text-[#1F3D2E] text-[44px] sm:text-6xl md:text-7xl lg:text-[6.5rem] leading-[0.9] tracking-tight font-semibold whitespace-nowrap">
+                Sua empresa cresce.
               </span>
-              <div className="flex items-end gap-6 mt-2">
-                <span className="font-display text-[#1F3D2E] text-[44px] sm:text-6xl md:text-7xl lg:text-[6.5rem] leading-[0.9] tracking-tight font-semibold">
-                  cresce.
-                </span>
-                <div className="hidden md:block max-w-[200px] border-l border-[#c48b30] pl-4 pb-3">
-                  <p className="font-sans text-[#1F3D2E]/60 text-xs leading-relaxed uppercase tracking-wider">
-                    Controladoria para PMEs que faturam até R$ 30M
-                  </p>
-                </div>
-              </div>
-              <span className="font-display italic font-light text-[#005a54] text-[26px] sm:text-4xl md:text-5xl lg:text-[3.25rem] leading-tight mt-6 lg:mt-8">
+              <span className="font-display italic font-light text-[#c48b30] text-[28px] sm:text-4xl md:text-5xl lg:text-[3.5rem] leading-tight mt-5 lg:mt-7">
                 Suas finanças acompanham?
+              </span>
+              <span className="font-sans text-[#1F3D2E]/70 text-sm lg:text-base leading-relaxed uppercase tracking-wider mt-6 lg:mt-8 border-l-2 border-[#c48b30] pl-4 max-w-[420px]">
+                Controladoria para PMEs que faturam até R$ 30M
               </span>
             </h1>
 
