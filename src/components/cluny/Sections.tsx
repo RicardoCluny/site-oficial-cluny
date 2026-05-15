@@ -2958,13 +2958,13 @@ export function Footer() {
             </h3>
             <ul className="space-y-3 mb-5">
               <li className="flex items-center gap-2.5" style={{ fontFamily: "Inter, system-ui, sans-serif", fontSize: 13, color: "rgba(244,241,236,0.85)" }}>
-                <Phone size={14} color="#c48b30" /> +55 11 4000-0000
+                <Phone size={14} color="#c48b30" /><span>+55 11 4000-0000</span>
               </li>
               <li className="flex items-center gap-2.5" style={{ fontFamily: "Inter, system-ui, sans-serif", fontSize: 13, color: "rgba(244,241,236,0.85)" }}>
-                <Mail size={14} color="#c48b30" /> contato@cluny.com.br
+                <Mail size={14} color="#c48b30" /><span>contato@cluny.com.br</span>
               </li>
               <li className="flex items-center gap-2.5" style={{ fontFamily: "Inter, system-ui, sans-serif", fontSize: 13, color: "rgba(244,241,236,0.85)" }}>
-                <MapPin size={14} color="#c48b30" /> São Paulo / SP
+                <MapPin size={14} color="#c48b30" /><span>São Paulo / SP</span>
               </li>
             </ul>
             <a
