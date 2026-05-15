@@ -669,9 +669,6 @@ export function Hero() {
                 <span>+500 empresas atendidas</span>
               </div>
             </div>
-            <p className="mt-4 text-[12px] text-[#1F3D2E]/55 font-sans">
-              Sem compromisso. Diagnóstico de 30 minutos por videochamada.
-            </p>
           </div>
 
           {/* Imagem grande — direita */}
