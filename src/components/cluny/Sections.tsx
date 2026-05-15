@@ -2675,9 +2675,9 @@ export function Metodo() {
                             <span
                               style={{
                                 fontFamily: "Inter",
-                                fontSize: 17,
-                                fontWeight: isActive ? 700 : 500,
-                                letterSpacing: "0.01em",
+                                fontSize: 22,
+                                fontWeight: isActive ? 700 : 600,
+                                letterSpacing: "-0.01em",
                               }}
                             >
                               {e.titulo}
