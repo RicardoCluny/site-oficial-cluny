@@ -1754,6 +1754,9 @@ export function Diagnostico() {
                   >
                     Agendar meu diagnóstico completo e gratuito →
                   </a>
+                  <p className="text-[12px]" style={{ color: "#6e7b7c", fontFamily: "Inter" }}>
+                    Sem compromisso. Diagnóstico de 30 minutos por videochamada.
+                  </p>
                   <a href="#metodo" style={{ color: "#005a54", fontSize: 13, fontWeight: 600, textDecoration: "underline", textUnderlineOffset: 4 }}>
                     Ver como o Método Cluny funciona
                   </a>
