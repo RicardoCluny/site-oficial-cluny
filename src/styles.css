@@ -214,6 +214,27 @@ html { scroll-behavior: smooth; }
 }
 .mega-in { animation: mega-in 200ms ease forwards; }
 
+/* Reveal on scroll (Intersection Observer flips data-revealed) */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 500ms ease, transform 500ms ease; }
+.reveal[data-revealed="true"] { opacity: 1; transform: translateY(0); }
+
+/* Focus-visible global (acessibilidade) */
+:where(a, button, [role="button"], input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid #c48b30;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Cursor pointer em interativos */
+button:not(:disabled), [role="button"]:not([aria-disabled="true"]) { cursor: pointer; }
+
+/* Mobile — carrossel hero menor */
+@media (max-width: 767px) {
+  #home { height: 70vh !important; min-height: 520px !important; }
+  #home h1 { font-size: 32px !important; line-height: 1.08 !important; }
+  .hero-deco-mobile-hide { display: none !important; }
+}
+
 /* Acessibilidade: respeitar redução de movimento */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
