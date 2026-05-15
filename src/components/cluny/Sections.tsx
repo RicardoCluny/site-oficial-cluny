@@ -2144,16 +2144,17 @@ export function Diagnostico() {
               </div>
             </div>
 
-            {/* Card de pergunta */}
-            <div
-              style={{
-                background: "#ffffff",
-                borderRadius: 16,
-                padding: 32,
-                boxShadow: "0 4px 20px rgba(0,90,84,0.08)",
-                width: "100%",
-              }}
-            >
+            <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-6 lg:gap-8 items-stretch">
+              {/* Card de pergunta */}
+              <div
+                style={{
+                  background: "#ffffff",
+                  borderRadius: 16,
+                  padding: 32,
+                  boxShadow: "0 4px 20px rgba(0,90,84,0.08)",
+                  width: "100%",
+                }}
+              >
               <div key={step} className="animate-fade-in">
                 <h3 className="font-display text-[22px] lg:text-[28px] leading-[1.2]" style={{ color: "#1F3D2E" }}>
                   {currentQ!.q}
