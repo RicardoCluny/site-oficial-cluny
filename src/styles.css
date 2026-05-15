@@ -228,10 +228,8 @@ html { scroll-behavior: smooth; }
 /* Cursor pointer em interativos */
 button:not(:disabled), [role="button"]:not([aria-disabled="true"]) { cursor: pointer; }
 
-/* Mobile — carrossel hero menor */
+/* Mobile — hero ajustes */
 @media (max-width: 767px) {
-  #home { height: 70vh !important; min-height: 520px !important; }
-  #home h1 { font-size: 32px !important; line-height: 1.08 !important; }
   .hero-deco-mobile-hide { display: none !important; }
 }
 
