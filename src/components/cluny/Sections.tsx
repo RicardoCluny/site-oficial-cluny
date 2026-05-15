@@ -1693,6 +1693,324 @@ const DIAG12: DiagQ[] = [
     ]},
 ];
 
+/* ============= CONTEXTOS EDUCATIVOS DO PAINEL DIREITO ============= */
+type DiagContextBlock =
+  | { kind: "metrics2x2"; items: { k: string; v: string }[] }
+  | { kind: "insight"; label: string; text: string }
+  | { kind: "quote"; text: string; source: string }
+  | { kind: "checklist"; items: string[] }
+  | { kind: "checklistAlert"; items: string[] };
+
+type DiagContextData = {
+  tag: string;
+  titulo: string;
+  corpo: string;
+  blocks: DiagContextBlock[];
+};
+
+// Mapeado por categoria (4 categorias = 4 contextos durante perguntas)
+const DIAG_CONTEXTS: DiagContextData[] = [
+  // Categoria 0 — Estrutura / Faturamento (Q1)
+  {
+    tag: "POR QUE ISSO IMPORTA",
+    titulo: "O faturamento revela o estágio de gestão que sua empresa exige",
+    corpo:
+      "Empresas de diferentes tamanhos precisam de estruturas financeiras diferentes. Uma empresa que fatura R$ 50k/mês pode funcionar com planilha. Acima de R$ 200k, a falta de controle começa a custar caro — e acima de R$ 1M, é questão de tempo até uma crise de caixa.",
+    blocks: [
+      {
+        kind: "metrics2x2",
+        items: [
+          { k: "82%", v: "das PMEs fecham em 5 anos por problemas financeiros (Sebrae)" },
+          { k: "3x", v: "mais chance de sobrevivência com controle financeiro formal" },
+          { k: "R$ 200k", v: "faturamento mínimo onde gestão estruturada se paga no 1º mês" },
+          { k: "60d", v: "tempo médio entre o problema surgir e o empresário perceber sem controle" },
+        ],
+      },
+    ],
+  },
+  // Categoria 1 — Controle Financeiro / Margem (Q2)
+  {
+    tag: "POR QUE ISSO IMPORTA",
+    titulo: "Não conhecer a margem é o erro financeiro mais comum — e mais caro",
+    corpo:
+      "A maioria dos empresários conhece o faturamento, mas desconhece a margem real. A diferença entre receita e lucro pode ser de 30 a 60% — e esse gap é onde o dinheiro desaparece.",
+    blocks: [
+      {
+        kind: "insight",
+        label: "DADO DE MERCADO",
+        text:
+          "Segundo a FGV, 71% dos empresários de PME superestimam a própria margem de lucro em pelo menos 15 pontos percentuais. Precificar sem margem real significa trabalhar para pagar custos, não para lucrar.",
+      },
+      {
+        kind: "checklist",
+        items: [
+          "O que grandes empresas fazem: fechamento mensal de DRE com margem por produto, canal e cliente.",
+          "O que PMEs bem geridas fazem: acompanham margem semanalmente — não só no balanço anual do contador.",
+        ],
+      },
+    ],
+  },
+  // Categoria 2 — Operação & Equipe / Controle (Q3)
+  {
+    tag: "POR QUE ISSO IMPORTA",
+    titulo: "A ferramenta não é o problema — a ausência de processo é",
+    corpo:
+      "Planilhas não são erradas. ERPs não são garantia. O que define se o controle funciona é se alguém competente está olhando os números com frequência e tomando decisão com base neles.",
+    blocks: [
+      {
+        kind: "quote",
+        text:
+          "Empresas que revisam indicadores financeiros semanalmente têm 40% menos chance de enfrentar crise de liquidez nos 12 meses seguintes.",
+        source: "— McKinsey Global Institute, Small Business Financial Health Report",
+      },
+      {
+        kind: "checklist",
+        items: [
+          "Empresas saudáveis têm alguém dedicado ao financeiro — interno ou terceirizado.",
+          "Contador ≠ gestor financeiro. Contador cuida do passado fiscal. Gestor financeiro cuida do futuro do caixa.",
+        ],
+      },
+    ],
+  },
+  // Categoria 3 — Estratégia / Dor (Q4)
+  {
+    tag: "POR QUE ISSO IMPORTA",
+    titulo: "Cada dor financeira tem uma causa raiz — e uma solução específica",
+    corpo:
+      "As situações mais comuns não são azar. São sintomas de estágios diferentes de desorganização. Identificar qual é a sua dor principal acelera em 3x a velocidade de resolução.",
+    blocks: [
+      {
+        kind: "checklistAlert",
+        items: [
+          "'Não sobrou dinheiro' → saídas não mapeadas, capital de giro consumindo resultado.",
+          "'Não sei se posso investir' → ausência de projeção de fluxo de caixa e cenários.",
+          "'Contador sumiu' → confusão entre obrigação fiscal e gestão financeira.",
+          "'Não tenho relatórios' → dados existem mas não estão estruturados para decisão.",
+        ],
+      },
+    ],
+  },
+];
+
+// Painel da tela de resultado
+const DIAG_RESULT_CONTEXT: DiagContextData = {
+  tag: "O QUE OS DADOS DIZEM",
+  titulo: "Empresas no seu estágio que estruturam a gestão crescem diferente",
+  corpo:
+    "Com base nas suas respostas, você está no estágio onde a estruturação financeira gera o maior retorno — porque os processos ainda são simples o suficiente para reorganizar rápido, mas o faturamento já justifica o investimento.",
+  blocks: [
+    {
+      kind: "insight",
+      label: "REFERÊNCIA DE MERCADO",
+      text:
+        "Empresas que implantam BPO Financeiro entre R$ 500k e R$ 3M/ano identificam, em média, de 8% a 18% de redução de custos ocultos nos primeiros 90 dias de operação estruturada.",
+    },
+    {
+      kind: "checklist",
+      items: [
+        "O próximo passo é mapear as saídas não controladas — que na maioria das empresas neste estágio representam 12 a 20% do faturamento.",
+        "Uma conversa de 30 minutos já é suficiente para identificar os 3 pontos críticos do seu financeiro.",
+      ],
+    },
+  ],
+};
+
+function DiagContextPanel({ data }: { data: DiagContextData }) {
+  return (
+    <div
+      key={data.titulo}
+      className="animate-slide-in-right"
+      style={{
+        background: "#1F3D2E",
+        color: "#f4f1ec",
+        borderRadius: 16,
+        padding: "32px 28px",
+        height: "100%",
+      }}
+    >
+      <span
+        style={{
+          fontFamily: "JetBrains Mono, ui-monospace, monospace",
+          fontSize: 10,
+          color: "#c48b30",
+          fontWeight: 700,
+          textTransform: "uppercase",
+          letterSpacing: "0.12em",
+        }}
+      >
+        · {data.tag}
+      </span>
+      <h4
+        className="font-display"
+        style={{
+          fontSize: 19,
+          lineHeight: 1.25,
+          color: "#f4f1ec",
+          fontWeight: 600,
+          marginTop: 14,
+        }}
+      >
+        {data.titulo}
+      </h4>
+      <p
+        style={{
+          fontFamily: "Inter, system-ui, sans-serif",
+          fontSize: 12.5,
+          lineHeight: 1.65,
+          color: "#9fb8b5",
+          marginTop: 14,
+        }}
+      >
+        {data.corpo}
+      </p>
+
+      <div style={{ marginTop: 22, display: "flex", flexDirection: "column", gap: 16 }}>
+        {data.blocks.map((b, bi) => {
+          if (b.kind === "metrics2x2") {
+            return (
+              <div
+                key={bi}
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: 10,
+                }}
+              >
+                {b.items.map((it, ii) => (
+                  <div
+                    key={ii}
+                    style={{
+                      background: "rgba(244,241,236,0.06)",
+                      border: "1px solid rgba(244,241,236,0.08)",
+                      borderRadius: 10,
+                      padding: "14px 14px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                        fontSize: 22,
+                        color: "#c48b30",
+                        fontWeight: 700,
+                        lineHeight: 1.1,
+                      }}
+                    >
+                      {it.k}
+                    </div>
+                    <div
+                      style={{
+                        fontFamily: "Inter, system-ui, sans-serif",
+                        fontSize: 11,
+                        color: "#cec9b8",
+                        marginTop: 6,
+                        lineHeight: 1.45,
+                      }}
+                    >
+                      {it.v}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            );
+          }
+          if (b.kind === "insight") {
+            return (
+              <div
+                key={bi}
+                style={{
+                  background: "rgba(196,139,48,0.10)",
+                  border: "1px solid rgba(196,139,48,0.25)",
+                  borderRadius: 10,
+                  padding: 14,
+                }}
+              >
+                <div
+                  style={{
+                    fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                    fontSize: 9,
+                    color: "#c48b30",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.12em",
+                    fontWeight: 700,
+                  }}
+                >
+                  {b.label}
+                </div>
+                <div
+                  style={{
+                    fontFamily: "Inter, system-ui, sans-serif",
+                    fontSize: 12,
+                    color: "#e8d5a8",
+                    marginTop: 8,
+                    lineHeight: 1.6,
+                  }}
+                >
+                  {b.text}
+                </div>
+              </div>
+            );
+          }
+          if (b.kind === "quote") {
+            return (
+              <div key={bi} style={{ borderLeft: "2px solid #c48b30", paddingLeft: 14 }}>
+                <div
+                  className="font-display"
+                  style={{
+                    fontStyle: "italic",
+                    fontSize: 14,
+                    color: "#cec9b8",
+                    lineHeight: 1.5,
+                  }}
+                >
+                  {b.text}
+                </div>
+                <div
+                  style={{
+                    fontFamily: "Inter, system-ui, sans-serif",
+                    fontSize: 10.5,
+                    color: "#6e9e9a",
+                    marginTop: 8,
+                  }}
+                >
+                  {b.source}
+                </div>
+              </div>
+            );
+          }
+          if (b.kind === "checklist" || b.kind === "checklistAlert") {
+            const isAlert = b.kind === "checklistAlert";
+            return (
+              <ul key={bi} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                {b.items.map((it, ii) => (
+                  <li
+                    key={ii}
+                    style={{
+                      display: "flex",
+                      gap: 10,
+                      fontFamily: "Inter, system-ui, sans-serif",
+                      fontSize: 12,
+                      color: "#cec9b8",
+                      lineHeight: 1.55,
+                    }}
+                  >
+                    {isAlert ? (
+                      <AlertTriangle size={14} color="#c48b30" strokeWidth={2} style={{ flexShrink: 0, marginTop: 2 }} />
+                    ) : (
+                      <CheckCircle2 size={14} color="#c48b30" strokeWidth={2} style={{ flexShrink: 0, marginTop: 2 }} />
+                    )}
+                    <span>{it}</span>
+                  </li>
+                ))}
+              </ul>
+            );
+          }
+          return null;
+        })}
+      </div>
+    </div>
+  );
+}
+
 function diagResultado(answers: (number | null)[]) {
   const total = answers.reduce<number>((s, a, i) => s + (a === null ? 0 : DIAG12[i].opts[a].risco), 0);
   const max = DIAG12.length * 3;
