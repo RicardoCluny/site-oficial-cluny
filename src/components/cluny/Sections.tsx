@@ -17,6 +17,12 @@ import heroPerson from "@/assets/hero-person.jpg";
 import blogDre from "@/assets/blog-dre.jpg";
 import blogHolding from "@/assets/blog-holding.jpg";
 import faqIllu from "@/assets/faq-illustration.jpg";
+import metodo01 from "@/assets/metodo-01-diagnostico.jpg";
+import metodo02 from "@/assets/metodo-02-fundacao.jpg";
+import metodo03 from "@/assets/metodo-03-reforma.jpg";
+import metodo04 from "@/assets/metodo-04-operacao.jpg";
+import metodo05 from "@/assets/metodo-05-gestao.jpg";
+const METODO_IMAGES = [metodo01, metodo02, metodo03, metodo04, metodo05];
 
 /* ============ Helpers CRO ============ */
 function useCounterUp(to: number, duration = 1200) {
