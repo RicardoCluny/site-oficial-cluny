@@ -11,7 +11,7 @@ import {
   Instagram, Linkedin, Youtube, Mail, Phone, MapPin, X as XIcon,
   Search as SearchIcon, Settings2, Gauge, TrendingUp,
 } from "lucide-react";
-import heroOffice from "@/assets/hero-office.jpg";
+
 import blogTrib from "@/assets/blog-tributario.jpg";
 import blogDre from "@/assets/blog-dre.jpg";
 import blogHolding from "@/assets/blog-holding.jpg";
