@@ -665,10 +665,11 @@ export function Hero() {
                 Agendar diagnóstico gratuito
                 <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
               </a>
-              <div className="font-mono-tech text-[11px] text-[#1F3D2E]/70 flex items-center gap-3">
-                <span className="text-[#c48b30] uppercase tracking-widest font-bold">NPS 94</span>
-                <span aria-hidden className="h-px w-6 bg-[#c48b30]/40" />
-                <span>+500 empresas atendidas</span>
+              <div className="flex items-center gap-2 mt-3">
+                <span aria-hidden style={{ color: "#c48b30", fontSize: 14, letterSpacing: "1px" }}>★★★★★</span>
+                <span style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 11, color: "#6e7b7c" }}>
+                  NPS 94 · +500 empresas atendidas · 12 anos de mercado
+                </span>
               </div>
             </div>
           </div>
