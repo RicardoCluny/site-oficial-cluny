@@ -609,76 +609,86 @@ export function Hero() {
   return (
     <section
       id="home"
-      className="relative overflow-hidden bg-[#1F3D2E] selection:bg-[#c48b30] selection:text-[#1F3D2E]"
+      className="relative overflow-hidden bg-[#f4f1ec] selection:bg-[#1F3D2E] selection:text-[#f4f1ec]"
       aria-label="Cluny — BPO Financeiro e Controladoria"
     >
-      {/* glow ambiente */}
+      {/* glow ambiente claro */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(900px 500px at 85% 15%, rgba(196,139,48,0.10), transparent 60%), radial-gradient(700px 500px at 5% 95%, rgba(244,241,236,0.05), transparent 60%)",
+            "radial-gradient(900px 500px at 85% 15%, rgba(196,139,48,0.12), transparent 60%), radial-gradient(700px 500px at 5% 95%, rgba(206,201,184,0.45), transparent 60%)",
+        }}
+      />
+      {/* grade fina decorativa */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.05] hero-deco-mobile-hide"
+        style={{
+          backgroundImage:
+            "linear-gradient(to right, #1F3D2E 1px, transparent 1px), linear-gradient(to bottom, #1F3D2E 1px, transparent 1px)",
+          backgroundSize: "80px 80px",
         }}
       />
 
       <div className="relative max-w-[1320px] w-full mx-auto px-6 lg:px-10 py-16 lg:py-24">
         {/* Eyebrow / metadata */}
-        <div className="mb-10 lg:mb-14 flex items-center gap-4 text-[#f4f1ec]/40 font-mono-tech text-[10px] tracking-[0.2em] uppercase">
+        <div className="mb-10 lg:mb-14 flex items-center gap-4 text-[#1F3D2E]/50 font-mono-tech text-[10px] tracking-[0.2em] uppercase">
           <span className="text-[#c48b30]">BPO Financeiro</span>
-          <span aria-hidden className="h-px w-12 bg-[#c48b30]/30" />
+          <span aria-hidden className="h-px w-12 bg-[#c48b30]/40" />
           <span className="hidden sm:inline">Estratégia & Crescimento</span>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-0 items-center">
-          {/* Tipografia massiva — esquerda */}
-          <div className="lg:col-span-7 z-10 relative">
+          {/* Tipografia — esquerda */}
+          <div className="lg:col-span-6 z-10 relative">
             <h1 className="flex flex-col">
-              <span className="font-display text-[#f4f1ec] text-[56px] sm:text-7xl md:text-8xl lg:text-[9.5rem] leading-[0.85] tracking-tight font-semibold">
+              <span className="font-display text-[#1F3D2E] text-[44px] sm:text-6xl md:text-7xl lg:text-[6.5rem] leading-[0.9] tracking-tight font-semibold">
                 Sua empresa
               </span>
               <div className="flex items-end gap-6 mt-2">
-                <span className="font-display text-[#f4f1ec] text-[56px] sm:text-7xl md:text-8xl lg:text-[9.5rem] leading-[0.85] tracking-tight font-semibold">
+                <span className="font-display text-[#1F3D2E] text-[44px] sm:text-6xl md:text-7xl lg:text-[6.5rem] leading-[0.9] tracking-tight font-semibold">
                   cresce.
                 </span>
                 <div className="hidden md:block max-w-[200px] border-l border-[#c48b30] pl-4 pb-3">
-                  <p className="font-sans text-[#f4f1ec]/60 text-xs leading-relaxed uppercase tracking-wider">
+                  <p className="font-sans text-[#1F3D2E]/60 text-xs leading-relaxed uppercase tracking-wider">
                     Controladoria para PMEs que faturam até R$ 30M
                   </p>
                 </div>
               </div>
-              <span className="font-display italic font-light text-[#c48b30] text-[32px] sm:text-5xl md:text-6xl lg:text-7xl leading-tight mt-8 lg:mt-10">
+              <span className="font-display italic font-light text-[#005a54] text-[26px] sm:text-4xl md:text-5xl lg:text-[3.25rem] leading-tight mt-6 lg:mt-8">
                 Suas finanças acompanham?
               </span>
             </h1>
 
-            <div className="mt-12 lg:mt-16 flex flex-col sm:flex-row items-start sm:items-center gap-8 sm:gap-10">
+            <div className="mt-10 lg:mt-12 flex flex-col sm:flex-row items-start sm:items-center gap-8 sm:gap-10">
               <a
                 href="#diagnostico"
-                className="group bg-[#f4f1ec] hover:bg-[#c48b30] transition-colors duration-500 px-8 lg:px-10 py-4 lg:py-5 rounded-full inline-flex items-center gap-3 text-[#1F3D2E] font-sans font-semibold text-base lg:text-lg shadow-xl"
+                className="group bg-[#005a54] hover:bg-[#1F3D2E] transition-colors duration-500 px-8 lg:px-10 py-4 lg:py-5 rounded-full inline-flex items-center gap-3 text-[#f4f1ec] font-sans font-semibold text-base lg:text-lg shadow-xl"
               >
                 Agendar diagnóstico gratuito
                 <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
               </a>
-              <div className="font-mono-tech text-[11px] text-[#f4f1ec]/50">
+              <div className="font-mono-tech text-[11px] text-[#1F3D2E]/60">
                 <span className="block text-[#c48b30] mb-1 uppercase tracking-widest">NPS 94</span>
                 <span>+500 empresas atendidas</span>
               </div>
             </div>
-            <p className="mt-4 text-[12px] text-[#f4f1ec]/50 font-sans">
+            <p className="mt-4 text-[12px] text-[#1F3D2E]/55 font-sans">
               Sem compromisso. Diagnóstico de 30 minutos por videochamada.
             </p>
           </div>
 
           {/* Imagem grande — direita */}
-          <div className="lg:col-span-5 relative h-[440px] sm:h-[540px] lg:h-[820px] lg:-mr-10">
+          <div className="lg:col-span-6 relative h-[460px] sm:h-[580px] lg:h-[860px] lg:-mr-10">
             <div
               className="absolute inset-0 rounded-2xl lg:rounded-none lg:rounded-l-[4rem] overflow-hidden"
               style={{
                 WebkitMaskImage:
-                  "linear-gradient(to right, transparent 0%, #000 22%, #000 100%), linear-gradient(to top, transparent 0%, #000 14%, #000 100%)",
+                  "linear-gradient(to right, transparent 0%, #000 24%, #000 100%), linear-gradient(to top, transparent 0%, #000 12%, #000 100%)",
                 maskImage:
-                  "linear-gradient(to right, transparent 0%, #000 22%, #000 100%), linear-gradient(to top, transparent 0%, #000 14%, #000 100%)",
+                  "linear-gradient(to right, transparent 0%, #000 24%, #000 100%), linear-gradient(to top, transparent 0%, #000 12%, #000 100%)",
                 WebkitMaskComposite: "source-in",
                 maskComposite: "intersect",
               }}
@@ -691,26 +701,99 @@ export function Hero() {
                 className="w-full h-full object-cover object-center"
                 fetchPriority="high"
               />
-              {/* Overlay de tom verde */}
               <div
                 aria-hidden
                 className="absolute inset-0 pointer-events-none"
                 style={{
                   background:
-                    "linear-gradient(120deg, rgba(31,61,46,0.2), transparent 55%)",
+                    "linear-gradient(120deg, rgba(31,61,46,0.18), transparent 55%)",
                 }}
               />
             </div>
+
+            {/* Camada de elementos flutuantes */}
             <div className="absolute inset-0 pointer-events-none">
-              {/* Floating brass card */}
-              <div className="pointer-events-auto absolute bottom-6 left-4 lg:-left-12 bg-[#f4f1ec] p-6 lg:p-8 shadow-2xl max-w-[240px] hero-deco-mobile-hide">
-                <div aria-hidden className="w-8 h-1 bg-[#c48b30] mb-4" />
-                <p className="font-display text-lg lg:text-xl text-[#1F3D2E] leading-tight mb-3">
+              {/* Card brass principal — bottom left */}
+              <div className="pointer-events-auto absolute bottom-6 left-4 lg:-left-16 bg-[#f4f1ec] p-6 lg:p-7 shadow-2xl max-w-[240px] hero-deco-mobile-hide border-l-4 border-[#c48b30] float-card-1">
+                <p className="font-display text-base lg:text-lg text-[#1F3D2E] leading-tight mb-3">
                   Decisões baseadas em números, não em suposições.
                 </p>
                 <span className="font-mono-tech text-[10px] text-[#1F3D2E]/40 uppercase tracking-widest">
                   Método Cluny
                 </span>
+              </div>
+
+              {/* KPI card — top left */}
+              <div className="pointer-events-auto absolute top-8 -left-6 lg:-left-20 bg-[#1F3D2E] text-[#f4f1ec] p-5 shadow-2xl w-[200px] hero-deco-mobile-hide float-card-2 rounded-sm">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="font-mono-tech text-[9px] uppercase tracking-widest text-[#cec9b8]">Margem líquida</span>
+                  <span className="text-[#c48b30] font-mono-tech text-[10px]">+12.4%</span>
+                </div>
+                <div className="font-mono-tech text-3xl text-[#f4f1ec] mb-3">R$ 2.4M</div>
+                {/* mini sparkline */}
+                <svg viewBox="0 0 100 28" className="w-full h-7" aria-hidden>
+                  <polyline
+                    fill="none"
+                    stroke="#c48b30"
+                    strokeWidth="1.5"
+                    points="0,22 12,18 24,20 36,14 48,16 60,10 72,12 84,6 100,4"
+                  />
+                  <polyline
+                    fill="none"
+                    stroke="#005a54"
+                    strokeWidth="1"
+                    strokeDasharray="2,2"
+                    points="0,24 100,16"
+                  />
+                </svg>
+              </div>
+
+              {/* Card de gráfico de barras — top right */}
+              <div className="pointer-events-auto absolute top-24 lg:top-32 right-2 lg:-right-8 bg-[#f4f1ec] p-4 shadow-2xl w-[180px] hero-deco-mobile-hide float-card-3 border border-[#1F3D2E]/10">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="font-mono-tech text-[9px] uppercase tracking-widest text-[#1F3D2E]/60">Fluxo de caixa</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#005a54] animate-pulse" />
+                </div>
+                <div className="flex items-end gap-1 h-16">
+                  {[40, 65, 50, 78, 55, 88, 72, 95].map((h, i) => (
+                    <div
+                      key={i}
+                      className="flex-1 rounded-sm"
+                      style={{
+                        height: `${h}%`,
+                        background: i === 7 ? "#c48b30" : "#005a54",
+                        opacity: i === 7 ? 1 : 0.3 + (h / 200),
+                      }}
+                    />
+                  ))}
+                </div>
+                <div className="flex justify-between mt-2 font-mono-tech text-[8px] text-[#1F3D2E]/40">
+                  <span>JAN</span><span>AGO</span>
+                </div>
+              </div>
+
+              {/* Indicador circular — meio direita */}
+              <div className="pointer-events-auto absolute bottom-32 lg:bottom-48 -right-4 lg:-right-12 bg-[#f4f1ec] rounded-full p-4 shadow-2xl w-[120px] h-[120px] hero-deco-mobile-hide float-card-1 flex flex-col items-center justify-center border border-[#c48b30]/30">
+                <svg viewBox="0 0 36 36" className="absolute inset-0 w-full h-full -rotate-90" aria-hidden>
+                  <circle cx="18" cy="18" r="15.5" fill="none" stroke="#cec9b8" strokeWidth="2" />
+                  <circle
+                    cx="18" cy="18" r="15.5"
+                    fill="none"
+                    stroke="#005a54"
+                    strokeWidth="2"
+                    strokeDasharray="97.4"
+                    strokeDashoffset="14"
+                    strokeLinecap="round"
+                  />
+                </svg>
+                <span className="font-mono-tech text-2xl text-[#1F3D2E] z-10">86%</span>
+                <span className="font-mono-tech text-[8px] uppercase tracking-widest text-[#1F3D2E]/50 z-10 mt-1">Eficiência</span>
+              </div>
+
+              {/* Tag pulse — top right pequeno */}
+              <div className="pointer-events-auto absolute top-2 right-6 lg:right-12 bg-[#005a54] text-[#f4f1ec] px-3 py-1.5 shadow-lg flex items-center gap-2 hero-deco-mobile-hide float-card-2 rounded-full">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#c48b30] animate-pulse" />
+                <span className="font-mono-tech text-[9px] uppercase tracking-widest">Live · 12 KPIs</span>
               </div>
             </div>
           </div>
@@ -718,7 +801,7 @@ export function Hero() {
 
         {/* Detalhe inferior */}
         <div className="mt-16 hidden lg:flex justify-between items-end">
-          <div className="font-mono-tech text-[9px] text-[#f4f1ec]/25 uppercase tracking-[0.3em] flex gap-12">
+          <div className="font-mono-tech text-[9px] text-[#1F3D2E]/30 uppercase tracking-[0.3em] flex gap-12">
             <span>CRC-SP 2SP-000000</span>
             <span>Operando desde 2013</span>
           </div>
