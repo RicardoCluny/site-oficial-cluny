@@ -638,26 +638,19 @@ export function Hero() {
         }}
       />
 
-      <div className="relative max-w-[1320px] w-full mx-auto px-6 lg:px-10 pt-2 lg:pt-3 pb-16 lg:pb-24">
+      <div className="relative max-w-[1320px] w-full mx-auto px-6 lg:px-10 pt-10 lg:pt-20 pb-16 lg:pb-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-0 items-start lg:items-start">
           {/* Tipografia — esquerda */}
           <div className="lg:col-span-6 z-10 relative">
             <h1 className="flex flex-col">
-              <span className="font-display text-[#1F3D2E] text-[44px] sm:text-6xl md:text-7xl lg:text-[6.5rem] leading-[0.9] tracking-tight font-semibold">
-                Sua empresa
+              <span className="font-display text-[#1F3D2E] text-[44px] sm:text-6xl md:text-7xl lg:text-[6.5rem] leading-[0.9] tracking-tight font-semibold whitespace-nowrap">
+                Sua empresa cresce.
               </span>
-              <div className="flex items-end gap-6 mt-2">
-                <span className="font-display text-[#1F3D2E] text-[44px] sm:text-6xl md:text-7xl lg:text-[6.5rem] leading-[0.9] tracking-tight font-semibold">
-                  cresce.
-                </span>
-                <div className="hidden md:block max-w-[200px] border-l border-[#c48b30] pl-4 pb-3">
-                  <p className="font-sans text-[#1F3D2E]/60 text-xs leading-relaxed uppercase tracking-wider">
-                    Controladoria para PMEs que faturam até R$ 30M
-                  </p>
-                </div>
-              </div>
-              <span className="font-display italic font-light text-[#005a54] text-[26px] sm:text-4xl md:text-5xl lg:text-[3.25rem] leading-tight mt-6 lg:mt-8">
+              <span className="font-display italic font-light text-[#c48b30] text-[28px] sm:text-4xl md:text-5xl lg:text-[3.5rem] leading-tight mt-5 lg:mt-7">
                 Suas finanças acompanham?
+              </span>
+              <span className="font-sans text-[#1F3D2E]/70 text-sm lg:text-base leading-relaxed uppercase tracking-wider mt-6 lg:mt-8 border-l-2 border-[#c48b30] pl-4 max-w-[420px]">
+                Controladoria para PMEs que faturam até R$ 30M
               </span>
             </h1>
 
@@ -2587,12 +2580,26 @@ export function Metodo() {
       />
       <div className="relative max-w-[1320px] mx-auto px-6 lg:px-10">
         {/* Cabeçalho */}
-        <div className="max-w-3xl mb-14 lg:mb-20">
+        <div className="max-w-3xl mb-14 lg:mb-20 relative">
           <span className="label-mono text-[#c48b30]">· O MÉTODO CLUNY</span>
           <h2
-            className="font-display font-semibold mt-4 leading-[1.05] text-[#1F3D2E]"
+            className="font-display font-semibold mt-4 leading-[1.05] text-[#1F3D2E] relative inline-block"
             style={{ fontSize: "clamp(32px, 5vw, 56px)" }}
           >
+            {/* Elemento flutuante decorativo conectado ao texto */}
+            <span
+              aria-hidden
+              className="hidden lg:flex absolute -left-32 top-2 items-center gap-3 float-card-2 pointer-events-none"
+            >
+              <span className="bg-white shadow-xl border border-[#e8e4db] rounded-xl px-3 py-2 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#005a54] animate-pulse" />
+                <span className="font-mono-tech text-[10px] uppercase tracking-widest text-[#1F3D2E]">5 fases</span>
+              </span>
+              <svg width="56" height="20" viewBox="0 0 56 20" className="text-[#c48b30]">
+                <path d="M2 10 Q 28 -4, 54 10" fill="none" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 3" />
+                <path d="M48 6 L54 10 L48 14" fill="none" stroke="currentColor" strokeWidth="1.5" />
+              </svg>
+            </span>
             5 etapas que transformam caos financeiro em <span className="italic text-[#005a54]">clareza estratégica</span>.
           </h2>
           <p className="mt-5 text-[17px] leading-relaxed text-[#1F3D2E]/70 max-w-2xl">
@@ -2709,7 +2716,7 @@ export function Metodo() {
           <div className="lg:col-span-7 lg:sticky lg:top-24">
             <article
               key={active}
-              className="animate-fade-in relative bg-white rounded-2xl border border-[#e8e4db] p-8 lg:p-10"
+              className="animate-slide-in-right relative bg-white rounded-2xl border border-[#e8e4db] p-8 lg:p-10"
               style={{ boxShadow: "0 24px 60px rgba(31,61,46,0.10)" }}
             >
               <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
@@ -2797,6 +2804,36 @@ export function Metodo() {
                 </button>
               </div>
             </article>
+          </div>
+        </div>
+
+        {/* Bloco explicativo — por que trabalhar com método */}
+        <div className="mt-16 lg:mt-24 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+          <div className="lg:col-span-5">
+            <span className="label-mono text-[#c48b30]">· POR QUE COM MÉTODO</span>
+            <h3 className="font-display text-[28px] lg:text-[36px] leading-tight text-[#1F3D2E] mt-3">
+              Sem método, finanças viram <span className="italic text-[#005a54]">improviso</span>.
+            </h3>
+          </div>
+          <div className="lg:col-span-7 space-y-5">
+            <p className="text-[16px] lg:text-[17px] leading-relaxed text-[#1F3D2E]/80">
+              A maioria das PMEs cresce em receita antes de crescer em estrutura — e isso transforma a operação financeira em um terreno de decisões reativas, planilhas paralelas e relatórios que ninguém entende. O Método Cluny existe para inverter essa lógica: cada etapa entrega uma camada técnica que estabiliza a operação, libera o sócio do operacional e devolve previsibilidade à gestão.
+            </p>
+            <p className="text-[16px] lg:text-[17px] leading-relaxed text-[#1F3D2E]/80">
+              Trabalhar com método não é seguir um roteiro — é garantir que cada decisão financeira seja sustentada por dado, processo e governança. É assim que o caos vira clareza, e a clareza vira crescimento.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
+              {[
+                { k: "45–60", l: "dias de implantação" },
+                { k: "350+", l: "empresas atendidas" },
+                { k: "100%", l: "ciclo contínuo de gestão" },
+              ].map((m) => (
+                <div key={m.k} className="border-l-2 border-[#c48b30] pl-4">
+                  <div className="font-display text-[28px] text-[#1F3D2E] leading-none">{m.k}</div>
+                  <div className="font-mono-tech text-[10px] uppercase tracking-widest text-[#6e7b7c] mt-2">{m.l}</div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
