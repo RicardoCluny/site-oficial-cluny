@@ -2295,6 +2295,8 @@ function MetodoCard({ etapa }: { etapa: MetodoEtapa }) {
   );
 }
 
+const METODO_ICONS = [SearchIcon, Settings2, Construction, Gauge, TrendingUp];
+
 export function Metodo() {
   const [active, setActive] = useState(0);
   const [visible, setVisible] = useState(false);
@@ -2305,165 +2307,239 @@ export function Metodo() {
     if (!el) return;
     const io = new IntersectionObserver(
       (entries) => entries.forEach((e) => e.isIntersecting && setVisible(true)),
-      { threshold: 0.25 },
+      { threshold: 0.2 },
     );
     io.observe(el);
     return () => io.disconnect();
   }, []);
 
-  const total = METODO_4.length;
+  const total = METODO_ETAPAS.length;
+  const etapaAtual = METODO_ETAPAS[active];
+  const Icon = METODO_ICONS[active] ?? SearchIcon;
 
   return (
     <section
       id="metodo"
       ref={sectionRef}
-      style={{ background: "#1F3D2E", padding: "120px 0" }}
+      className="bg-[#f4f1ec] py-24 lg:py-32 relative overflow-hidden"
     >
-      <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
-        <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
-          <span className="label-mono" style={{ color: "#c48b30" }}>· O MÉTODO CLUNY</span>
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(800px 500px at 90% 10%, rgba(196,139,48,0.08), transparent 60%), radial-gradient(700px 500px at 0% 90%, rgba(0,90,84,0.06), transparent 60%)",
+        }}
+      />
+      <div className="relative max-w-[1320px] mx-auto px-6 lg:px-10">
+        {/* Cabeçalho */}
+        <div className="max-w-3xl mb-14 lg:mb-20">
+          <span className="label-mono text-[#c48b30]">· O MÉTODO CLUNY</span>
           <h2
-            className="font-display font-semibold mt-4 leading-[1.1]"
-            style={{ color: "#f4f1ec", fontSize: "clamp(28px, 4.4vw, 44px)" }}
+            className="font-display font-semibold mt-4 leading-[1.05] text-[#1F3D2E]"
+            style={{ fontSize: "clamp(32px, 5vw, 56px)" }}
           >
-            O caminho que transforma caos financeiro em clareza estratégica
+            5 etapas que transformam caos financeiro em <span className="italic text-[#005a54]">clareza estratégica</span>.
           </h2>
-          <p className="mt-5 text-[18px] leading-relaxed" style={{ color: "#cec9b8" }}>
-            4 etapas. Resultado mensurável. Sem achismos.
+          <p className="mt-5 text-[17px] leading-relaxed text-[#1F3D2E]/70 max-w-2xl">
+            Um caminho aplicado em mais de 350 empresas. Implantação em 45–60 dias e ciclo contínuo de operação e gestão.
           </p>
         </div>
 
-        {/* Desktop — timeline horizontal */}
-        <div className="hidden lg:block relative">
-          {/* linha conectora animada */}
-          <div className="absolute left-0 right-0" style={{ top: 38, height: 2 }}>
-            <div className="mx-auto" style={{ maxWidth: "85%", height: "100%", background: "rgba(244,241,236,0.12)", position: "relative" }}>
+        {/* Grid lateral: stepper esquerda · texto direita */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+          {/* Stepper vertical (5 etapas) */}
+          <div className="lg:col-span-5">
+            <div className="relative">
+              {/* linha conectora */}
               <div
-                style={{
-                  height: "100%",
-                  background: "linear-gradient(to right, #005a54, #c48b30)",
-                  width: visible ? "100%" : "0%",
-                  transition: "width 2000ms ease-out",
-                }}
+                className="absolute left-[34px] top-3 bottom-3 w-px"
+                style={{ background: "rgba(31,61,46,0.12)" }}
+                aria-hidden
               />
+              <div
+                className="absolute left-[34px] top-3 w-px"
+                style={{
+                  background: "linear-gradient(to bottom, #005a54, #c48b30)",
+                  height: visible ? `${(active / (total - 1)) * 100}%` : "0%",
+                  maxHeight: "calc(100% - 24px)",
+                  transition: "height 700ms ease-out",
+                }}
+                aria-hidden
+              />
+
+              <ul className="space-y-2">
+                {METODO_ETAPAS.map((e, idx) => {
+                  const isActive = active === idx;
+                  const isPast = idx < active;
+                  const StepIcon = METODO_ICONS[idx] ?? SearchIcon;
+                  return (
+                    <li key={e.n}>
+                      <button
+                        type="button"
+                        onClick={() => setActive(idx)}
+                        onMouseEnter={() => setActive(idx)}
+                        aria-pressed={isActive}
+                        className="w-full text-left flex items-start gap-5 py-3 pr-4 rounded-xl transition-all"
+                        style={{
+                          background: isActive ? "rgba(0,90,84,0.06)" : "transparent",
+                          paddingLeft: 8,
+                          cursor: "pointer",
+                        }}
+                      >
+                        <span
+                          className="relative z-10 shrink-0 flex items-center justify-center transition-all"
+                          style={{
+                            width: 56,
+                            height: 56,
+                            borderRadius: "50%",
+                            background: isActive ? "#1F3D2E" : isPast ? "#005a54" : "#f4f1ec",
+                            border: `2px solid ${isActive ? "#c48b30" : isPast ? "#005a54" : "rgba(31,61,46,0.18)"}`,
+                            boxShadow: isActive ? "0 0 0 6px rgba(196,139,48,0.18)" : "none",
+                          }}
+                        >
+                          <span
+                            style={{
+                              fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                              fontSize: 16,
+                              fontWeight: 700,
+                              color: isActive ? "#c48b30" : isPast ? "#f4f1ec" : "#1F3D2E",
+                            }}
+                          >
+                            {e.n}
+                          </span>
+                        </span>
+                        <span className="flex-1 min-w-0 pt-1">
+                          <span
+                            className="flex items-center gap-2"
+                            style={{
+                              color: isActive ? "#1F3D2E" : "#1F3D2E",
+                              opacity: isActive ? 1 : 0.55,
+                            }}
+                          >
+                            <StepIcon size={15} strokeWidth={2} />
+                            <span
+                              style={{
+                                fontFamily: "Inter",
+                                fontSize: 17,
+                                fontWeight: isActive ? 700 : 500,
+                                letterSpacing: "0.01em",
+                              }}
+                            >
+                              {e.titulo}
+                            </span>
+                          </span>
+                          <span
+                            className="block mt-1"
+                            style={{
+                              fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                              fontSize: 11,
+                              color: isActive ? "#c48b30" : "#6e7b7c",
+                              letterSpacing: "0.06em",
+                              textTransform: "uppercase",
+                              fontWeight: 600,
+                            }}
+                          >
+                            {e.periodo}
+                          </span>
+                        </span>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
             </div>
           </div>
 
-          <div className="grid grid-cols-4 relative">
-            {METODO_4.map((e, idx) => {
-              const isActive = active === idx;
-              const Icon = e.Icon;
-              return (
-                <button
-                  key={e.n}
-                  onClick={() => setActive(idx)}
-                  onMouseEnter={() => setActive(idx)}
-                  className="group flex flex-col items-center text-center px-4 outline-none"
-                  style={{
-                    opacity: visible ? 1 : 0,
-                    transform: visible ? "translateY(0)" : "translateY(12px)",
-                    transition: `all 500ms ease-out ${0.4 + idx * 0.3}s`,
-                    background: "transparent", border: 0, cursor: "pointer",
-                  }}
-                  aria-expanded={isActive}
-                >
-                  <div
-                    className="relative z-10 flex items-center justify-center transition-all"
-                    style={{
-                      width: 78, height: 78, borderRadius: "50%",
-                      background: "#1F3D2E",
-                      border: `2px solid ${isActive ? "#c48b30" : "#005a54"}`,
-                      boxShadow: isActive ? "0 0 0 6px rgba(196,139,48,0.15)" : "none",
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontFamily: "JetBrains Mono, ui-monospace, monospace",
-                        fontSize: 28, fontWeight: 700, color: "#c48b30",
-                      }}
-                    >
-                      {e.n}
-                    </span>
-                  </div>
-                  <div className="mt-5 flex items-center gap-2" style={{ color: isActive ? "#c48b30" : "#f4f1ec" }}>
-                    <Icon size={16} strokeWidth={1.8} />
-                    <span style={{ fontFamily: "Inter", fontSize: 15, fontWeight: 600, letterSpacing: "0.02em" }}>
-                      {e.label}
-                    </span>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* card expansivo */}
-          <div className="mt-12 max-w-3xl mx-auto" key={active}>
-            <MetodoCard etapa={METODO_4[active]} />
-          </div>
-        </div>
-
-        {/* Mobile — vertical empilhado */}
-        <div className="lg:hidden space-y-3">
-          {METODO_4.map((e, idx) => {
-            const isActive = active === idx;
-            const Icon = e.Icon;
-            return (
-              <div key={e.n}>
-                <button
-                  onClick={() => setActive(isActive ? -1 : idx)}
-                  className="w-full flex items-center gap-4 text-left p-4"
-                  style={{
-                    background: "rgba(244,241,236,0.04)",
-                    border: `1px solid ${isActive ? "#c48b30" : "rgba(244,241,236,0.12)"}`,
-                    borderRadius: 12,
-                  }}
-                  aria-expanded={isActive}
-                >
+          {/* Painel lateral com explicação */}
+          <div className="lg:col-span-7 lg:sticky lg:top-24">
+            <article
+              key={active}
+              className="animate-fade-in relative bg-white rounded-2xl border border-[#e8e4db] p-8 lg:p-10"
+              style={{ boxShadow: "0 24px 60px rgba(31,61,46,0.10)" }}
+            >
+              <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+                <div className="flex items-center gap-3">
                   <span
-                    className="flex items-center justify-center shrink-0"
+                    className="inline-flex items-center justify-center"
                     style={{
-                      width: 48, height: 48, borderRadius: "50%",
-                      background: "#1F3D2E", border: "2px solid #005a54",
-                      fontFamily: "JetBrains Mono, ui-monospace, monospace",
-                      fontWeight: 700, fontSize: 16, color: "#c48b30",
+                      width: 44, height: 44, borderRadius: 12,
+                      background: "rgba(0,90,84,0.08)", color: "#005a54",
                     }}
                   >
-                    {e.n}
+                    <Icon size={20} strokeWidth={2} />
                   </span>
-                  <div className="flex items-center gap-2 flex-1" style={{ color: "#f4f1ec" }}>
-                    <Icon size={16} strokeWidth={1.8} color="#c48b30" />
-                    <span style={{ fontFamily: "Inter", fontSize: 16, fontWeight: 600 }}>{e.label}</span>
+                  <div>
+                    <span className="label-mono text-[#c48b30]">ETAPA {etapaAtual.n}</span>
+                    <h3 className="font-display text-[26px] lg:text-[32px] leading-tight text-[#1F3D2E] mt-1">
+                      {etapaAtual.titulo}
+                    </h3>
                   </div>
-                  <span style={{ color: "#c48b30", fontSize: 18, transition: "transform 300ms", transform: isActive ? "rotate(45deg)" : "none" }}>+</span>
-                </button>
-                {isActive && (
-                  <div className="mt-3">
-                    <MetodoCard etapa={e} />
-                  </div>
-                )}
+                </div>
+                <FaseBadge fase={etapaAtual.fase} />
               </div>
-            );
-          })}
+
+              <p className="text-[16px] leading-relaxed text-[#1A1A1A]/85">
+                {etapaAtual.desc}
+              </p>
+
+              <div className="mt-7">
+                <div className="label-mono text-[#005a54] mb-4">· O QUE EU ENTREGO NESTA ETAPA</div>
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
+                  {etapaAtual.entregaveis.map((it, i) => (
+                    <li key={i} className="flex gap-3 items-start">
+                      <CheckCircle2 size={16} strokeWidth={2.2} className="text-[#005a54] mt-0.5 shrink-0" />
+                      <span style={{ fontFamily: "Inter", fontSize: 14, color: "#1A1A1A", lineHeight: 1.55 }}>
+                        {it}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* navegação inferior */}
+              <div className="mt-8 pt-6 border-t border-[#e8e4db] flex items-center justify-between">
+                <button
+                  type="button"
+                  onClick={() => setActive((i) => Math.max(0, i - 1))}
+                  disabled={active === 0}
+                  className="text-[13px] font-bold text-[#6e7b7c] disabled:opacity-30 hover:text-[#005a54] transition-colors"
+                  style={{ background: "transparent", border: 0, cursor: active === 0 ? "default" : "pointer" }}
+                >
+                  ← Anterior
+                </button>
+                <span className="font-mono-tech text-[12px] text-[#6e7b7c]">
+                  {active + 1} / {total}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setActive((i) => Math.min(total - 1, i + 1))}
+                  disabled={active === total - 1}
+                  className="text-[13px] font-bold text-[#005a54] disabled:opacity-30 hover:text-[#1F3D2E] transition-colors"
+                  style={{ background: "transparent", border: 0, cursor: active === total - 1 ? "default" : "pointer" }}
+                >
+                  Próxima →
+                </button>
+              </div>
+            </article>
+          </div>
         </div>
 
         {/* CTA final */}
         <div className="text-center mt-16 lg:mt-20">
           <a
             href="#diagnostico"
-            className="inline-flex items-center justify-center gap-2 transition-all hover:opacity-90"
+            className="inline-flex items-center justify-center gap-2 transition-all hover:opacity-90 bg-[#005a54] text-[#f4f1ec] font-bold"
             style={{
-              background: "#005a54", color: "#f4f1ec",
               minHeight: 56, padding: "0 32px", borderRadius: 12,
-              fontFamily: "Inter", fontWeight: 700, fontSize: 14, letterSpacing: "0.02em",
+              fontFamily: "Inter", fontSize: 14, letterSpacing: "0.02em",
             }}
           >
             Quero aplicar o Método Cluny no meu negócio
-            <span>→</span>
+            <span aria-hidden>→</span>
           </a>
         </div>
       </div>
-      {/* suprimir aviso eslint sobre total não usado */}
-      <span className="sr-only">{total} etapas</span>
     </section>
   );
 }
