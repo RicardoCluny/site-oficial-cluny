@@ -11,7 +11,7 @@ import {
   Instagram, Linkedin, Youtube, Mail, Phone, MapPin, X as XIcon,
   Search as SearchIcon, Settings2, Gauge, TrendingUp,
 } from "lucide-react";
-import heroOffice from "@/assets/hero-office.jpg";
+
 import blogTrib from "@/assets/blog-tributario.jpg";
 import blogDre from "@/assets/blog-dre.jpg";
 import blogHolding from "@/assets/blog-holding.jpg";
@@ -671,17 +671,38 @@ export function Hero() {
 
           {/* Imagem grande — direita */}
           <div className="lg:col-span-4 relative h-[360px] sm:h-[440px] lg:h-[700px]">
-            <div className="absolute inset-0 bg-[#c48b30]/10 rounded-2xl lg:rounded-none lg:rounded-l-[4rem] overflow-hidden">
+            <div
+              className="absolute inset-0 rounded-2xl lg:rounded-none lg:rounded-l-[4rem] overflow-hidden"
+              style={{
+                WebkitMaskImage:
+                  "linear-gradient(to right, transparent 0%, #000 18%, #000 100%), linear-gradient(to top, transparent 0%, #000 14%, #000 100%)",
+                maskImage:
+                  "linear-gradient(to right, transparent 0%, #000 18%, #000 100%), linear-gradient(to top, transparent 0%, #000 14%, #000 100%)",
+                WebkitMaskComposite: "source-in",
+                maskComposite: "intersect",
+              }}
+            >
               <img
-                src={heroOffice}
-                alt="Escritório corporativo Cluny — ambiente sofisticado em verde profundo e detalhes em latão"
-                width={800}
+                src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=900&q=85&fit=crop&crop=faces,center"
+                alt="Profissional Cluny — confiança e clareza estratégica"
+                width={900}
                 height={1200}
-                className="w-full h-full object-cover grayscale opacity-80 mix-blend-luminosity"
+                className="w-full h-full object-cover"
                 fetchPriority="high"
               />
+              {/* Overlay de tom verde */}
+              <div
+                aria-hidden
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background:
+                    "linear-gradient(120deg, rgba(31,61,46,0.2), transparent 55%)",
+                }}
+              />
+            </div>
+            <div className="absolute inset-0 pointer-events-none">
               {/* Floating brass card */}
-              <div className="absolute bottom-6 left-4 lg:-left-12 bg-[#f4f1ec] p-6 lg:p-8 shadow-2xl max-w-[240px] hero-deco-mobile-hide">
+              <div className="pointer-events-auto absolute bottom-6 left-4 lg:-left-12 bg-[#f4f1ec] p-6 lg:p-8 shadow-2xl max-w-[240px] hero-deco-mobile-hide">
                 <div aria-hidden className="w-8 h-1 bg-[#c48b30] mb-4" />
                 <p className="font-display text-lg lg:text-xl text-[#1F3D2E] leading-tight mb-3">
                   Decisões baseadas em números, não em suposições.
