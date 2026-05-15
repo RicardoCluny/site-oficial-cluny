@@ -2105,7 +2105,7 @@ export function Diagnostico() {
         </div>
 
         {!isResult ? (
-          <div style={{ maxWidth: 780, margin: "0 auto" }}>
+          <div style={{ maxWidth: 1180, margin: "0 auto" }}>
             {/* Progress bar */}
             <div style={{ marginBottom: 32 }}>
               <div className="flex items-center justify-between mb-2">
