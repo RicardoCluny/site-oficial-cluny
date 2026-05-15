@@ -702,7 +702,7 @@ export function Hero() {
             </div>
             <div className="absolute inset-0 pointer-events-none">
               {/* Floating brass card */}
-              <div className="absolute bottom-6 left-4 lg:-left-12 bg-[#f4f1ec] p-6 lg:p-8 shadow-2xl max-w-[240px] hero-deco-mobile-hide">
+              <div className="pointer-events-auto absolute bottom-6 left-4 lg:-left-12 bg-[#f4f1ec] p-6 lg:p-8 shadow-2xl max-w-[240px] hero-deco-mobile-hide">
                 <div aria-hidden className="w-8 h-1 bg-[#c48b30] mb-4" />
                 <p className="font-display text-lg lg:text-xl text-[#1F3D2E] leading-tight mb-3">
                   Decisões baseadas em números, não em suposições.
