@@ -9,6 +9,7 @@ import {
 import {
   PlayCircle, Table as TableIcon, BookOpen, CheckCircle2, AlertTriangle, Construction,
   Instagram, Linkedin, Youtube, Mail, Phone, MapPin, X as XIcon,
+  Search as SearchIcon, Settings2, Gauge, TrendingUp,
 } from "lucide-react";
 import blogTrib from "@/assets/blog-tributario.jpg";
 import blogDre from "@/assets/blog-dre.jpg";
