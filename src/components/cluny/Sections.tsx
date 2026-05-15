@@ -632,8 +632,8 @@ export function Hero() {
         }}
       />
 
-      <div className="relative max-w-[1320px] w-full mx-auto px-6 lg:px-10 pt-6 lg:pt-10 pb-16 lg:pb-24">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-0 items-center">
+      <div className="relative max-w-[1320px] w-full mx-auto px-6 lg:px-10 pt-2 lg:pt-3 pb-16 lg:pb-24">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-0 items-start lg:items-start">
           {/* Tipografia — esquerda */}
           <div className="lg:col-span-6 z-10 relative">
             <h1 className="flex flex-col">
