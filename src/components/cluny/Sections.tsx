@@ -3016,3 +3016,38 @@ export function Footer() {
 }
 
 /* ============ Sticky CTA Bar (desktop) ============ */
+
+/* ============ Social Proof Bar ============ */
+export function SocialProofBar() {
+  return (
+    <div
+      role="region"
+      aria-label="Prova social"
+      style={{
+        position: "sticky",
+        top: 0,
+        zIndex: 30,
+        height: 36,
+        background: "#005a54",
+        color: "#f4f1ec",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 24,
+        padding: "0 16px",
+        fontFamily: "JetBrains Mono, ui-monospace, monospace",
+        fontSize: 11,
+        letterSpacing: "0.08em",
+        textTransform: "uppercase",
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+      }}
+    >
+      <span>+500 empresas atendidas</span>
+      <span aria-hidden style={{ opacity: 0.5 }}>•</span>
+      <span>12 anos de mercado</span>
+      <span aria-hidden style={{ opacity: 0.5 }}>•</span>
+      <span style={{ color: "#c48b30", fontWeight: 700 }}>NPS 94</span>
+    </div>
+  );
+}
