@@ -2223,6 +2223,10 @@ export function Diagnostico() {
                 </button>
               </div>
             </div>
+
+            {/* Painel educativo direito */}
+            <DiagContextPanel data={DIAG_CONTEXTS[currentQ!.categoria]} />
+            </div>
           </div>
         ) : (
           // RESULTADO
