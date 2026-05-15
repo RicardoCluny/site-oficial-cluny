@@ -605,141 +605,103 @@ function HeroVideo() {
 }
 
 export function Hero() {
-  const [i, setI] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const [hidden, setHidden] = useState(false);
-  const total = HERO_SLIDES.length;
-
-  // Page Visibility API — pausa autoplay quando aba está em background
-  useEffect(() => {
-    const onVis = () => setHidden(typeof document !== "undefined" && document.hidden);
-    onVis();
-    if (typeof document !== "undefined") {
-      document.addEventListener("visibilitychange", onVis);
-      return () => document.removeEventListener("visibilitychange", onVis);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (paused || hidden) return;
-    const t = setInterval(() => setI((p) => (p + 1) % total), 5000);
-    return () => clearInterval(t);
-  }, [paused, hidden, total]);
-
-  const go = (n: number) => setI((n + total) % total);
-
   return (
     <section
       id="home"
-      className="relative overflow-hidden"
-      style={{ height: "90vh", minHeight: 600 }}
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      aria-roledescription="carousel"
-      aria-label="Apresentação Cluny"
-      aria-live="polite"
+      className="relative overflow-hidden bg-[#1F3D2E] selection:bg-[#c48b30] selection:text-[#1F3D2E]"
+      aria-label="Cluny — BPO Financeiro e Controladoria"
     >
-      {HERO_SLIDES.map((s, idx) => (
-        <div
-          key={s.id}
-          className="absolute inset-0 transition-opacity duration-700 ease-in-out"
-          style={{ background: s.bg, opacity: i === idx ? 1 : 0, pointerEvents: i === idx ? "auto" : "none" }}
-          aria-hidden={i !== idx}
-          role="group"
-          aria-roledescription="slide"
-          aria-label={`${idx + 1} de ${total}`}
-        >
-          {/* glow */}
-          <div aria-hidden className="pointer-events-none absolute inset-0" style={{
-            background: "radial-gradient(900px 500px at 80% 20%, rgba(255,255,255,0.06), transparent 60%), radial-gradient(700px 500px at 10% 90%, rgba(196,139,48,0.10), transparent 60%)",
-          }} />
-          {/* formas decorativas slide vídeo */}
-          {s.id === "video" && (
-            <>
-              <div aria-hidden className="absolute hidden md:block float-card-1" style={{ top: "12%", left: "6%", width: 140, height: 140, border: "1px solid rgba(244,241,236,0.10)", borderRadius: "50%" }} />
-              <div aria-hidden className="absolute hidden md:block float-card-3" style={{ bottom: "10%", right: "8%", width: 180, height: 180, border: "1px solid rgba(244,241,236,0.10)" }} />
-            </>
-          )}
+      {/* glow ambiente */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(900px 500px at 85% 15%, rgba(196,139,48,0.10), transparent 60%), radial-gradient(700px 500px at 5% 95%, rgba(244,241,236,0.05), transparent 60%)",
+        }}
+      />
 
-          <div className="relative max-w-[1320px] mx-auto px-6 lg:px-10 h-full grid grid-cols-1 lg:grid-cols-[55fr_45fr] gap-10 lg:gap-16 items-center py-20 lg:py-0">
-            <div className={i === idx ? "animate-fade-in" : ""}>
-              <span style={{
-                fontFamily: "Inter", fontSize: 12, fontWeight: 600,
-                letterSpacing: "0.16em", textTransform: "uppercase", color: s.eyebrowColor,
-              }}>
-                {s.eyebrow}
+      <div className="relative max-w-[1320px] w-full mx-auto px-6 lg:px-10 py-16 lg:py-24">
+        {/* Eyebrow / metadata */}
+        <div className="mb-10 lg:mb-14 flex items-center gap-4 text-[#f4f1ec]/40 font-mono-tech text-[10px] tracking-[0.2em] uppercase">
+          <span className="text-[#c48b30]">BPO Financeiro</span>
+          <span aria-hidden className="h-px w-12 bg-[#c48b30]/30" />
+          <span className="hidden sm:inline">Estratégia & Crescimento</span>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-0 items-center">
+          {/* Tipografia massiva — esquerda */}
+          <div className="lg:col-span-8 z-10 relative">
+            <h1 className="flex flex-col">
+              <span className="font-display text-[#f4f1ec] text-[56px] sm:text-7xl md:text-8xl lg:text-[9.5rem] leading-[0.85] tracking-tight font-semibold">
+                Sua empresa
               </span>
-              <h1
-                className="font-display font-semibold mt-6 leading-[1.05] text-[36px] sm:text-[48px] lg:text-[56px]"
-                style={{ color: "#f4f1ec" }}
+              <div className="flex items-end gap-6 mt-2">
+                <span className="font-display text-[#f4f1ec] text-[56px] sm:text-7xl md:text-8xl lg:text-[9.5rem] leading-[0.85] tracking-tight font-semibold">
+                  cresce.
+                </span>
+                <div className="hidden md:block max-w-[200px] border-l border-[#c48b30] pl-4 pb-3">
+                  <p className="font-sans text-[#f4f1ec]/60 text-xs leading-relaxed uppercase tracking-wider">
+                    Controladoria para PMEs que faturam até R$ 30M
+                  </p>
+                </div>
+              </div>
+              <span className="font-display italic font-light text-[#c48b30] text-[32px] sm:text-5xl md:text-6xl lg:text-7xl leading-tight mt-8 lg:mt-10">
+                Suas finanças acompanham?
+              </span>
+            </h1>
+
+            <div className="mt-12 lg:mt-16 flex flex-col sm:flex-row items-start sm:items-center gap-8 sm:gap-10">
+              <a
+                href="#diagnostico"
+                className="group bg-[#f4f1ec] hover:bg-[#c48b30] transition-colors duration-500 px-8 lg:px-10 py-4 lg:py-5 rounded-full inline-flex items-center gap-3 text-[#1F3D2E] font-sans font-semibold text-base lg:text-lg shadow-xl"
               >
-                {s.title}
-              </h1>
-              <p className="mt-6 max-w-[560px] leading-relaxed text-base lg:text-[20px]" style={{ color: "rgba(244,241,236,0.82)" }}>
-                {s.subtitle}
-              </p>
-              <div className="mt-8 lg:mt-10">
-                <a
-                  href={s.cta.href}
-                  className="group inline-flex items-center justify-center gap-2 transition-all hover:opacity-90"
-                  style={{
-                    background: s.cta.bg, color: s.cta.color, minHeight: 48,
-                    padding: "0 28px", borderRadius: 12,
-                    fontFamily: "Inter", fontWeight: 700, fontSize: 14, letterSpacing: "0.02em",
-                  }}
-                >
-                  {s.cta.label}
-                  <span className="transition-transform group-hover:translate-x-1">→</span>
-                </a>
-                <p className="mt-3 text-[12px]" style={{ color: "rgba(244,241,236,0.6)", fontFamily: "Inter" }}>
-                  Sem compromisso. Diagnóstico de 30 minutos por videochamada.
-                </p>
+                Agendar diagnóstico gratuito
+                <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
+              </a>
+              <div className="font-mono-tech text-[11px] text-[#f4f1ec]/50">
+                <span className="block text-[#c48b30] mb-1 uppercase tracking-widest">NPS 94</span>
+                <span>+500 empresas atendidas</span>
               </div>
             </div>
-            <div className="hidden lg:block relative w-full h-[460px]">
-              {s.visual}
+            <p className="mt-4 text-[12px] text-[#f4f1ec]/50 font-sans">
+              Sem compromisso. Diagnóstico de 30 minutos por videochamada.
+            </p>
+          </div>
+
+          {/* Imagem grande — direita */}
+          <div className="lg:col-span-4 relative h-[360px] sm:h-[440px] lg:h-[700px]">
+            <div className="absolute inset-0 bg-[#c48b30]/10 rounded-2xl lg:rounded-none lg:rounded-l-[4rem] overflow-hidden">
+              <img
+                src={heroOffice}
+                alt="Escritório corporativo Cluny — ambiente sofisticado em verde profundo e detalhes em latão"
+                width={800}
+                height={1200}
+                className="w-full h-full object-cover grayscale opacity-80 mix-blend-luminosity"
+                fetchPriority="high"
+              />
+              {/* Floating brass card */}
+              <div className="absolute bottom-6 left-4 lg:-left-12 bg-[#f4f1ec] p-6 lg:p-8 shadow-2xl max-w-[240px] hero-deco-mobile-hide">
+                <div aria-hidden className="w-8 h-1 bg-[#c48b30] mb-4" />
+                <p className="font-display text-lg lg:text-xl text-[#1F3D2E] leading-tight mb-3">
+                  Decisões baseadas em números, não em suposições.
+                </p>
+                <span className="font-mono-tech text-[10px] text-[#1F3D2E]/40 uppercase tracking-widest">
+                  Método Cluny
+                </span>
+              </div>
             </div>
           </div>
         </div>
-      ))}
 
-      {/* setas */}
-      <button
-        onClick={() => go(i - 1)}
-        aria-label="Slide anterior"
-        className="absolute left-4 lg:left-6 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center transition hover:scale-110"
-        style={{ width: 44, height: 44, borderRadius: 999, background: "rgba(244,241,236,0.12)", border: "1px solid rgba(244,241,236,0.25)", color: "#f4f1ec", backdropFilter: "blur(6px)" }}
-      >
-        ←
-      </button>
-      <button
-        onClick={() => go(i + 1)}
-        aria-label="Próximo slide"
-        className="absolute right-4 lg:right-6 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center transition hover:scale-110"
-        style={{ width: 44, height: 44, borderRadius: 999, background: "rgba(244,241,236,0.12)", border: "1px solid rgba(244,241,236,0.25)", color: "#f4f1ec", backdropFilter: "blur(6px)" }}
-      >
-        →
-      </button>
-
-      {/* dots */}
-      <div className="absolute bottom-6 lg:bottom-8 left-1/2 -translate-x-1/2 z-10 flex items-center gap-3">
-        {HERO_SLIDES.map((s, idx) => (
-          <button
-            key={s.id}
-            onClick={() => go(idx)}
-            aria-label={`Ir para slide ${idx + 1}`}
-            aria-current={i === idx}
-            style={{
-              width: i === idx ? 28 : 10,
-              height: 10,
-              borderRadius: 999,
-              background: i === idx ? "#c48b30" : "rgba(244,241,236,0.4)",
-              border: 0,
-              transition: "all 300ms ease",
-              cursor: "pointer",
-            }}
-          />
-        ))}
+        {/* Detalhe inferior */}
+        <div className="mt-16 hidden lg:flex justify-between items-end">
+          <div className="font-mono-tech text-[9px] text-[#f4f1ec]/25 uppercase tracking-[0.3em] flex gap-12">
+            <span>CRC-SP 2SP-000000</span>
+            <span>Operando desde 2013</span>
+          </div>
+          <div aria-hidden className="h-12 w-px bg-gradient-to-t from-[#c48b30] to-transparent" />
+        </div>
       </div>
     </section>
   );
