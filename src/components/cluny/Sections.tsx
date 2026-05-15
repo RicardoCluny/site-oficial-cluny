@@ -1976,9 +1976,6 @@ type MetodoEtapa = {
   Icon: React.ComponentType<{ size?: number; color?: string; strokeWidth?: number }>;
 };
 
-import {
-  Search as SearchIcon, Settings2, Gauge, TrendingUp,
-} from "lucide-react";
 
 const METODO_4: MetodoEtapa[] = [
   {
