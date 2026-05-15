@@ -17,6 +17,12 @@ import heroPerson from "@/assets/hero-person.jpg";
 import blogDre from "@/assets/blog-dre.jpg";
 import blogHolding from "@/assets/blog-holding.jpg";
 import faqIllu from "@/assets/faq-illustration.jpg";
+import metodo01 from "@/assets/metodo-01-diagnostico.jpg";
+import metodo02 from "@/assets/metodo-02-fundacao.jpg";
+import metodo03 from "@/assets/metodo-03-reforma.jpg";
+import metodo04 from "@/assets/metodo-04-operacao.jpg";
+import metodo05 from "@/assets/metodo-05-gestao.jpg";
+const METODO_IMAGES = [metodo01, metodo02, metodo03, metodo04, metodo05];
 
 /* ============ Helpers CRO ============ */
 function useCounterUp(to: number, duration = 1200) {
@@ -632,8 +638,8 @@ export function Hero() {
         }}
       />
 
-      <div className="relative max-w-[1320px] w-full mx-auto px-6 lg:px-10 pt-6 lg:pt-10 pb-16 lg:pb-24">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-0 items-center">
+      <div className="relative max-w-[1320px] w-full mx-auto px-6 lg:px-10 pt-2 lg:pt-3 pb-16 lg:pb-24">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-0 items-start lg:items-start">
           {/* Tipografia — esquerda */}
           <div className="lg:col-span-6 z-10 relative">
             <h1 className="flex flex-col">
@@ -2669,9 +2675,9 @@ export function Metodo() {
                             <span
                               style={{
                                 fontFamily: "Inter",
-                                fontSize: 17,
-                                fontWeight: isActive ? 700 : 500,
-                                letterSpacing: "0.01em",
+                                fontSize: 22,
+                                fontWeight: isActive ? 700 : 600,
+                                letterSpacing: "-0.01em",
                               }}
                             >
                               {e.titulo}
@@ -2725,6 +2731,27 @@ export function Metodo() {
                   </div>
                 </div>
                 <FaseBadge fase={etapaAtual.fase} />
+              </div>
+
+              <div className="relative -mx-8 lg:-mx-10 mb-7 overflow-hidden">
+                <img
+                  src={METODO_IMAGES[active]}
+                  alt={`Etapa ${etapaAtual.n} — ${etapaAtual.titulo}`}
+                  width={800}
+                  height={600}
+                  loading="lazy"
+                  className="w-full h-[220px] lg:h-[260px] object-cover"
+                />
+                <div
+                  aria-hidden
+                  className="absolute inset-0 pointer-events-none"
+                  style={{ background: "linear-gradient(180deg, rgba(31,61,46,0.05) 0%, rgba(31,61,46,0.0) 40%, rgba(255,255,255,0.0) 80%, rgba(255,255,255,0.6) 100%)" }}
+                />
+                <span
+                  className="absolute top-4 left-8 lg:left-10 font-mono-tech text-[10px] uppercase tracking-widest text-[#f4f1ec] bg-[#1F3D2E]/80 px-2.5 py-1 rounded-sm"
+                >
+                  Ordem · {etapaAtual.n} de 05
+                </span>
               </div>
 
               <p className="text-[16px] leading-relaxed text-[#1A1A1A]/85">
