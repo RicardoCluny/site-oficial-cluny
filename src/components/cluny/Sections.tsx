@@ -2852,6 +2852,24 @@ export function Metodo() {
           </div>
         </div>
 
+        {/* Imagem ilustrativa — diagnóstico financeiro */}
+        <div
+          className="relative overflow-hidden"
+          style={{ borderRadius: "12px 12px 0 0", marginTop: 40 }}
+        >
+          <img
+            src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200&q=85&fit=crop"
+            alt="Análise financeira em conjunto"
+            loading="lazy"
+            style={{ width: "100%", maxHeight: 380, objectFit: "cover", objectPosition: "center", display: "block" }}
+          />
+          <div
+            aria-hidden
+            className="absolute inset-0 pointer-events-none"
+            style={{ background: "linear-gradient(to bottom, rgba(31,61,46,0.3) 0%, transparent 50%)" }}
+          />
+        </div>
+
         {/* CTA final */}
         <div className="text-center mt-16 lg:mt-20">
           <a
