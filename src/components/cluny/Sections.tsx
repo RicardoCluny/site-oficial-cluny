@@ -606,13 +606,24 @@ function HeroVideo() {
 export function Hero() {
   const [i, setI] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const total = HERO_SLIDES.length;
 
+  // Page Visibility API — pausa autoplay quando aba está em background
   useEffect(() => {
-    if (paused) return;
+    const onVis = () => setHidden(typeof document !== "undefined" && document.hidden);
+    onVis();
+    if (typeof document !== "undefined") {
+      document.addEventListener("visibilitychange", onVis);
+      return () => document.removeEventListener("visibilitychange", onVis);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (paused || hidden) return;
     const t = setInterval(() => setI((p) => (p + 1) % total), 5000);
     return () => clearInterval(t);
-  }, [paused, total]);
+  }, [paused, hidden, total]);
 
   const go = (n: number) => setI((n + total) % total);
 
@@ -625,6 +636,7 @@ export function Hero() {
       onMouseLeave={() => setPaused(false)}
       aria-roledescription="carousel"
       aria-label="Apresentação Cluny"
+      aria-live="polite"
     >
       {HERO_SLIDES.map((s, idx) => (
         <div
