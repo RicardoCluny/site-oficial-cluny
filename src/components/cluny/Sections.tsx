@@ -9,6 +9,7 @@ import {
 import {
   PlayCircle, Table as TableIcon, BookOpen, CheckCircle2, AlertTriangle, Construction,
   Instagram, Linkedin, Youtube, Mail, Phone, MapPin, X as XIcon,
+  Search as SearchIcon, Settings2, Gauge, TrendingUp,
 } from "lucide-react";
 import blogTrib from "@/assets/blog-tributario.jpg";
 import blogDre from "@/assets/blog-dre.jpg";
@@ -1964,112 +1965,260 @@ function EntregaveisPopover({ etapa }: { etapa: Etapa }) {
   );
 }
 
-export function Metodo() {
+/* ============= MÉTODO CLUNY · 4 ETAPAS ============= */
+type MetodoEtapa = {
+  n: string;
+  label: string;
+  titulo: string;
+  texto: string;
+  entregavel: string;
+  tempo: string;
+  Icon: React.ComponentType<{ size?: number; color?: string; strokeWidth?: number }>;
+};
+
+
+const METODO_4: MetodoEtapa[] = [
+  {
+    n: "01", label: "Diagnóstico", Icon: SearchIcon,
+    titulo: "Vejo o que está invisível nas suas finanças",
+    texto: "Mapeamos receitas, custos, fluxo de caixa, estrutura societária e obrigações fiscais. Em 7 dias úteis, você tem um raio-x completo — não um relatório genérico, mas um diagnóstico do seu negócio.",
+    entregavel: "Relatório de Diagnóstico Personalizado",
+    tempo: "7 dias úteis",
+  },
+  {
+    n: "02", label: "Estruturação", Icon: Settings2,
+    titulo: "Organizo o que estava espalhado",
+    texto: "Implantamos o BPO Financeiro, separamos contas PJ/PF, estruturamos centros de custo e definimos o modelo de relatórios gerenciais que você vai receber toda semana.",
+    entregavel: "Plano de Contas + DRE Gerencial + Dashboard",
+    tempo: "30 a 60 dias",
+  },
+  {
+    n: "03", label: "Controle", Icon: Gauge,
+    titulo: "Você passa a decidir com dados, não com intuição",
+    texto: "Relatórios gerenciais semanais, fechamento mensal, controle de contratos, conciliação bancária e indicadores de performance (KPIs) que revelam onde o dinheiro está indo — e onde está vazando.",
+    entregavel: "Relatórios Semanais + KPIs + Reunião Mensal de Resultado",
+    tempo: "Contínuo",
+  },
+  {
+    n: "04", label: "Crescimento", Icon: TrendingUp,
+    titulo: "Com clareza, o crescimento deixa de ser acidente",
+    texto: "Com a base estruturada, partimos para planejamento orçamentário, análise de viabilidade de expansão, modelagem de cenários e suporte estratégico nas decisões que movem o negócio.",
+    entregavel: "Orçamento Anual + Cenários + Suporte Estratégico",
+    tempo: "Contínuo",
+  },
+];
+
+function MetodoCard({ etapa }: { etapa: MetodoEtapa }) {
   return (
-    <section id="metodo" className="py-24 lg:py-32" style={{ background: "#f4f1ec" }}>
+    <div
+      className="relative animate-fade-in"
+      style={{
+        background: "#f4f1ec",
+        borderLeft: "4px solid #005a54",
+        borderRadius: 8,
+        padding: "28px 32px",
+        boxShadow: "0 24px 60px rgba(0,0,0,0.25)",
+      }}
+    >
+      <h3 className="font-display font-semibold text-[24px] lg:text-[28px] leading-tight" style={{ color: "#1F3D2E" }}>
+        {etapa.titulo}
+      </h3>
+      <p className="mt-4 text-[15px] leading-relaxed" style={{ color: "#1A1A1A" }}>
+        {etapa.texto}
+      </p>
+      <div className="mt-6 flex flex-wrap items-center gap-3">
+        <span
+          style={{
+            background: "#c48b30", color: "#1A1A1A",
+            fontFamily: "Inter", fontSize: 11, fontWeight: 700,
+            padding: "8px 14px", borderRadius: 999, letterSpacing: "0.04em",
+          }}
+        >
+          {etapa.entregavel}
+        </span>
+        <span
+          style={{
+            fontFamily: "JetBrains Mono, ui-monospace, monospace",
+            fontSize: 12, color: "#6e7b7c", fontWeight: 600,
+            letterSpacing: "0.06em", textTransform: "uppercase",
+          }}
+        >
+          ⏱ {etapa.tempo}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+export function Metodo() {
+  const [active, setActive] = useState(0);
+  const [visible, setVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.isIntersecting && setVisible(true)),
+      { threshold: 0.25 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  const total = METODO_4.length;
+
+  return (
+    <section
+      id="metodo"
+      ref={sectionRef}
+      style={{ background: "#1F3D2E", padding: "120px 0" }}
+    >
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="label-mono" style={{ color: "#c48b30" }}>· COMO EU TRABALHO</span>
-          <h2 className="font-display font-semibold text-[40px] lg:text-[56px] leading-[1.05] mt-4" style={{ color: "#1F3D2E" }}>
-            O Método Cluny
+        <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
+          <span className="label-mono" style={{ color: "#c48b30" }}>· O MÉTODO CLUNY</span>
+          <h2
+            className="font-display font-semibold mt-4 leading-[1.1]"
+            style={{ color: "#f4f1ec", fontSize: "clamp(28px, 4.4vw, 44px)" }}
+          >
+            O caminho que transforma caos financeiro em clareza estratégica
           </h2>
-          <p className="mt-6 text-[16px] leading-relaxed" style={{ color: "#1A1A1A" }}>
-            Inspirado na Ordem de Cluny — uma das instituições mais bem organizadas da história — o método estrutura o financeiro da sua empresa em 5 etapas com nome, cadência, papéis e entregáveis definidos. Nada acontece no improviso.
+          <p className="mt-5 text-[18px] leading-relaxed" style={{ color: "#cec9b8" }}>
+            4 etapas. Resultado mensurável. Sem achismos.
           </p>
         </div>
 
         {/* Desktop — timeline horizontal */}
-        <div className="hidden lg:block">
-          <div className="grid grid-cols-5 gap-6 relative">
-            {/* linha base */}
-            <div className="absolute top-[14px] left-[10%] right-[10%] h-[2px]" style={{ background: "#cec9b8" }} />
-            {METODO_ETAPAS.map((e) => (
-              <div key={e.n} className="relative flex flex-col items-center text-center">
-                <div
-                  className="relative z-10 mb-5 flex items-center justify-center"
-                  style={{
-                    width: 30, height: 30, borderRadius: "50%",
-                    background: "#005a54", color: "#f4f1ec",
-                    fontFamily: "JetBrains Mono, ui-monospace, monospace",
-                    fontWeight: 700, fontSize: 12,
-                  }}
-                >
-                  {e.n}
-                </div>
-                <div
-                  className="w-full bg-white p-6 flex flex-col items-center text-center"
-                  style={{ borderRadius: 12, boxShadow: "0 10px 24px rgba(0,0,0,0.05)", minHeight: 320 }}
-                >
-                  <h3 className="font-display font-semibold text-[20px]" style={{ color: "#1F3D2E" }}>
-                    {e.titulo}
-                  </h3>
-                  <div className="mt-1 mb-4" style={{ fontFamily: "Inter, system-ui, sans-serif", fontSize: 12, color: "#6e7b7c" }}>
-                    {e.periodo}
-                  </div>
-                  <p className="text-[14px] leading-relaxed mb-5 flex-1" style={{ color: "#1A1A1A" }}>
-                    {e.desc}
-                  </p>
-                  <FaseBadge fase={e.fase} />
-                  <div className="mt-4">
-                    <EntregaveisPopover etapa={e} />
-                  </div>
-                </div>
-              </div>
-            ))}
+        <div className="hidden lg:block relative">
+          {/* linha conectora animada */}
+          <div className="absolute left-0 right-0" style={{ top: 38, height: 2 }}>
+            <div className="mx-auto" style={{ maxWidth: "85%", height: "100%", background: "rgba(244,241,236,0.12)", position: "relative" }}>
+              <div
+                style={{
+                  height: "100%",
+                  background: "linear-gradient(to right, #005a54, #c48b30)",
+                  width: visible ? "100%" : "0%",
+                  transition: "width 2000ms ease-out",
+                }}
+              />
+            </div>
           </div>
-        </div>
 
-        {/* Mobile — accordion */}
-        <div className="lg:hidden">
-          <Accordion type="single" collapsible defaultValue="01" className="space-y-3">
-            {METODO_ETAPAS.map((e) => (
-              <AccordionItem
-                key={e.n}
-                value={e.n}
-                className="bg-white border-0"
-                style={{ borderRadius: 12, boxShadow: "0 6px 16px rgba(0,0,0,0.04)" }}
-              >
-                <AccordionTrigger className="px-5 py-4 hover:no-underline">
-                  <div className="flex items-center gap-4 flex-1 text-left">
+          <div className="grid grid-cols-4 relative">
+            {METODO_4.map((e, idx) => {
+              const isActive = active === idx;
+              const Icon = e.Icon;
+              return (
+                <button
+                  key={e.n}
+                  onClick={() => setActive(idx)}
+                  onMouseEnter={() => setActive(idx)}
+                  className="group flex flex-col items-center text-center px-4 outline-none"
+                  style={{
+                    opacity: visible ? 1 : 0,
+                    transform: visible ? "translateY(0)" : "translateY(12px)",
+                    transition: `all 500ms ease-out ${0.4 + idx * 0.3}s`,
+                    background: "transparent", border: 0, cursor: "pointer",
+                  }}
+                  aria-expanded={isActive}
+                >
+                  <div
+                    className="relative z-10 flex items-center justify-center transition-all"
+                    style={{
+                      width: 78, height: 78, borderRadius: "50%",
+                      background: "#1F3D2E",
+                      border: `2px solid ${isActive ? "#c48b30" : "#005a54"}`,
+                      boxShadow: isActive ? "0 0 0 6px rgba(196,139,48,0.15)" : "none",
+                    }}
+                  >
                     <span
                       style={{
                         fontFamily: "JetBrains Mono, ui-monospace, monospace",
-                        fontWeight: 700, fontSize: 14, color: "#c48b30",
+                        fontSize: 28, fontWeight: 700, color: "#c48b30",
                       }}
                     >
                       {e.n}
                     </span>
-                    <div className="flex-1">
-                      <div className="font-display font-semibold text-[18px]" style={{ color: "#1F3D2E" }}>
-                        {e.titulo}
-                      </div>
-                      <div style={{ fontFamily: "Inter, system-ui, sans-serif", fontSize: 12, color: "#6e7b7c" }}>
-                        {e.periodo}
-                      </div>
-                    </div>
                   </div>
-                </AccordionTrigger>
-                <AccordionContent className="px-5 pb-5">
-                  <p className="text-[14px] leading-relaxed mb-4" style={{ color: "#1A1A1A" }}>
-                    {e.desc}
-                  </p>
-                  <FaseBadge fase={e.fase} />
-                  <div className="mt-4">
-                    <div className="label-mono mb-2" style={{ color: "#c48b30" }}>Entregáveis</div>
-                    <ul className="space-y-1.5">
-                      {e.entregaveis.map((it, i) => (
-                        <li key={i} className="flex gap-2 text-[13px]" style={{ color: "#1A1A1A" }}>
-                          <span style={{ color: "#005a54", fontWeight: 700 }}>·</span>{it}
-                        </li>
-                      ))}
-                    </ul>
+                  <div className="mt-5 flex items-center gap-2" style={{ color: isActive ? "#c48b30" : "#f4f1ec" }}>
+                    <Icon size={16} strokeWidth={1.8} />
+                    <span style={{ fontFamily: "Inter", fontSize: 15, fontWeight: 600, letterSpacing: "0.02em" }}>
+                      {e.label}
+                    </span>
                   </div>
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* card expansivo */}
+          <div className="mt-12 max-w-3xl mx-auto" key={active}>
+            <MetodoCard etapa={METODO_4[active]} />
+          </div>
+        </div>
+
+        {/* Mobile — vertical empilhado */}
+        <div className="lg:hidden space-y-3">
+          {METODO_4.map((e, idx) => {
+            const isActive = active === idx;
+            const Icon = e.Icon;
+            return (
+              <div key={e.n}>
+                <button
+                  onClick={() => setActive(isActive ? -1 : idx)}
+                  className="w-full flex items-center gap-4 text-left p-4"
+                  style={{
+                    background: "rgba(244,241,236,0.04)",
+                    border: `1px solid ${isActive ? "#c48b30" : "rgba(244,241,236,0.12)"}`,
+                    borderRadius: 12,
+                  }}
+                  aria-expanded={isActive}
+                >
+                  <span
+                    className="flex items-center justify-center shrink-0"
+                    style={{
+                      width: 48, height: 48, borderRadius: "50%",
+                      background: "#1F3D2E", border: "2px solid #005a54",
+                      fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                      fontWeight: 700, fontSize: 16, color: "#c48b30",
+                    }}
+                  >
+                    {e.n}
+                  </span>
+                  <div className="flex items-center gap-2 flex-1" style={{ color: "#f4f1ec" }}>
+                    <Icon size={16} strokeWidth={1.8} color="#c48b30" />
+                    <span style={{ fontFamily: "Inter", fontSize: 16, fontWeight: 600 }}>{e.label}</span>
+                  </div>
+                  <span style={{ color: "#c48b30", fontSize: 18, transition: "transform 300ms", transform: isActive ? "rotate(45deg)" : "none" }}>+</span>
+                </button>
+                {isActive && (
+                  <div className="mt-3">
+                    <MetodoCard etapa={e} />
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* CTA final */}
+        <div className="text-center mt-16 lg:mt-20">
+          <a
+            href="#diagnostico"
+            className="inline-flex items-center justify-center gap-2 transition-all hover:opacity-90"
+            style={{
+              background: "#005a54", color: "#f4f1ec",
+              minHeight: 56, padding: "0 32px", borderRadius: 12,
+              fontFamily: "Inter", fontWeight: 700, fontSize: 14, letterSpacing: "0.02em",
+            }}
+          >
+            Quero aplicar o Método Cluny no meu negócio
+            <span>→</span>
+          </a>
         </div>
       </div>
+      {/* suprimir aviso eslint sobre total não usado */}
+      <span className="sr-only">{total} etapas</span>
     </section>
   );
 }
