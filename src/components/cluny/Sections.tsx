@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 
 import blogTrib from "@/assets/blog-tributario.jpg";
+import heroPerson from "@/assets/hero-person.jpg";
 import blogDre from "@/assets/blog-dre.jpg";
 import blogHolding from "@/assets/blog-holding.jpg";
 import faqIllu from "@/assets/faq-illustration.jpg";
@@ -631,7 +632,7 @@ export function Hero() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-0 items-center">
           {/* Tipografia massiva — esquerda */}
-          <div className="lg:col-span-8 z-10 relative">
+          <div className="lg:col-span-7 z-10 relative">
             <h1 className="flex flex-col">
               <span className="font-display text-[#f4f1ec] text-[56px] sm:text-7xl md:text-8xl lg:text-[9.5rem] leading-[0.85] tracking-tight font-semibold">
                 Sua empresa
@@ -670,24 +671,24 @@ export function Hero() {
           </div>
 
           {/* Imagem grande — direita */}
-          <div className="lg:col-span-4 relative h-[360px] sm:h-[440px] lg:h-[700px]">
+          <div className="lg:col-span-5 relative h-[440px] sm:h-[540px] lg:h-[820px] lg:-mr-10">
             <div
               className="absolute inset-0 rounded-2xl lg:rounded-none lg:rounded-l-[4rem] overflow-hidden"
               style={{
                 WebkitMaskImage:
-                  "linear-gradient(to right, transparent 0%, #000 18%, #000 100%), linear-gradient(to top, transparent 0%, #000 14%, #000 100%)",
+                  "linear-gradient(to right, transparent 0%, #000 22%, #000 100%), linear-gradient(to top, transparent 0%, #000 14%, #000 100%)",
                 maskImage:
-                  "linear-gradient(to right, transparent 0%, #000 18%, #000 100%), linear-gradient(to top, transparent 0%, #000 14%, #000 100%)",
+                  "linear-gradient(to right, transparent 0%, #000 22%, #000 100%), linear-gradient(to top, transparent 0%, #000 14%, #000 100%)",
                 WebkitMaskComposite: "source-in",
                 maskComposite: "intersect",
               }}
             >
               <img
-                src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=900&q=85&fit=crop&crop=faces,center"
+                src={heroPerson}
                 alt="Profissional Cluny — confiança e clareza estratégica"
                 width={900}
                 height={1200}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover object-center"
                 fetchPriority="high"
               />
               {/* Overlay de tom verde */}
