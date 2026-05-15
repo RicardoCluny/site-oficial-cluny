@@ -631,7 +631,7 @@ export function Hero() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-0 items-center">
           {/* Tipografia massiva — esquerda */}
-          <div className="lg:col-span-8 z-10 relative">
+          <div className="lg:col-span-7 z-10 relative">
             <h1 className="flex flex-col">
               <span className="font-display text-[#f4f1ec] text-[56px] sm:text-7xl md:text-8xl lg:text-[9.5rem] leading-[0.85] tracking-tight font-semibold">
                 Sua empresa
