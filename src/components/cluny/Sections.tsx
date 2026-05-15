@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 
 import blogTrib from "@/assets/blog-tributario.jpg";
+import heroPerson from "@/assets/hero-person.jpg";
 import blogDre from "@/assets/blog-dre.jpg";
 import blogHolding from "@/assets/blog-holding.jpg";
 import faqIllu from "@/assets/faq-illustration.jpg";
