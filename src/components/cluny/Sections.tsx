@@ -655,7 +655,7 @@ export function Hero() {
               </span>
             </h1>
 
-            <div className="mt-10 lg:mt-12 flex flex-col sm:flex-row items-start sm:items-center gap-8 sm:gap-10">
+            <div className="mt-10 lg:mt-12 flex flex-col items-start gap-4">
               <a
                 href="#diagnostico"
                 className="group bg-[#005a54] hover:bg-[#1F3D2E] transition-colors duration-500 px-8 lg:px-10 py-4 lg:py-5 rounded-full inline-flex items-center gap-3 text-[#f4f1ec] font-sans font-semibold text-base lg:text-lg shadow-xl"
@@ -663,8 +663,9 @@ export function Hero() {
                 Agendar diagnóstico gratuito
                 <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
               </a>
-              <div className="font-mono-tech text-[11px] text-[#1F3D2E]/60">
-                <span className="block text-[#c48b30] mb-1 uppercase tracking-widest">NPS 94</span>
+              <div className="font-mono-tech text-[11px] text-[#1F3D2E]/70 flex items-center gap-3">
+                <span className="text-[#c48b30] uppercase tracking-widest font-bold">NPS 94</span>
+                <span aria-hidden className="h-px w-6 bg-[#c48b30]/40" />
                 <span>+500 empresas atendidas</span>
               </div>
             </div>
