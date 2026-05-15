@@ -690,6 +690,9 @@ export function Hero() {
                   {s.cta.label}
                   <span className="transition-transform group-hover:translate-x-1">→</span>
                 </a>
+                <p className="mt-3 text-[12px]" style={{ color: "rgba(244,241,236,0.6)", fontFamily: "Inter" }}>
+                  Sem compromisso. Diagnóstico de 30 minutos por videochamada.
+                </p>
               </div>
             </div>
             <div className="hidden lg:block relative w-full h-[460px]">
