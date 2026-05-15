@@ -2716,7 +2716,7 @@ export function Metodo() {
           <div className="lg:col-span-7 lg:sticky lg:top-24">
             <article
               key={active}
-              className="animate-fade-in relative bg-white rounded-2xl border border-[#e8e4db] p-8 lg:p-10"
+              className="animate-slide-in-right relative bg-white rounded-2xl border border-[#e8e4db] p-8 lg:p-10"
               style={{ boxShadow: "0 24px 60px rgba(31,61,46,0.10)" }}
             >
               <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
