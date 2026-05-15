@@ -632,14 +632,7 @@ export function Hero() {
         }}
       />
 
-      <div className="relative max-w-[1320px] w-full mx-auto px-6 lg:px-10 py-16 lg:py-24">
-        {/* Eyebrow / metadata */}
-        <div className="mb-4 lg:mb-6 flex items-center gap-4 text-[#1F3D2E]/50 font-mono-tech text-[10px] tracking-[0.2em] uppercase">
-          <span className="text-[#c48b30]">BPO Financeiro</span>
-          <span aria-hidden className="h-px w-12 bg-[#c48b30]/40" />
-          <span className="hidden sm:inline">Estratégia & Crescimento</span>
-        </div>
-
+      <div className="relative max-w-[1320px] w-full mx-auto px-6 lg:px-10 pt-6 lg:pt-10 pb-16 lg:pb-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-0 items-center">
           {/* Tipografia — esquerda */}
           <div className="lg:col-span-6 z-10 relative">
@@ -662,7 +655,7 @@ export function Hero() {
               </span>
             </h1>
 
-            <div className="mt-10 lg:mt-12 flex flex-col sm:flex-row items-start sm:items-center gap-8 sm:gap-10">
+            <div className="mt-10 lg:mt-12 flex flex-col items-start gap-4">
               <a
                 href="#diagnostico"
                 className="group bg-[#005a54] hover:bg-[#1F3D2E] transition-colors duration-500 px-8 lg:px-10 py-4 lg:py-5 rounded-full inline-flex items-center gap-3 text-[#f4f1ec] font-sans font-semibold text-base lg:text-lg shadow-xl"
@@ -670,14 +663,12 @@ export function Hero() {
                 Agendar diagnóstico gratuito
                 <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
               </a>
-              <div className="font-mono-tech text-[11px] text-[#1F3D2E]/60">
-                <span className="block text-[#c48b30] mb-1 uppercase tracking-widest">NPS 94</span>
+              <div className="font-mono-tech text-[11px] text-[#1F3D2E]/70 flex items-center gap-3">
+                <span className="text-[#c48b30] uppercase tracking-widest font-bold">NPS 94</span>
+                <span aria-hidden className="h-px w-6 bg-[#c48b30]/40" />
                 <span>+500 empresas atendidas</span>
               </div>
             </div>
-            <p className="mt-4 text-[12px] text-[#1F3D2E]/55 font-sans">
-              Sem compromisso. Diagnóstico de 30 minutos por videochamada.
-            </p>
           </div>
 
           {/* Imagem grande — direita */}
@@ -1585,77 +1576,143 @@ export function Indicadores() {
   );
 }
 
-/* ============= DIAGNÓSTICO INTERATIVO · 5 PERGUNTAS ============= */
+/* ============= DIAGNÓSTICO INTERATIVO · 12 PERGUNTAS ============= */
 type DiagOpt = { label: string; risco: number };
-type DiagQ = { q: string; opts: DiagOpt[] };
+type DiagQ = { q: string; hint?: string; opts: DiagOpt[]; categoria: number };
 
-const DIAG5: DiagQ[] = [
-  {
+const DIAG_CATEGORIAS = [
+  { titulo: "Estrutura", desc: "Porte e maturidade da operação" },
+  { titulo: "Controle Financeiro", desc: "Visibilidade de margem e caixa" },
+  { titulo: "Operação & Equipe", desc: "Como o financeiro é executado hoje" },
+  { titulo: "Estratégia", desc: "Planejamento, KPIs e tomada de decisão" },
+];
+
+const DIAG12: DiagQ[] = [
+  // Estrutura
+  { categoria: 0,
     q: "Qual é o faturamento mensal aproximado da sua empresa?",
     opts: [
       { label: "Até R$ 50 mil", risco: 1 },
       { label: "R$ 50k – R$ 200k", risco: 2 },
       { label: "R$ 200k – R$ 1M", risco: 2 },
       { label: "Acima de R$ 1M", risco: 3 },
-    ],
-  },
-  {
+    ]},
+  { categoria: 0,
+    q: "Há quanto tempo a empresa está em operação?",
+    opts: [
+      { label: "Menos de 1 ano", risco: 2 },
+      { label: "1 a 3 anos", risco: 2 },
+      { label: "3 a 7 anos", risco: 1 },
+      { label: "Mais de 7 anos", risco: 1 },
+    ]},
+  { categoria: 0,
+    q: "Qual é o regime tributário atual?",
+    opts: [
+      { label: "Simples Nacional", risco: 1 },
+      { label: "Lucro Presumido", risco: 2 },
+      { label: "Lucro Real", risco: 2 },
+      { label: "Não sei dizer", risco: 3 },
+    ]},
+  // Controle Financeiro
+  { categoria: 1,
     q: "Você sabe qual é a sua margem de lucro real hoje?",
     opts: [
       { label: "Sim, com precisão", risco: 0 },
       { label: "Tenho uma ideia aproximada", risco: 1 },
       { label: "Não sei", risco: 3 },
       { label: "Não acompanho", risco: 3 },
-    ],
-  },
-  {
+    ]},
+  { categoria: 1,
+    q: "Quando foi seu último fechamento financeiro mensal?",
+    opts: [
+      { label: "Faço todo mês, com DRE", risco: 0 },
+      { label: "Faço de vez em quando", risco: 2 },
+      { label: "Faz mais de 3 meses", risco: 3 },
+      { label: "Nunca fiz fechamento mensal", risco: 3 },
+    ]},
+  { categoria: 1,
+    q: "Suas contas pessoais e da empresa estão totalmente separadas?",
+    opts: [
+      { label: "Totalmente separadas", risco: 0 },
+      { label: "Quase tudo, mas tem mistura", risco: 2 },
+      { label: "Misturado com frequência", risco: 3 },
+      { label: "Não há separação clara", risco: 3 },
+    ]},
+  // Operação & Equipe
+  { categoria: 2,
     q: "Como é o seu controle financeiro atual?",
     opts: [
       { label: "Planilha própria", risco: 2 },
       { label: "Sistema (ERP/app)", risco: 1 },
       { label: "Meu contador faz", risco: 2 },
       { label: "Não tenho controle estruturado", risco: 3 },
-    ],
-  },
-  {
+    ]},
+  { categoria: 2,
     q: "Quantas pessoas da equipe administrativa você tem hoje?",
     opts: [
       { label: "Sou eu mesmo", risco: 3 },
       { label: "1 pessoa", risco: 2 },
       { label: "2 a 3 pessoas", risco: 1 },
       { label: "4 ou mais", risco: 1 },
-    ],
-  },
-  {
+    ]},
+  { categoria: 2,
+    q: "Com que frequência você concilia o banco?",
+    opts: [
+      { label: "Diariamente", risco: 0 },
+      { label: "Semanalmente", risco: 1 },
+      { label: "Mensalmente", risco: 2 },
+      { label: "Raramente / nunca", risco: 3 },
+    ]},
+  // Estratégia
+  { categoria: 3,
+    q: "Você opera com orçamento anual ou planejamento financeiro?",
+    opts: [
+      { label: "Sim, revisado mensalmente", risco: 0 },
+      { label: "Tenho orçamento, mas não acompanho", risco: 2 },
+      { label: "Faço só projeções pontuais", risco: 2 },
+      { label: "Não tenho orçamento", risco: 3 },
+    ]},
+  { categoria: 3,
+    q: "Você acompanha KPIs financeiros (margem, ticket, CAC, LTV)?",
+    opts: [
+      { label: "Sim, em dashboard recorrente", risco: 0 },
+      { label: "Acompanho alguns indicadores", risco: 1 },
+      { label: "Olho quando preciso", risco: 2 },
+      { label: "Não acompanho KPIs", risco: 3 },
+    ]},
+  { categoria: 3,
     q: "Qual dessas dores mais representa sua situação?",
     opts: [
       { label: "Faturei bem mas não sobrou dinheiro", risco: 3 },
       { label: "Não sei se posso contratar ou investir", risco: 2 },
-      { label: "Meu contador só aparece no imposto de renda", risco: 2 },
-      { label: "Não tenho relatórios para tomar decisão", risco: 3 },
-    ],
-  },
+      { label: "Meu contador só aparece no IR", risco: 2 },
+      { label: "Não tenho relatórios para decidir", risco: 3 },
+    ]},
 ];
 
 function diagResultado(answers: (number | null)[]) {
-  const total = answers.reduce<number>((s, a, i) => s + (a === null ? 0 : DIAG5[i].opts[a].risco), 0);
-  const margemNaoSabe = answers[1] === 2 || answers[1] === 3;
-  const semControle = answers[2] === 3;
-  if (margemNaoSabe && semControle) {
+  const total = answers.reduce<number>((s, a, i) => s + (a === null ? 0 : DIAG12[i].opts[a].risco), 0);
+  const max = DIAG12.length * 3;
+  const pct = (total / max) * 100;
+  const margemNaoSabe = answers[3] === 2 || answers[3] === 3;
+  const semControle = answers[6] === 3;
+  if ((margemNaoSabe && semControle) || pct >= 75) {
     return {
       titulo: "Diagnóstico: Alto risco financeiro",
       cor: "#b94a3a",
+      score: total, max,
       linhas: [
-        "Sua empresa opera no escuro: sem visibilidade de margem nem controle estruturado.",
+        "Sua empresa opera no escuro: sem visibilidade clara de margem nem controle estruturado.",
         "Risco identificado: decisões baseadas em sensação podem comprometer o caixa nos próximos 90 dias.",
         "Próximo passo: implantação imediata de BPO Financeiro para estruturar a base operacional.",
       ],
     };
   }
-  if (total >= 11) {
+  if (pct >= 50) {
     return {
       titulo: "Diagnóstico: Risco moderado a alto",
       cor: "#c48b30",
+      score: total, max,
       linhas: [
         "Sua empresa tem alguns controles, mas opera sem a base que sustenta crescimento seguro.",
         "Risco identificado: passivos ocultos e decisões sem dados consistentes.",
@@ -1663,10 +1720,11 @@ function diagResultado(answers: (number | null)[]) {
       ],
     };
   }
-  if (total >= 6) {
+  if (pct >= 25) {
     return {
       titulo: "Diagnóstico: Estágio em estruturação",
       cor: "#c48b30",
+      score: total, max,
       linhas: [
         "Sua empresa está saindo do caos, mas ainda falta o nível de controladoria que multiplica resultado.",
         "Risco identificado: gargalos de informação que limitam o salto para o próximo patamar.",
@@ -1677,6 +1735,7 @@ function diagResultado(answers: (number | null)[]) {
   return {
     titulo: "Diagnóstico: Base sólida — pronto para escalar",
     cor: "#005a54",
+    score: total, max,
     linhas: [
       "Sua empresa tem controle e clareza. Agora é hora de usar isso como vantagem competitiva.",
       "Oportunidade identificada: orçamento, cenários e expansão com previsibilidade.",
@@ -1686,9 +1745,9 @@ function diagResultado(answers: (number | null)[]) {
 }
 
 export function Diagnostico() {
-  const [step, setStep] = useState(0); // 0..4 perguntas; 5 = resultado
-  const [answers, setAnswers] = useState<(number | null)[]>(Array(5).fill(null));
-  const total = DIAG5.length;
+  const total = DIAG12.length;
+  const [step, setStep] = useState(0);
+  const [answers, setAnswers] = useState<(number | null)[]>(Array(total).fill(null));
   const isResult = step === total;
   const progress = isResult ? 100 : ((step + (answers[step] !== null ? 1 : 0)) / total) * 100;
 
@@ -1696,76 +1755,162 @@ export function Diagnostico() {
     const next = [...answers];
     next[step] = i;
     setAnswers(next);
-    setTimeout(() => setStep((s) => Math.min(total, s + 1)), 220);
+    setTimeout(() => setStep((s) => Math.min(total, s + 1)), 240);
   };
 
-  const reset = () => { setStep(0); setAnswers(Array(5).fill(null)); };
+  const reset = () => { setStep(0); setAnswers(Array(total).fill(null)); };
   const resultado = useMemo(() => diagResultado(answers), [answers]);
+  const currentQ = !isResult ? DIAG12[step] : null;
+  const catAtual = currentQ?.categoria ?? 0;
+
+  // progresso por categoria
+  const catProgress = DIAG_CATEGORIAS.map((_, ci) => {
+    const idxs = DIAG12.map((q, i) => (q.categoria === ci ? i : -1)).filter((x) => x >= 0);
+    const done = idxs.filter((i) => answers[i] !== null).length;
+    return { done, total: idxs.length };
+  });
 
   return (
     <section id="diagnostico" className="py-24 lg:py-32" style={{ background: "#f4f1ec" }}>
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
-        <div className="text-center mb-12">
+        <div className="max-w-3xl mb-12">
           <span className="label-mono" style={{ color: "#c48b30" }}>· DIAGNÓSTICO INTERATIVO</span>
-          <h2 className="font-display font-semibold text-[32px] lg:text-[44px] mt-4 leading-tight" style={{ color: "#1F3D2E" }}>
-            Diagnóstico Financeiro Gratuito — <span className="italic" style={{ color: "#005a54" }}>2 minutos</span>
+          <h2 className="font-display font-semibold text-[32px] lg:text-[48px] mt-4 leading-[1.05]" style={{ color: "#1F3D2E" }}>
+            Diagnóstico Financeiro Gratuito — <span className="italic" style={{ color: "#005a54" }}>3 minutos</span>
           </h2>
-          <p className="mt-5 text-[16px]" style={{ color: "#6e7b7c" }}>
-            Responda 5 perguntas e descubra onde sua empresa está perdendo dinheiro agora.
+          <p className="mt-5 text-[17px] leading-relaxed" style={{ color: "#1F3D2E", opacity: 0.7 }}>
+            12 perguntas em 4 dimensões. Ao final, você recebe uma análise técnica do seu estágio financeiro e o próximo passo recomendado.
           </p>
         </div>
 
-        <div
-          className="mx-auto"
-          style={{
-            maxWidth: 760, background: "#ffffff", borderRadius: 20,
-            padding: "32px 28px", boxShadow: "0 24px 60px rgba(31,61,46,0.10)",
-          }}
-        >
-          {/* progress bar */}
-          <div className="flex items-center justify-between mb-3">
-            <span className="label-mono" style={{ color: "#6e7b7c" }}>
-              {isResult ? "RESULTADO" : `PERGUNTA ${step + 1} DE ${total}`}
-            </span>
-            <span style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 12, fontWeight: 700, color: "#005a54" }}>
-              {Math.round(progress)}%
-            </span>
-          </div>
-          <div style={{ height: 2, background: "rgba(0,90,84,0.15)", borderRadius: 2, overflow: "hidden" }}>
-            <div style={{ width: `${progress}%`, height: "100%", background: "#005a54", transition: "width 400ms ease" }} />
-          </div>
+        {!isResult ? (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+            {/* Painel lateral · categorias */}
+            <aside className="lg:col-span-4 lg:sticky lg:top-24">
+              <div
+                className="rounded-2xl p-6 lg:p-7"
+                style={{ background: "#1F3D2E", color: "#f4f1ec", boxShadow: "0 24px 60px rgba(31,61,46,0.18)" }}
+              >
+                <span className="label-mono" style={{ color: "#c48b30" }}>· PROGRESSO</span>
+                <div className="mt-3 flex items-baseline gap-2">
+                  <span style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 36, fontWeight: 700, color: "#f4f1ec" }}>
+                    {Math.round(progress)}%
+                  </span>
+                  <span style={{ fontFamily: "Inter", fontSize: 13, color: "#cec9b8" }}>
+                    {step + 1} de {total}
+                  </span>
+                </div>
+                <div className="mt-3 h-1 rounded-full overflow-hidden" style={{ background: "rgba(244,241,236,0.12)" }}>
+                  <div style={{ width: `${progress}%`, height: "100%", background: "linear-gradient(to right, #005a54, #c48b30)", transition: "width 400ms ease" }} />
+                </div>
 
-          {/* conteúdo */}
-          <div key={step} className="mt-10 animate-fade-in">
-            {!isResult ? (
-              <div>
-                <h3 className="font-display text-[22px] lg:text-[26px] leading-snug" style={{ color: "#1F3D2E" }}>
-                  {DIAG5[step].q}
-                </h3>
-                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {DIAG5[step].opts.map((opt, oi) => {
-                    const selected = answers[step] === oi;
+                <ul className="mt-7 space-y-4">
+                  {DIAG_CATEGORIAS.map((c, ci) => {
+                    const cp = catProgress[ci];
+                    const isActive = ci === catAtual;
+                    const isDone = cp.done === cp.total;
                     return (
-                      <button
-                        key={oi}
-                        onClick={() => set(oi)}
-                        className="text-left transition-all flex items-center justify-between gap-3"
-                        style={{
-                          padding: "16px 18px", borderRadius: 12,
-                          border: selected ? "2px solid #005a54" : "2px solid #e8e4db",
-                          background: selected ? "#005a54" : "#ffffff",
-                          color: selected ? "#f4f1ec" : "#1A1A1A",
-                          fontFamily: "Inter", fontSize: 14, fontWeight: 500,
-                          cursor: "pointer", minHeight: 56,
-                        }}
-                      >
-                        <span>{opt.label}</span>
-                        {selected && <CheckCircle2 size={18} color="#c48b30" strokeWidth={2.5} />}
-                      </button>
+                      <li key={c.titulo} className="flex items-start gap-3">
+                        <span
+                          className="shrink-0 mt-0.5 flex items-center justify-center"
+                          style={{
+                            width: 28, height: 28, borderRadius: "50%",
+                            background: isDone ? "#005a54" : isActive ? "rgba(196,139,48,0.18)" : "rgba(244,241,236,0.08)",
+                            border: `1px solid ${isActive ? "#c48b30" : isDone ? "#005a54" : "rgba(244,241,236,0.18)"}`,
+                            color: isDone ? "#f4f1ec" : isActive ? "#c48b30" : "#cec9b8",
+                            fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 11, fontWeight: 700,
+                          }}
+                        >
+                          {isDone ? "✓" : `0${ci + 1}`}
+                        </span>
+                        <div className="flex-1">
+                          <div style={{ fontFamily: "Inter", fontSize: 14, fontWeight: 700, color: isActive ? "#c48b30" : "#f4f1ec" }}>
+                            {c.titulo}
+                          </div>
+                          <div style={{ fontFamily: "Inter", fontSize: 12, color: "#cec9b8", lineHeight: 1.4 }}>
+                            {c.desc}
+                          </div>
+                          <div className="mt-1.5 flex gap-1">
+                            {Array.from({ length: cp.total }).map((_, i) => (
+                              <span
+                                key={i}
+                                className="h-1 flex-1 rounded-full"
+                                style={{ background: i < cp.done ? "#c48b30" : "rgba(244,241,236,0.12)" }}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      </li>
                     );
                   })}
+                </ul>
+
+                <div className="mt-7 pt-5 border-t" style={{ borderColor: "rgba(244,241,236,0.1)" }}>
+                  <div className="flex items-center gap-2" style={{ fontFamily: "Inter", fontSize: 12, color: "#cec9b8" }}>
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#c48b30] animate-pulse" />
+                    Análise gerada na hora · sem cadastro
+                  </div>
                 </div>
-                <div className="flex items-center justify-between pt-8">
+              </div>
+            </aside>
+
+            {/* Pergunta atual */}
+            <div className="lg:col-span-8">
+              <div
+                className="rounded-2xl bg-white border border-[#e8e4db] p-7 lg:p-10"
+                style={{ boxShadow: "0 24px 60px rgba(31,61,46,0.10)" }}
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <span className="label-mono" style={{ color: "#c48b30" }}>
+                    · {DIAG_CATEGORIAS[currentQ!.categoria].titulo}
+                  </span>
+                  <span style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 11, color: "#6e7b7c" }}>
+                    PERGUNTA {step + 1} / {total}
+                  </span>
+                </div>
+
+                <div key={step} className="animate-fade-in">
+                  <h3 className="font-display text-[24px] lg:text-[30px] leading-[1.15]" style={{ color: "#1F3D2E" }}>
+                    {currentQ!.q}
+                  </h3>
+                  <div className="mt-7 grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {currentQ!.opts.map((opt, oi) => {
+                      const selected = answers[step] === oi;
+                      return (
+                        <button
+                          key={oi}
+                          onClick={() => set(oi)}
+                          className="text-left transition-all flex items-center justify-between gap-3 group hover:border-[#005a54]"
+                          style={{
+                            padding: "18px 20px", borderRadius: 12,
+                            border: selected ? "2px solid #005a54" : "2px solid #e8e4db",
+                            background: selected ? "#005a54" : "#ffffff",
+                            color: selected ? "#f4f1ec" : "#1A1A1A",
+                            fontFamily: "Inter", fontSize: 14, fontWeight: 500,
+                            cursor: "pointer", minHeight: 64,
+                          }}
+                        >
+                          <span className="flex items-center gap-3">
+                            <span
+                              className="shrink-0 flex items-center justify-center"
+                              style={{
+                                width: 22, height: 22, borderRadius: "50%",
+                                border: `2px solid ${selected ? "#c48b30" : "#cec9b8"}`,
+                                background: selected ? "#c48b30" : "transparent",
+                              }}
+                            >
+                              {selected && <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#1F3D2E" }} />}
+                            </span>
+                            <span>{opt.label}</span>
+                          </span>
+                          {selected && <CheckCircle2 size={18} color="#c48b30" strokeWidth={2.5} />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between pt-8 mt-2 border-t border-[#e8e4db]">
                   <button
                     onClick={() => setStep(Math.max(0, step - 1))}
                     disabled={step === 0}
@@ -1773,61 +1918,116 @@ export function Diagnostico() {
                   >
                     ← Voltar
                   </button>
-                  <span style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 11, color: "#6e7b7c" }}>
-                    {step + 1} / {total}
-                  </span>
+                  <button
+                    onClick={() => answers[step] !== null && setStep(Math.min(total, step + 1))}
+                    disabled={answers[step] === null}
+                    className="transition-all"
+                    style={{
+                      background: answers[step] !== null ? "#005a54" : "transparent",
+                      color: answers[step] !== null ? "#f4f1ec" : "#cec9b8",
+                      padding: "10px 22px", borderRadius: 999,
+                      fontFamily: "Inter", fontSize: 13, fontWeight: 700, border: 0,
+                      cursor: answers[step] !== null ? "pointer" : "default",
+                    }}
+                  >
+                    {step === total - 1 ? "Ver resultado →" : "Avançar →"}
+                  </button>
                 </div>
               </div>
-            ) : (
-              <div className="text-center py-2">
+            </div>
+          </div>
+        ) : (
+          // RESULTADO
+          <div
+            className="mx-auto rounded-2xl bg-white border border-[#e8e4db] overflow-hidden animate-fade-in"
+            style={{ maxWidth: 960, boxShadow: "0 24px 60px rgba(31,61,46,0.12)" }}
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-5">
+              {/* Lateral score */}
+              <div className="lg:col-span-2 p-8 lg:p-10" style={{ background: "#1F3D2E", color: "#f4f1ec" }}>
+                <span className="label-mono" style={{ color: "#c48b30" }}>· ANÁLISE GERADA</span>
+                <div className="mt-6">
+                  <div style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 64, lineHeight: 1, color: resultado.cor, fontWeight: 700 }}>
+                    {resultado.score}
+                    <span style={{ fontSize: 22, color: "#cec9b8", fontWeight: 500 }}> / {resultado.max}</span>
+                  </div>
+                  <div style={{ fontFamily: "Inter", fontSize: 12, color: "#cec9b8", marginTop: 6 }}>Pontuação de risco</div>
+                </div>
+                <div className="mt-8">
+                  <div className="label-mono" style={{ color: "#cec9b8" }}>POR DIMENSÃO</div>
+                  <ul className="mt-3 space-y-3">
+                    {DIAG_CATEGORIAS.map((c, ci) => {
+                      const idxs = DIAG12.map((q, i) => (q.categoria === ci ? i : -1)).filter((x) => x >= 0);
+                      const sc = idxs.reduce((s, i) => s + (answers[i] === null ? 0 : DIAG12[i].opts[answers[i]!].risco), 0);
+                      const m = idxs.length * 3;
+                      const p = (sc / m) * 100;
+                      return (
+                        <li key={c.titulo}>
+                          <div className="flex justify-between" style={{ fontFamily: "Inter", fontSize: 12 }}>
+                            <span style={{ color: "#f4f1ec", fontWeight: 600 }}>{c.titulo}</span>
+                            <span style={{ color: "#c48b30", fontFamily: "JetBrains Mono, ui-monospace, monospace" }}>{sc}/{m}</span>
+                          </div>
+                          <div className="mt-1 h-1 rounded-full overflow-hidden" style={{ background: "rgba(244,241,236,0.12)" }}>
+                            <div style={{ width: `${p}%`, height: "100%", background: "#c48b30" }} />
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              </div>
+
+              {/* Conteúdo principal do resultado */}
+              <div className="lg:col-span-3 p-8 lg:p-10">
                 <span
                   className="inline-block label-mono"
                   style={{
                     color: resultado.cor, background: `${resultado.cor}15`,
-                    padding: "6px 14px", borderRadius: 999, marginBottom: 18,
+                    padding: "6px 14px", borderRadius: 999,
                   }}
                 >
-                  · ANÁLISE GERADA
+                  · RESULTADO
                 </span>
-                <h3 className="font-display font-semibold text-[26px] lg:text-[34px] leading-tight" style={{ color: "#1F3D2E" }}>
+                <h3 className="font-display font-semibold text-[26px] lg:text-[34px] leading-tight mt-4" style={{ color: "#1F3D2E" }}>
                   {resultado.titulo}
                 </h3>
-                <ul className="mt-8 space-y-4 text-left max-w-[560px] mx-auto">
+                <ul className="mt-6 space-y-4">
                   {resultado.linhas.map((l, i) => (
                     <li key={i} className="flex gap-3">
-                      <span style={{ color: resultado.cor, fontWeight: 700, fontFamily: "JetBrains Mono, ui-monospace, monospace" }}>
+                      <span style={{ color: resultado.cor, fontWeight: 700, fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 14 }}>
                         0{i + 1}
                       </span>
                       <span style={{ fontFamily: "Inter", fontSize: 15, color: "#1A1A1A", lineHeight: 1.6 }}>{l}</span>
                     </li>
                   ))}
                 </ul>
-                <div className="mt-10 flex flex-col items-center gap-4">
+                <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-4">
                   <a
                     href="#cadastro"
                     className="inline-flex items-center gap-2 transition-all hover:opacity-90"
                     style={{
                       background: "#005a54", color: "#f4f1ec",
-                      padding: "16px 32px", borderRadius: 12,
+                      padding: "16px 26px", borderRadius: 12,
                       fontFamily: "Inter", fontWeight: 700, fontSize: 14, minHeight: 56,
                     }}
                   >
-                    Agendar meu diagnóstico completo e gratuito →
+                    Agendar diagnóstico completo →
                   </a>
-                  <p className="text-[12px]" style={{ color: "#6e7b7c", fontFamily: "Inter" }}>
-                    Sem compromisso. Diagnóstico de 30 minutos por videochamada.
-                  </p>
                   <a href="#metodo" style={{ color: "#005a54", fontSize: 13, fontWeight: 600, textDecoration: "underline", textUnderlineOffset: 4 }}>
-                    Ver como o Método Cluny funciona
+                    Ver o Método Cluny
                   </a>
-                  <button onClick={reset} style={{ color: "#6e7b7c", fontSize: 12, background: "transparent", border: 0, cursor: "pointer", marginTop: 4 }}>
-                    ↺ Refazer diagnóstico
-                  </button>
                 </div>
+                <button
+                  onClick={reset}
+                  className="mt-6"
+                  style={{ color: "#6e7b7c", fontSize: 12, background: "transparent", border: 0, cursor: "pointer" }}
+                >
+                  ↺ Refazer diagnóstico
+                </button>
               </div>
-            )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );
@@ -1956,8 +2156,47 @@ export function CalculadoraCLT() {
           {/* RESULTADO */}
           <div>
             {!shown ? (
-              <div style={{ background: "rgba(244,241,236,0.04)", border: "1px dashed rgba(244,241,236,0.18)", borderRadius: 16, padding: 40, textAlign: "center", color: "#6e7b7c", fontFamily: "Inter", fontSize: 14 }}>
-                Preencha os dados ao lado e clique em <strong style={{ color: "#c48b30" }}>Calcular custo real</strong> para ver o comparativo.
+              <div
+                style={{
+                  background: "linear-gradient(160deg, #1F3D2E 0%, #0e2a1f 100%)",
+                  border: "1px solid rgba(196,139,48,0.25)",
+                  borderRadius: 16,
+                  padding: 40,
+                  color: "#f4f1ec",
+                }}
+              >
+                <span className="label-mono" style={{ color: "#c48b30" }}>· PRÉVIA</span>
+                <h3 className="font-display text-[26px] lg:text-[30px] leading-tight mt-3" style={{ color: "#f4f1ec" }}>
+                  O que você verá em segundos:
+                </h3>
+                <ul className="mt-6 space-y-4">
+                  {[
+                    { l: "Custo real do CLT", d: "Salário + encargos + provisões" },
+                    { l: "Comparativo CLT × BPO Cluny", d: "Lado a lado, valores e riscos" },
+                    { l: "Riscos ocultos", d: "Passivo trabalhista e dependência operacional" },
+                  ].map((it) => (
+                    <li key={it.l} className="flex items-start gap-3">
+                      <span
+                        className="shrink-0 mt-0.5 flex items-center justify-center"
+                        style={{
+                          width: 22, height: 22, borderRadius: 999,
+                          background: "rgba(196,139,48,0.18)", color: "#c48b30",
+                          fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 12, fontWeight: 700,
+                        }}
+                      >·</span>
+                      <div>
+                        <div style={{ fontFamily: "Inter", fontSize: 14, fontWeight: 700, color: "#f4f1ec" }}>{it.l}</div>
+                        <div style={{ fontFamily: "Inter", fontSize: 13, color: "#cec9b8" }}>{it.d}</div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-7 pt-6 border-t" style={{ borderColor: "rgba(244,241,236,0.08)" }}>
+                  <div className="flex items-center gap-3" style={{ color: "#cec9b8", fontFamily: "Inter", fontSize: 13 }}>
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#c48b30] animate-pulse" />
+                    Cálculo gerado em tempo real, sem cadastro.
+                  </div>
+                </div>
               </div>
             ) : (
               <div className="animate-fade-in" style={{ background: "#0e0e0e", border: "1px solid rgba(244,241,236,0.08)", borderRadius: 16, overflow: "hidden" }}>
@@ -2304,6 +2543,8 @@ function MetodoCard({ etapa }: { etapa: MetodoEtapa }) {
   );
 }
 
+const METODO_ICONS = [SearchIcon, Settings2, Construction, Gauge, TrendingUp];
+
 export function Metodo() {
   const [active, setActive] = useState(0);
   const [visible, setVisible] = useState(false);
@@ -2314,165 +2555,239 @@ export function Metodo() {
     if (!el) return;
     const io = new IntersectionObserver(
       (entries) => entries.forEach((e) => e.isIntersecting && setVisible(true)),
-      { threshold: 0.25 },
+      { threshold: 0.2 },
     );
     io.observe(el);
     return () => io.disconnect();
   }, []);
 
-  const total = METODO_4.length;
+  const total = METODO_ETAPAS.length;
+  const etapaAtual = METODO_ETAPAS[active];
+  const Icon = METODO_ICONS[active] ?? SearchIcon;
 
   return (
     <section
       id="metodo"
       ref={sectionRef}
-      style={{ background: "#1F3D2E", padding: "120px 0" }}
+      className="bg-[#f4f1ec] py-24 lg:py-32 relative overflow-hidden"
     >
-      <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
-        <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
-          <span className="label-mono" style={{ color: "#c48b30" }}>· O MÉTODO CLUNY</span>
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(800px 500px at 90% 10%, rgba(196,139,48,0.08), transparent 60%), radial-gradient(700px 500px at 0% 90%, rgba(0,90,84,0.06), transparent 60%)",
+        }}
+      />
+      <div className="relative max-w-[1320px] mx-auto px-6 lg:px-10">
+        {/* Cabeçalho */}
+        <div className="max-w-3xl mb-14 lg:mb-20">
+          <span className="label-mono text-[#c48b30]">· O MÉTODO CLUNY</span>
           <h2
-            className="font-display font-semibold mt-4 leading-[1.1]"
-            style={{ color: "#f4f1ec", fontSize: "clamp(28px, 4.4vw, 44px)" }}
+            className="font-display font-semibold mt-4 leading-[1.05] text-[#1F3D2E]"
+            style={{ fontSize: "clamp(32px, 5vw, 56px)" }}
           >
-            O caminho que transforma caos financeiro em clareza estratégica
+            5 etapas que transformam caos financeiro em <span className="italic text-[#005a54]">clareza estratégica</span>.
           </h2>
-          <p className="mt-5 text-[18px] leading-relaxed" style={{ color: "#cec9b8" }}>
-            4 etapas. Resultado mensurável. Sem achismos.
+          <p className="mt-5 text-[17px] leading-relaxed text-[#1F3D2E]/70 max-w-2xl">
+            Um caminho aplicado em mais de 350 empresas. Implantação em 45–60 dias e ciclo contínuo de operação e gestão.
           </p>
         </div>
 
-        {/* Desktop — timeline horizontal */}
-        <div className="hidden lg:block relative">
-          {/* linha conectora animada */}
-          <div className="absolute left-0 right-0" style={{ top: 38, height: 2 }}>
-            <div className="mx-auto" style={{ maxWidth: "85%", height: "100%", background: "rgba(244,241,236,0.12)", position: "relative" }}>
+        {/* Grid lateral: stepper esquerda · texto direita */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+          {/* Stepper vertical (5 etapas) */}
+          <div className="lg:col-span-5">
+            <div className="relative">
+              {/* linha conectora */}
               <div
-                style={{
-                  height: "100%",
-                  background: "linear-gradient(to right, #005a54, #c48b30)",
-                  width: visible ? "100%" : "0%",
-                  transition: "width 2000ms ease-out",
-                }}
+                className="absolute left-[34px] top-3 bottom-3 w-px"
+                style={{ background: "rgba(31,61,46,0.12)" }}
+                aria-hidden
               />
+              <div
+                className="absolute left-[34px] top-3 w-px"
+                style={{
+                  background: "linear-gradient(to bottom, #005a54, #c48b30)",
+                  height: visible ? `${(active / (total - 1)) * 100}%` : "0%",
+                  maxHeight: "calc(100% - 24px)",
+                  transition: "height 700ms ease-out",
+                }}
+                aria-hidden
+              />
+
+              <ul className="space-y-2">
+                {METODO_ETAPAS.map((e, idx) => {
+                  const isActive = active === idx;
+                  const isPast = idx < active;
+                  const StepIcon = METODO_ICONS[idx] ?? SearchIcon;
+                  return (
+                    <li key={e.n}>
+                      <button
+                        type="button"
+                        onClick={() => setActive(idx)}
+                        onMouseEnter={() => setActive(idx)}
+                        aria-pressed={isActive}
+                        className="w-full text-left flex items-start gap-5 py-3 pr-4 rounded-xl transition-all"
+                        style={{
+                          background: isActive ? "rgba(0,90,84,0.06)" : "transparent",
+                          paddingLeft: 8,
+                          cursor: "pointer",
+                        }}
+                      >
+                        <span
+                          className="relative z-10 shrink-0 flex items-center justify-center transition-all"
+                          style={{
+                            width: 56,
+                            height: 56,
+                            borderRadius: "50%",
+                            background: isActive ? "#1F3D2E" : isPast ? "#005a54" : "#f4f1ec",
+                            border: `2px solid ${isActive ? "#c48b30" : isPast ? "#005a54" : "rgba(31,61,46,0.18)"}`,
+                            boxShadow: isActive ? "0 0 0 6px rgba(196,139,48,0.18)" : "none",
+                          }}
+                        >
+                          <span
+                            style={{
+                              fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                              fontSize: 16,
+                              fontWeight: 700,
+                              color: isActive ? "#c48b30" : isPast ? "#f4f1ec" : "#1F3D2E",
+                            }}
+                          >
+                            {e.n}
+                          </span>
+                        </span>
+                        <span className="flex-1 min-w-0 pt-1">
+                          <span
+                            className="flex items-center gap-2"
+                            style={{
+                              color: isActive ? "#1F3D2E" : "#1F3D2E",
+                              opacity: isActive ? 1 : 0.55,
+                            }}
+                          >
+                            <StepIcon size={15} strokeWidth={2} />
+                            <span
+                              style={{
+                                fontFamily: "Inter",
+                                fontSize: 17,
+                                fontWeight: isActive ? 700 : 500,
+                                letterSpacing: "0.01em",
+                              }}
+                            >
+                              {e.titulo}
+                            </span>
+                          </span>
+                          <span
+                            className="block mt-1"
+                            style={{
+                              fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                              fontSize: 11,
+                              color: isActive ? "#c48b30" : "#6e7b7c",
+                              letterSpacing: "0.06em",
+                              textTransform: "uppercase",
+                              fontWeight: 600,
+                            }}
+                          >
+                            {e.periodo}
+                          </span>
+                        </span>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
             </div>
           </div>
 
-          <div className="grid grid-cols-4 relative">
-            {METODO_4.map((e, idx) => {
-              const isActive = active === idx;
-              const Icon = e.Icon;
-              return (
-                <button
-                  key={e.n}
-                  onClick={() => setActive(idx)}
-                  onMouseEnter={() => setActive(idx)}
-                  className="group flex flex-col items-center text-center px-4 outline-none"
-                  style={{
-                    opacity: visible ? 1 : 0,
-                    transform: visible ? "translateY(0)" : "translateY(12px)",
-                    transition: `all 500ms ease-out ${0.4 + idx * 0.3}s`,
-                    background: "transparent", border: 0, cursor: "pointer",
-                  }}
-                  aria-expanded={isActive}
-                >
-                  <div
-                    className="relative z-10 flex items-center justify-center transition-all"
-                    style={{
-                      width: 78, height: 78, borderRadius: "50%",
-                      background: "#1F3D2E",
-                      border: `2px solid ${isActive ? "#c48b30" : "#005a54"}`,
-                      boxShadow: isActive ? "0 0 0 6px rgba(196,139,48,0.15)" : "none",
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontFamily: "JetBrains Mono, ui-monospace, monospace",
-                        fontSize: 28, fontWeight: 700, color: "#c48b30",
-                      }}
-                    >
-                      {e.n}
-                    </span>
-                  </div>
-                  <div className="mt-5 flex items-center gap-2" style={{ color: isActive ? "#c48b30" : "#f4f1ec" }}>
-                    <Icon size={16} strokeWidth={1.8} />
-                    <span style={{ fontFamily: "Inter", fontSize: 15, fontWeight: 600, letterSpacing: "0.02em" }}>
-                      {e.label}
-                    </span>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* card expansivo */}
-          <div className="mt-12 max-w-3xl mx-auto" key={active}>
-            <MetodoCard etapa={METODO_4[active]} />
-          </div>
-        </div>
-
-        {/* Mobile — vertical empilhado */}
-        <div className="lg:hidden space-y-3">
-          {METODO_4.map((e, idx) => {
-            const isActive = active === idx;
-            const Icon = e.Icon;
-            return (
-              <div key={e.n}>
-                <button
-                  onClick={() => setActive(isActive ? -1 : idx)}
-                  className="w-full flex items-center gap-4 text-left p-4"
-                  style={{
-                    background: "rgba(244,241,236,0.04)",
-                    border: `1px solid ${isActive ? "#c48b30" : "rgba(244,241,236,0.12)"}`,
-                    borderRadius: 12,
-                  }}
-                  aria-expanded={isActive}
-                >
+          {/* Painel lateral com explicação */}
+          <div className="lg:col-span-7 lg:sticky lg:top-24">
+            <article
+              key={active}
+              className="animate-fade-in relative bg-white rounded-2xl border border-[#e8e4db] p-8 lg:p-10"
+              style={{ boxShadow: "0 24px 60px rgba(31,61,46,0.10)" }}
+            >
+              <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+                <div className="flex items-center gap-3">
                   <span
-                    className="flex items-center justify-center shrink-0"
+                    className="inline-flex items-center justify-center"
                     style={{
-                      width: 48, height: 48, borderRadius: "50%",
-                      background: "#1F3D2E", border: "2px solid #005a54",
-                      fontFamily: "JetBrains Mono, ui-monospace, monospace",
-                      fontWeight: 700, fontSize: 16, color: "#c48b30",
+                      width: 44, height: 44, borderRadius: 12,
+                      background: "rgba(0,90,84,0.08)", color: "#005a54",
                     }}
                   >
-                    {e.n}
+                    <Icon size={20} strokeWidth={2} />
                   </span>
-                  <div className="flex items-center gap-2 flex-1" style={{ color: "#f4f1ec" }}>
-                    <Icon size={16} strokeWidth={1.8} color="#c48b30" />
-                    <span style={{ fontFamily: "Inter", fontSize: 16, fontWeight: 600 }}>{e.label}</span>
+                  <div>
+                    <span className="label-mono text-[#c48b30]">ETAPA {etapaAtual.n}</span>
+                    <h3 className="font-display text-[26px] lg:text-[32px] leading-tight text-[#1F3D2E] mt-1">
+                      {etapaAtual.titulo}
+                    </h3>
                   </div>
-                  <span style={{ color: "#c48b30", fontSize: 18, transition: "transform 300ms", transform: isActive ? "rotate(45deg)" : "none" }}>+</span>
-                </button>
-                {isActive && (
-                  <div className="mt-3">
-                    <MetodoCard etapa={e} />
-                  </div>
-                )}
+                </div>
+                <FaseBadge fase={etapaAtual.fase} />
               </div>
-            );
-          })}
+
+              <p className="text-[16px] leading-relaxed text-[#1A1A1A]/85">
+                {etapaAtual.desc}
+              </p>
+
+              <div className="mt-7">
+                <div className="label-mono text-[#005a54] mb-4">· O QUE EU ENTREGO NESTA ETAPA</div>
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
+                  {etapaAtual.entregaveis.map((it, i) => (
+                    <li key={i} className="flex gap-3 items-start">
+                      <CheckCircle2 size={16} strokeWidth={2.2} className="text-[#005a54] mt-0.5 shrink-0" />
+                      <span style={{ fontFamily: "Inter", fontSize: 14, color: "#1A1A1A", lineHeight: 1.55 }}>
+                        {it}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* navegação inferior */}
+              <div className="mt-8 pt-6 border-t border-[#e8e4db] flex items-center justify-between">
+                <button
+                  type="button"
+                  onClick={() => setActive((i) => Math.max(0, i - 1))}
+                  disabled={active === 0}
+                  className="text-[13px] font-bold text-[#6e7b7c] disabled:opacity-30 hover:text-[#005a54] transition-colors"
+                  style={{ background: "transparent", border: 0, cursor: active === 0 ? "default" : "pointer" }}
+                >
+                  ← Anterior
+                </button>
+                <span className="font-mono-tech text-[12px] text-[#6e7b7c]">
+                  {active + 1} / {total}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setActive((i) => Math.min(total - 1, i + 1))}
+                  disabled={active === total - 1}
+                  className="text-[13px] font-bold text-[#005a54] disabled:opacity-30 hover:text-[#1F3D2E] transition-colors"
+                  style={{ background: "transparent", border: 0, cursor: active === total - 1 ? "default" : "pointer" }}
+                >
+                  Próxima →
+                </button>
+              </div>
+            </article>
+          </div>
         </div>
 
         {/* CTA final */}
         <div className="text-center mt-16 lg:mt-20">
           <a
             href="#diagnostico"
-            className="inline-flex items-center justify-center gap-2 transition-all hover:opacity-90"
+            className="inline-flex items-center justify-center gap-2 transition-all hover:opacity-90 bg-[#005a54] text-[#f4f1ec] font-bold"
             style={{
-              background: "#005a54", color: "#f4f1ec",
               minHeight: 56, padding: "0 32px", borderRadius: 12,
-              fontFamily: "Inter", fontWeight: 700, fontSize: 14, letterSpacing: "0.02em",
+              fontFamily: "Inter", fontSize: 14, letterSpacing: "0.02em",
             }}
           >
             Quero aplicar o Método Cluny no meu negócio
-            <span>→</span>
+            <span aria-hidden>→</span>
           </a>
         </div>
       </div>
-      {/* suprimir aviso eslint sobre total não usado */}
-      <span className="sr-only">{total} etapas</span>
     </section>
   );
 }
