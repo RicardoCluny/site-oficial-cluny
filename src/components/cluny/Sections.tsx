@@ -643,14 +643,17 @@ export function Hero() {
           {/* Tipografia — esquerda */}
           <div className="lg:col-span-6 z-10 relative">
             <h1 className="flex flex-col">
-              <span className="font-display text-[#1F3D2E] text-[44px] sm:text-6xl md:text-7xl lg:text-[6.5rem] leading-[0.9] tracking-tight font-semibold whitespace-nowrap">
-                Sua empresa cresce.
+              <span className="font-display text-[#1F3D2E] text-[44px] sm:text-6xl md:text-7xl lg:text-[6.5rem] leading-[0.9] tracking-tight font-semibold">
+                Sua empresa cresce?
               </span>
-              <span className="font-display italic font-light text-[#c48b30] text-[28px] sm:text-4xl md:text-5xl lg:text-[3.5rem] leading-tight mt-5 lg:mt-7">
+              <span className="font-display text-[#1F3D2E] text-[44px] sm:text-6xl md:text-7xl lg:text-[6.5rem] leading-[0.9] tracking-tight font-semibold mt-3 lg:mt-4">
                 Suas finanças acompanham?
               </span>
-              <span className="font-sans text-[#1F3D2E]/70 text-sm lg:text-base leading-relaxed uppercase tracking-wider mt-6 lg:mt-8 border-l-2 border-[#c48b30] pl-4 max-w-[420px]">
-                Controladoria para PMEs que faturam até R$ 30M
+              <span
+                className="font-display italic leading-[0.9] tracking-tight mt-6 lg:mt-8"
+                style={{ color: "#005a54", fontSize: "0.85em", fontWeight: 400 }}
+              >
+                Liberamos você, empresário, para cuidar do crescimento da empresa.
               </span>
             </h1>
 
