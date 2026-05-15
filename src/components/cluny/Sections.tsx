@@ -606,13 +606,24 @@ function HeroVideo() {
 export function Hero() {
   const [i, setI] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const total = HERO_SLIDES.length;
 
+  // Page Visibility API — pausa autoplay quando aba está em background
   useEffect(() => {
-    if (paused) return;
+    const onVis = () => setHidden(typeof document !== "undefined" && document.hidden);
+    onVis();
+    if (typeof document !== "undefined") {
+      document.addEventListener("visibilitychange", onVis);
+      return () => document.removeEventListener("visibilitychange", onVis);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (paused || hidden) return;
     const t = setInterval(() => setI((p) => (p + 1) % total), 5000);
     return () => clearInterval(t);
-  }, [paused, total]);
+  }, [paused, hidden, total]);
 
   const go = (n: number) => setI((n + total) % total);
 
@@ -625,6 +636,7 @@ export function Hero() {
       onMouseLeave={() => setPaused(false)}
       aria-roledescription="carousel"
       aria-label="Apresentação Cluny"
+      aria-live="polite"
     >
       {HERO_SLIDES.map((s, idx) => (
         <div
@@ -678,6 +690,9 @@ export function Hero() {
                   {s.cta.label}
                   <span className="transition-transform group-hover:translate-x-1">→</span>
                 </a>
+                <p className="mt-3 text-[12px]" style={{ color: "rgba(244,241,236,0.6)", fontFamily: "Inter" }}>
+                  Sem compromisso. Diagnóstico de 30 minutos por videochamada.
+                </p>
               </div>
             </div>
             <div className="hidden lg:block relative w-full h-[460px]">
@@ -1739,6 +1754,9 @@ export function Diagnostico() {
                   >
                     Agendar meu diagnóstico completo e gratuito →
                   </a>
+                  <p className="text-[12px]" style={{ color: "#6e7b7c", fontFamily: "Inter" }}>
+                    Sem compromisso. Diagnóstico de 30 minutos por videochamada.
+                  </p>
                   <a href="#metodo" style={{ color: "#005a54", fontSize: 13, fontWeight: 600, textDecoration: "underline", textUnderlineOffset: 4 }}>
                     Ver como o Método Cluny funciona
                   </a>
@@ -1973,6 +1991,9 @@ export function CalculadoraCLT() {
               >
                 Quero substituir meu CLT pelo BPO Cluny →
               </a>
+              <p className="mt-3 text-center text-[11px]" style={{ color: "#6e7b7c", fontFamily: "Inter" }}>
+                Sem compromisso. Diagnóstico de 30 minutos por videochamada.
+              </p>
             </div>
           </div>
         )}
@@ -3001,3 +3022,38 @@ export function Footer() {
 }
 
 /* ============ Sticky CTA Bar (desktop) ============ */
+
+/* ============ Social Proof Bar ============ */
+export function SocialProofBar() {
+  return (
+    <div
+      role="region"
+      aria-label="Prova social"
+      style={{
+        position: "sticky",
+        top: 0,
+        zIndex: 30,
+        height: 36,
+        background: "#005a54",
+        color: "#f4f1ec",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 24,
+        padding: "0 16px",
+        fontFamily: "JetBrains Mono, ui-monospace, monospace",
+        fontSize: 11,
+        letterSpacing: "0.08em",
+        textTransform: "uppercase",
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+      }}
+    >
+      <span>+500 empresas atendidas</span>
+      <span aria-hidden style={{ opacity: 0.5 }}>•</span>
+      <span>12 anos de mercado</span>
+      <span aria-hidden style={{ opacity: 0.5 }}>•</span>
+      <span style={{ color: "#c48b30", fontWeight: 700 }}>NPS 94</span>
+    </div>
+  );
+}
