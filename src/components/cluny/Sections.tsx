@@ -1947,8 +1947,47 @@ export function CalculadoraCLT() {
           {/* RESULTADO */}
           <div>
             {!shown ? (
-              <div style={{ background: "rgba(244,241,236,0.04)", border: "1px dashed rgba(244,241,236,0.18)", borderRadius: 16, padding: 40, textAlign: "center", color: "#6e7b7c", fontFamily: "Inter", fontSize: 14 }}>
-                Preencha os dados ao lado e clique em <strong style={{ color: "#c48b30" }}>Calcular custo real</strong> para ver o comparativo.
+              <div
+                style={{
+                  background: "linear-gradient(160deg, #1F3D2E 0%, #0e2a1f 100%)",
+                  border: "1px solid rgba(196,139,48,0.25)",
+                  borderRadius: 16,
+                  padding: 40,
+                  color: "#f4f1ec",
+                }}
+              >
+                <span className="label-mono" style={{ color: "#c48b30" }}>· PRÉVIA</span>
+                <h3 className="font-display text-[26px] lg:text-[30px] leading-tight mt-3" style={{ color: "#f4f1ec" }}>
+                  O que você verá em segundos:
+                </h3>
+                <ul className="mt-6 space-y-4">
+                  {[
+                    { l: "Custo real do CLT", d: "Salário + encargos + provisões" },
+                    { l: "Comparativo CLT × BPO Cluny", d: "Lado a lado, valores e riscos" },
+                    { l: "Riscos ocultos", d: "Passivo trabalhista e dependência operacional" },
+                  ].map((it) => (
+                    <li key={it.l} className="flex items-start gap-3">
+                      <span
+                        className="shrink-0 mt-0.5 flex items-center justify-center"
+                        style={{
+                          width: 22, height: 22, borderRadius: 999,
+                          background: "rgba(196,139,48,0.18)", color: "#c48b30",
+                          fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 12, fontWeight: 700,
+                        }}
+                      >·</span>
+                      <div>
+                        <div style={{ fontFamily: "Inter", fontSize: 14, fontWeight: 700, color: "#f4f1ec" }}>{it.l}</div>
+                        <div style={{ fontFamily: "Inter", fontSize: 13, color: "#cec9b8" }}>{it.d}</div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-7 pt-6 border-t" style={{ borderColor: "rgba(244,241,236,0.08)" }}>
+                  <div className="flex items-center gap-3" style={{ color: "#cec9b8", fontFamily: "Inter", fontSize: 13 }}>
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#c48b30] animate-pulse" />
+                    Cálculo gerado em tempo real, sem cadastro.
+                  </div>
+                </div>
               </div>
             ) : (
               <div className="animate-fade-in" style={{ background: "#0e0e0e", border: "1px solid rgba(244,241,236,0.08)", borderRadius: 16, overflow: "hidden" }}>
