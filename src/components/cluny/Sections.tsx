@@ -1991,6 +1991,9 @@ export function CalculadoraCLT() {
               >
                 Quero substituir meu CLT pelo BPO Cluny →
               </a>
+              <p className="mt-3 text-center text-[11px]" style={{ color: "#6e7b7c", fontFamily: "Inter" }}>
+                Sem compromisso. Diagnóstico de 30 minutos por videochamada.
+              </p>
             </div>
           </div>
         )}
