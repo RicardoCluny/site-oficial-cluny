@@ -2807,6 +2807,36 @@ export function Metodo() {
           </div>
         </div>
 
+        {/* Bloco explicativo — por que trabalhar com método */}
+        <div className="mt-16 lg:mt-24 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+          <div className="lg:col-span-5">
+            <span className="label-mono text-[#c48b30]">· POR QUE COM MÉTODO</span>
+            <h3 className="font-display text-[28px] lg:text-[36px] leading-tight text-[#1F3D2E] mt-3">
+              Sem método, finanças viram <span className="italic text-[#005a54]">improviso</span>.
+            </h3>
+          </div>
+          <div className="lg:col-span-7 space-y-5">
+            <p className="text-[16px] lg:text-[17px] leading-relaxed text-[#1F3D2E]/80">
+              A maioria das PMEs cresce em receita antes de crescer em estrutura — e isso transforma a operação financeira em um terreno de decisões reativas, planilhas paralelas e relatórios que ninguém entende. O Método Cluny existe para inverter essa lógica: cada etapa entrega uma camada técnica que estabiliza a operação, libera o sócio do operacional e devolve previsibilidade à gestão.
+            </p>
+            <p className="text-[16px] lg:text-[17px] leading-relaxed text-[#1F3D2E]/80">
+              Trabalhar com método não é seguir um roteiro — é garantir que cada decisão financeira seja sustentada por dado, processo e governança. É assim que o caos vira clareza, e a clareza vira crescimento.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
+              {[
+                { k: "45–60", l: "dias de implantação" },
+                { k: "350+", l: "empresas atendidas" },
+                { k: "100%", l: "ciclo contínuo de gestão" },
+              ].map((m) => (
+                <div key={m.k} className="border-l-2 border-[#c48b30] pl-4">
+                  <div className="font-display text-[28px] text-[#1F3D2E] leading-none">{m.k}</div>
+                  <div className="font-mono-tech text-[10px] uppercase tracking-widest text-[#6e7b7c] mt-2">{m.l}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
         {/* CTA final */}
         <div className="text-center mt-16 lg:mt-20">
           <a
