@@ -2230,93 +2230,99 @@ export function Diagnostico() {
           </div>
         ) : (
           // RESULTADO
-          <div
-            className="mx-auto rounded-2xl bg-white border border-[#e8e4db] overflow-hidden animate-fade-in"
-            style={{ maxWidth: 780, boxShadow: "0 24px 60px rgba(31,61,46,0.12)" }}
-          >
-            <div className="grid grid-cols-1 lg:grid-cols-5">
-              {/* Lateral score */}
-              <div className="lg:col-span-2 p-8 lg:p-10" style={{ background: "#1F3D2E", color: "#f4f1ec" }}>
-                <span className="label-mono" style={{ color: "#c48b30" }}>· ANÁLISE GERADA</span>
-                <div className="mt-6">
-                  <div style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 64, lineHeight: 1, color: resultado.cor, fontWeight: 700 }}>
-                    {resultado.score}
-                    <span style={{ fontSize: 22, color: "#cec9b8", fontWeight: 500 }}> / {resultado.max}</span>
+          <div style={{ maxWidth: 1180, margin: "0 auto" }} className="animate-fade-in">
+            <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-6 lg:gap-8 items-stretch">
+              <div
+                className="rounded-2xl bg-white border border-[#e8e4db] overflow-hidden"
+                style={{ boxShadow: "0 24px 60px rgba(31,61,46,0.12)" }}
+              >
+                <div className="p-8 lg:p-10">
+                  <div className="flex items-start justify-between gap-6 flex-wrap">
+                    <div>
+                      <span className="label-mono" style={{ color: "#c48b30" }}>· ANÁLISE GERADA</span>
+                      <div className="mt-3">
+                        <div style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 56, lineHeight: 1, color: resultado.cor, fontWeight: 700 }}>
+                          {resultado.score}
+                          <span style={{ fontSize: 20, color: "#6e7b7c", fontWeight: 500 }}> / {resultado.max}</span>
+                        </div>
+                        <div style={{ fontFamily: "Inter", fontSize: 12, color: "#6e7b7c", marginTop: 6 }}>Pontuação de risco</div>
+                      </div>
+                    </div>
+                    <span
+                      className="inline-block label-mono"
+                      style={{
+                        color: resultado.cor, background: `${resultado.cor}15`,
+                        padding: "6px 14px", borderRadius: 999,
+                      }}
+                    >
+                      · RESULTADO
+                    </span>
                   </div>
-                  <div style={{ fontFamily: "Inter", fontSize: 12, color: "#cec9b8", marginTop: 6 }}>Pontuação de risco</div>
-                </div>
-                <div className="mt-8">
-                  <div className="label-mono" style={{ color: "#cec9b8" }}>POR DIMENSÃO</div>
-                  <ul className="mt-3 space-y-3">
-                    {DIAG_CATEGORIAS.map((c, ci) => {
-                      const idxs = DIAG12.map((q, i) => (q.categoria === ci ? i : -1)).filter((x) => x >= 0);
-                      const sc = idxs.reduce((s, i) => s + (answers[i] === null ? 0 : DIAG12[i].opts[answers[i]!].risco), 0);
-                      const m = idxs.length * 3;
-                      const p = (sc / m) * 100;
-                      return (
-                        <li key={c.titulo}>
-                          <div className="flex justify-between" style={{ fontFamily: "Inter", fontSize: 12 }}>
-                            <span style={{ color: "#f4f1ec", fontWeight: 600 }}>{c.titulo}</span>
-                            <span style={{ color: "#c48b30", fontFamily: "JetBrains Mono, ui-monospace, monospace" }}>{sc}/{m}</span>
-                          </div>
-                          <div className="mt-1 h-1 rounded-full overflow-hidden" style={{ background: "rgba(244,241,236,0.12)" }}>
-                            <div style={{ width: `${p}%`, height: "100%", background: "#c48b30" }} />
-                          </div>
-                        </li>
-                      );
-                    })}
+
+                  <div className="mt-6">
+                    <div className="label-mono" style={{ color: "#6e7b7c" }}>POR DIMENSÃO</div>
+                    <ul className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {DIAG_CATEGORIAS.map((c, ci) => {
+                        const idxs = DIAG12.map((q, i) => (q.categoria === ci ? i : -1)).filter((x) => x >= 0);
+                        const sc = idxs.reduce((s, i) => s + (answers[i] === null ? 0 : DIAG12[i].opts[answers[i]!].risco), 0);
+                        const m = idxs.length * 3;
+                        const p = (sc / m) * 100;
+                        return (
+                          <li key={c.titulo}>
+                            <div className="flex justify-between" style={{ fontFamily: "Inter", fontSize: 12 }}>
+                              <span style={{ color: "#1F3D2E", fontWeight: 600 }}>{c.titulo}</span>
+                              <span style={{ color: "#c48b30", fontFamily: "JetBrains Mono, ui-monospace, monospace" }}>{sc}/{m}</span>
+                            </div>
+                            <div className="mt-1 h-1 rounded-full overflow-hidden" style={{ background: "rgba(31,61,46,0.10)" }}>
+                              <div style={{ width: `${p}%`, height: "100%", background: "#c48b30" }} />
+                            </div>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+
+                  <h3 className="font-display font-semibold text-[26px] lg:text-[32px] leading-tight mt-8" style={{ color: "#1F3D2E" }}>
+                    {resultado.titulo}
+                  </h3>
+                  <ul className="mt-5 space-y-3">
+                    {resultado.linhas.map((l, i) => (
+                      <li key={i} className="flex gap-3">
+                        <span style={{ color: resultado.cor, fontWeight: 700, fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 14 }}>
+                          0{i + 1}
+                        </span>
+                        <span style={{ fontFamily: "Inter", fontSize: 14.5, color: "#1A1A1A", lineHeight: 1.6 }}>{l}</span>
+                      </li>
+                    ))}
                   </ul>
+                  <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-4">
+                    <a
+                      href="#cadastro"
+                      className="inline-flex items-center gap-2 transition-all hover:opacity-90"
+                      style={{
+                        background: "#005a54", color: "#f4f1ec",
+                        padding: "16px 26px", borderRadius: 12,
+                        fontFamily: "Inter", fontWeight: 700, fontSize: 14, minHeight: 56,
+                      }}
+                    >
+                      Agendar diagnóstico completo →
+                    </a>
+                    <a href="#metodo" style={{ color: "#005a54", fontSize: 13, fontWeight: 600, textDecoration: "underline", textUnderlineOffset: 4 }}>
+                      Ver o Método Cluny
+                    </a>
+                  </div>
+                  <button
+                    onClick={reset}
+                    className="mt-6"
+                    style={{ color: "#6e7b7c", fontSize: 12, background: "transparent", border: 0, cursor: "pointer" }}
+                  >
+                    ↺ Refazer diagnóstico
+                  </button>
                 </div>
               </div>
 
-              {/* Conteúdo principal do resultado */}
-              <div className="lg:col-span-3 p-8 lg:p-10">
-                <span
-                  className="inline-block label-mono"
-                  style={{
-                    color: resultado.cor, background: `${resultado.cor}15`,
-                    padding: "6px 14px", borderRadius: 999,
-                  }}
-                >
-                  · RESULTADO
-                </span>
-                <h3 className="font-display font-semibold text-[26px] lg:text-[34px] leading-tight mt-4" style={{ color: "#1F3D2E" }}>
-                  {resultado.titulo}
-                </h3>
-                <ul className="mt-6 space-y-4">
-                  {resultado.linhas.map((l, i) => (
-                    <li key={i} className="flex gap-3">
-                      <span style={{ color: resultado.cor, fontWeight: 700, fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 14 }}>
-                        0{i + 1}
-                      </span>
-                      <span style={{ fontFamily: "Inter", fontSize: 15, color: "#1A1A1A", lineHeight: 1.6 }}>{l}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-4">
-                  <a
-                    href="#cadastro"
-                    className="inline-flex items-center gap-2 transition-all hover:opacity-90"
-                    style={{
-                      background: "#005a54", color: "#f4f1ec",
-                      padding: "16px 26px", borderRadius: 12,
-                      fontFamily: "Inter", fontWeight: 700, fontSize: 14, minHeight: 56,
-                    }}
-                  >
-                    Agendar diagnóstico completo →
-                  </a>
-                  <a href="#metodo" style={{ color: "#005a54", fontSize: 13, fontWeight: 600, textDecoration: "underline", textUnderlineOffset: 4 }}>
-                    Ver o Método Cluny
-                  </a>
-                </div>
-                <button
-                  onClick={reset}
-                  className="mt-6"
-                  style={{ color: "#6e7b7c", fontSize: 12, background: "transparent", border: 0, cursor: "pointer" }}
-                >
-                  ↺ Refazer diagnóstico
-                </button>
-              </div>
+              {/* Painel educativo direito */}
+              <DiagContextPanel data={DIAG_RESULT_CONTEXT} />
             </div>
           </div>
         )}
