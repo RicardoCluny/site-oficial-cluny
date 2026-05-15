@@ -634,7 +634,7 @@ export function Hero() {
 
       <div className="relative max-w-[1320px] w-full mx-auto px-6 lg:px-10 py-16 lg:py-24">
         {/* Eyebrow / metadata */}
-        <div className="mb-10 lg:mb-14 flex items-center gap-4 text-[#1F3D2E]/50 font-mono-tech text-[10px] tracking-[0.2em] uppercase">
+        <div className="mb-4 lg:mb-6 flex items-center gap-4 text-[#1F3D2E]/50 font-mono-tech text-[10px] tracking-[0.2em] uppercase">
           <span className="text-[#c48b30]">BPO Financeiro</span>
           <span aria-hidden className="h-px w-12 bg-[#c48b30]/40" />
           <span className="hidden sm:inline">Estratégia & Crescimento</span>
@@ -723,8 +723,8 @@ export function Hero() {
                 </span>
               </div>
 
-              {/* KPI card — top left */}
-              <div className="pointer-events-auto absolute top-8 -left-6 lg:-left-20 bg-[#1F3D2E] text-[#f4f1ec] p-5 shadow-2xl w-[200px] hero-deco-mobile-hide float-card-2 rounded-sm">
+              {/* KPI card — reposicionado para baixo, próximo ao card brass */}
+              <div className="pointer-events-auto absolute top-1/2 -translate-y-1/2 -left-6 lg:-left-24 bg-[#1F3D2E] text-[#f4f1ec] p-4 shadow-2xl w-[180px] hero-deco-mobile-hide float-card-2 rounded-sm">
                 <div className="flex items-center justify-between mb-2">
                   <span className="font-mono-tech text-[9px] uppercase tracking-widest text-[#cec9b8]">Margem líquida</span>
                   <span className="text-[#c48b30] font-mono-tech text-[10px]">+12.4%</span>
@@ -799,14 +799,6 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Detalhe inferior */}
-        <div className="mt-16 hidden lg:flex justify-between items-end">
-          <div className="font-mono-tech text-[9px] text-[#1F3D2E]/30 uppercase tracking-[0.3em] flex gap-12">
-            <span>CRC-SP 2SP-000000</span>
-            <span>Operando desde 2013</span>
-          </div>
-          <div aria-hidden className="h-12 w-px bg-gradient-to-t from-[#c48b30] to-transparent" />
-        </div>
       </div>
     </section>
   );
