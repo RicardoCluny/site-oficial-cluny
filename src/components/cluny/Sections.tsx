@@ -632,14 +632,7 @@ export function Hero() {
         }}
       />
 
-      <div className="relative max-w-[1320px] w-full mx-auto px-6 lg:px-10 py-16 lg:py-24">
-        {/* Eyebrow / metadata */}
-        <div className="mb-4 lg:mb-6 flex items-center gap-4 text-[#1F3D2E]/50 font-mono-tech text-[10px] tracking-[0.2em] uppercase">
-          <span className="text-[#c48b30]">BPO Financeiro</span>
-          <span aria-hidden className="h-px w-12 bg-[#c48b30]/40" />
-          <span className="hidden sm:inline">Estratégia & Crescimento</span>
-        </div>
-
+      <div className="relative max-w-[1320px] w-full mx-auto px-6 lg:px-10 pt-6 lg:pt-10 pb-16 lg:pb-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-0 items-center">
           {/* Tipografia — esquerda */}
           <div className="lg:col-span-6 z-10 relative">
