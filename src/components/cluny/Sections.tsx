@@ -1576,77 +1576,143 @@ export function Indicadores() {
   );
 }
 
-/* ============= DIAGNÓSTICO INTERATIVO · 5 PERGUNTAS ============= */
+/* ============= DIAGNÓSTICO INTERATIVO · 12 PERGUNTAS ============= */
 type DiagOpt = { label: string; risco: number };
-type DiagQ = { q: string; opts: DiagOpt[] };
+type DiagQ = { q: string; hint?: string; opts: DiagOpt[]; categoria: number };
 
-const DIAG5: DiagQ[] = [
-  {
+const DIAG_CATEGORIAS = [
+  { titulo: "Estrutura", desc: "Porte e maturidade da operação" },
+  { titulo: "Controle Financeiro", desc: "Visibilidade de margem e caixa" },
+  { titulo: "Operação & Equipe", desc: "Como o financeiro é executado hoje" },
+  { titulo: "Estratégia", desc: "Planejamento, KPIs e tomada de decisão" },
+];
+
+const DIAG12: DiagQ[] = [
+  // Estrutura
+  { categoria: 0,
     q: "Qual é o faturamento mensal aproximado da sua empresa?",
     opts: [
       { label: "Até R$ 50 mil", risco: 1 },
       { label: "R$ 50k – R$ 200k", risco: 2 },
       { label: "R$ 200k – R$ 1M", risco: 2 },
       { label: "Acima de R$ 1M", risco: 3 },
-    ],
-  },
-  {
+    ]},
+  { categoria: 0,
+    q: "Há quanto tempo a empresa está em operação?",
+    opts: [
+      { label: "Menos de 1 ano", risco: 2 },
+      { label: "1 a 3 anos", risco: 2 },
+      { label: "3 a 7 anos", risco: 1 },
+      { label: "Mais de 7 anos", risco: 1 },
+    ]},
+  { categoria: 0,
+    q: "Qual é o regime tributário atual?",
+    opts: [
+      { label: "Simples Nacional", risco: 1 },
+      { label: "Lucro Presumido", risco: 2 },
+      { label: "Lucro Real", risco: 2 },
+      { label: "Não sei dizer", risco: 3 },
+    ]},
+  // Controle Financeiro
+  { categoria: 1,
     q: "Você sabe qual é a sua margem de lucro real hoje?",
     opts: [
       { label: "Sim, com precisão", risco: 0 },
       { label: "Tenho uma ideia aproximada", risco: 1 },
       { label: "Não sei", risco: 3 },
       { label: "Não acompanho", risco: 3 },
-    ],
-  },
-  {
+    ]},
+  { categoria: 1,
+    q: "Quando foi seu último fechamento financeiro mensal?",
+    opts: [
+      { label: "Faço todo mês, com DRE", risco: 0 },
+      { label: "Faço de vez em quando", risco: 2 },
+      { label: "Faz mais de 3 meses", risco: 3 },
+      { label: "Nunca fiz fechamento mensal", risco: 3 },
+    ]},
+  { categoria: 1,
+    q: "Suas contas pessoais e da empresa estão totalmente separadas?",
+    opts: [
+      { label: "Totalmente separadas", risco: 0 },
+      { label: "Quase tudo, mas tem mistura", risco: 2 },
+      { label: "Misturado com frequência", risco: 3 },
+      { label: "Não há separação clara", risco: 3 },
+    ]},
+  // Operação & Equipe
+  { categoria: 2,
     q: "Como é o seu controle financeiro atual?",
     opts: [
       { label: "Planilha própria", risco: 2 },
       { label: "Sistema (ERP/app)", risco: 1 },
       { label: "Meu contador faz", risco: 2 },
       { label: "Não tenho controle estruturado", risco: 3 },
-    ],
-  },
-  {
+    ]},
+  { categoria: 2,
     q: "Quantas pessoas da equipe administrativa você tem hoje?",
     opts: [
       { label: "Sou eu mesmo", risco: 3 },
       { label: "1 pessoa", risco: 2 },
       { label: "2 a 3 pessoas", risco: 1 },
       { label: "4 ou mais", risco: 1 },
-    ],
-  },
-  {
+    ]},
+  { categoria: 2,
+    q: "Com que frequência você concilia o banco?",
+    opts: [
+      { label: "Diariamente", risco: 0 },
+      { label: "Semanalmente", risco: 1 },
+      { label: "Mensalmente", risco: 2 },
+      { label: "Raramente / nunca", risco: 3 },
+    ]},
+  // Estratégia
+  { categoria: 3,
+    q: "Você opera com orçamento anual ou planejamento financeiro?",
+    opts: [
+      { label: "Sim, revisado mensalmente", risco: 0 },
+      { label: "Tenho orçamento, mas não acompanho", risco: 2 },
+      { label: "Faço só projeções pontuais", risco: 2 },
+      { label: "Não tenho orçamento", risco: 3 },
+    ]},
+  { categoria: 3,
+    q: "Você acompanha KPIs financeiros (margem, ticket, CAC, LTV)?",
+    opts: [
+      { label: "Sim, em dashboard recorrente", risco: 0 },
+      { label: "Acompanho alguns indicadores", risco: 1 },
+      { label: "Olho quando preciso", risco: 2 },
+      { label: "Não acompanho KPIs", risco: 3 },
+    ]},
+  { categoria: 3,
     q: "Qual dessas dores mais representa sua situação?",
     opts: [
       { label: "Faturei bem mas não sobrou dinheiro", risco: 3 },
       { label: "Não sei se posso contratar ou investir", risco: 2 },
-      { label: "Meu contador só aparece no imposto de renda", risco: 2 },
-      { label: "Não tenho relatórios para tomar decisão", risco: 3 },
-    ],
-  },
+      { label: "Meu contador só aparece no IR", risco: 2 },
+      { label: "Não tenho relatórios para decidir", risco: 3 },
+    ]},
 ];
 
 function diagResultado(answers: (number | null)[]) {
-  const total = answers.reduce<number>((s, a, i) => s + (a === null ? 0 : DIAG5[i].opts[a].risco), 0);
-  const margemNaoSabe = answers[1] === 2 || answers[1] === 3;
-  const semControle = answers[2] === 3;
-  if (margemNaoSabe && semControle) {
+  const total = answers.reduce<number>((s, a, i) => s + (a === null ? 0 : DIAG12[i].opts[a].risco), 0);
+  const max = DIAG12.length * 3;
+  const pct = (total / max) * 100;
+  const margemNaoSabe = answers[3] === 2 || answers[3] === 3;
+  const semControle = answers[6] === 3;
+  if ((margemNaoSabe && semControle) || pct >= 75) {
     return {
       titulo: "Diagnóstico: Alto risco financeiro",
       cor: "#b94a3a",
+      score: total, max,
       linhas: [
-        "Sua empresa opera no escuro: sem visibilidade de margem nem controle estruturado.",
+        "Sua empresa opera no escuro: sem visibilidade clara de margem nem controle estruturado.",
         "Risco identificado: decisões baseadas em sensação podem comprometer o caixa nos próximos 90 dias.",
         "Próximo passo: implantação imediata de BPO Financeiro para estruturar a base operacional.",
       ],
     };
   }
-  if (total >= 11) {
+  if (pct >= 50) {
     return {
       titulo: "Diagnóstico: Risco moderado a alto",
       cor: "#c48b30",
+      score: total, max,
       linhas: [
         "Sua empresa tem alguns controles, mas opera sem a base que sustenta crescimento seguro.",
         "Risco identificado: passivos ocultos e decisões sem dados consistentes.",
@@ -1654,10 +1720,11 @@ function diagResultado(answers: (number | null)[]) {
       ],
     };
   }
-  if (total >= 6) {
+  if (pct >= 25) {
     return {
       titulo: "Diagnóstico: Estágio em estruturação",
       cor: "#c48b30",
+      score: total, max,
       linhas: [
         "Sua empresa está saindo do caos, mas ainda falta o nível de controladoria que multiplica resultado.",
         "Risco identificado: gargalos de informação que limitam o salto para o próximo patamar.",
@@ -1668,6 +1735,7 @@ function diagResultado(answers: (number | null)[]) {
   return {
     titulo: "Diagnóstico: Base sólida — pronto para escalar",
     cor: "#005a54",
+    score: total, max,
     linhas: [
       "Sua empresa tem controle e clareza. Agora é hora de usar isso como vantagem competitiva.",
       "Oportunidade identificada: orçamento, cenários e expansão com previsibilidade.",
@@ -1677,9 +1745,9 @@ function diagResultado(answers: (number | null)[]) {
 }
 
 export function Diagnostico() {
-  const [step, setStep] = useState(0); // 0..4 perguntas; 5 = resultado
-  const [answers, setAnswers] = useState<(number | null)[]>(Array(5).fill(null));
-  const total = DIAG5.length;
+  const total = DIAG12.length;
+  const [step, setStep] = useState(0);
+  const [answers, setAnswers] = useState<(number | null)[]>(Array(total).fill(null));
   const isResult = step === total;
   const progress = isResult ? 100 : ((step + (answers[step] !== null ? 1 : 0)) / total) * 100;
 
@@ -1687,76 +1755,162 @@ export function Diagnostico() {
     const next = [...answers];
     next[step] = i;
     setAnswers(next);
-    setTimeout(() => setStep((s) => Math.min(total, s + 1)), 220);
+    setTimeout(() => setStep((s) => Math.min(total, s + 1)), 240);
   };
 
-  const reset = () => { setStep(0); setAnswers(Array(5).fill(null)); };
+  const reset = () => { setStep(0); setAnswers(Array(total).fill(null)); };
   const resultado = useMemo(() => diagResultado(answers), [answers]);
+  const currentQ = !isResult ? DIAG12[step] : null;
+  const catAtual = currentQ?.categoria ?? 0;
+
+  // progresso por categoria
+  const catProgress = DIAG_CATEGORIAS.map((_, ci) => {
+    const idxs = DIAG12.map((q, i) => (q.categoria === ci ? i : -1)).filter((x) => x >= 0);
+    const done = idxs.filter((i) => answers[i] !== null).length;
+    return { done, total: idxs.length };
+  });
 
   return (
     <section id="diagnostico" className="py-24 lg:py-32" style={{ background: "#f4f1ec" }}>
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
-        <div className="text-center mb-12">
+        <div className="max-w-3xl mb-12">
           <span className="label-mono" style={{ color: "#c48b30" }}>· DIAGNÓSTICO INTERATIVO</span>
-          <h2 className="font-display font-semibold text-[32px] lg:text-[44px] mt-4 leading-tight" style={{ color: "#1F3D2E" }}>
-            Diagnóstico Financeiro Gratuito — <span className="italic" style={{ color: "#005a54" }}>2 minutos</span>
+          <h2 className="font-display font-semibold text-[32px] lg:text-[48px] mt-4 leading-[1.05]" style={{ color: "#1F3D2E" }}>
+            Diagnóstico Financeiro Gratuito — <span className="italic" style={{ color: "#005a54" }}>3 minutos</span>
           </h2>
-          <p className="mt-5 text-[16px]" style={{ color: "#6e7b7c" }}>
-            Responda 5 perguntas e descubra onde sua empresa está perdendo dinheiro agora.
+          <p className="mt-5 text-[17px] leading-relaxed" style={{ color: "#1F3D2E", opacity: 0.7 }}>
+            12 perguntas em 4 dimensões. Ao final, você recebe uma análise técnica do seu estágio financeiro e o próximo passo recomendado.
           </p>
         </div>
 
-        <div
-          className="mx-auto"
-          style={{
-            maxWidth: 760, background: "#ffffff", borderRadius: 20,
-            padding: "32px 28px", boxShadow: "0 24px 60px rgba(31,61,46,0.10)",
-          }}
-        >
-          {/* progress bar */}
-          <div className="flex items-center justify-between mb-3">
-            <span className="label-mono" style={{ color: "#6e7b7c" }}>
-              {isResult ? "RESULTADO" : `PERGUNTA ${step + 1} DE ${total}`}
-            </span>
-            <span style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 12, fontWeight: 700, color: "#005a54" }}>
-              {Math.round(progress)}%
-            </span>
-          </div>
-          <div style={{ height: 2, background: "rgba(0,90,84,0.15)", borderRadius: 2, overflow: "hidden" }}>
-            <div style={{ width: `${progress}%`, height: "100%", background: "#005a54", transition: "width 400ms ease" }} />
-          </div>
+        {!isResult ? (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+            {/* Painel lateral · categorias */}
+            <aside className="lg:col-span-4 lg:sticky lg:top-24">
+              <div
+                className="rounded-2xl p-6 lg:p-7"
+                style={{ background: "#1F3D2E", color: "#f4f1ec", boxShadow: "0 24px 60px rgba(31,61,46,0.18)" }}
+              >
+                <span className="label-mono" style={{ color: "#c48b30" }}>· PROGRESSO</span>
+                <div className="mt-3 flex items-baseline gap-2">
+                  <span style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 36, fontWeight: 700, color: "#f4f1ec" }}>
+                    {Math.round(progress)}%
+                  </span>
+                  <span style={{ fontFamily: "Inter", fontSize: 13, color: "#cec9b8" }}>
+                    {step + 1} de {total}
+                  </span>
+                </div>
+                <div className="mt-3 h-1 rounded-full overflow-hidden" style={{ background: "rgba(244,241,236,0.12)" }}>
+                  <div style={{ width: `${progress}%`, height: "100%", background: "linear-gradient(to right, #005a54, #c48b30)", transition: "width 400ms ease" }} />
+                </div>
 
-          {/* conteúdo */}
-          <div key={step} className="mt-10 animate-fade-in">
-            {!isResult ? (
-              <div>
-                <h3 className="font-display text-[22px] lg:text-[26px] leading-snug" style={{ color: "#1F3D2E" }}>
-                  {DIAG5[step].q}
-                </h3>
-                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {DIAG5[step].opts.map((opt, oi) => {
-                    const selected = answers[step] === oi;
+                <ul className="mt-7 space-y-4">
+                  {DIAG_CATEGORIAS.map((c, ci) => {
+                    const cp = catProgress[ci];
+                    const isActive = ci === catAtual;
+                    const isDone = cp.done === cp.total;
                     return (
-                      <button
-                        key={oi}
-                        onClick={() => set(oi)}
-                        className="text-left transition-all flex items-center justify-between gap-3"
-                        style={{
-                          padding: "16px 18px", borderRadius: 12,
-                          border: selected ? "2px solid #005a54" : "2px solid #e8e4db",
-                          background: selected ? "#005a54" : "#ffffff",
-                          color: selected ? "#f4f1ec" : "#1A1A1A",
-                          fontFamily: "Inter", fontSize: 14, fontWeight: 500,
-                          cursor: "pointer", minHeight: 56,
-                        }}
-                      >
-                        <span>{opt.label}</span>
-                        {selected && <CheckCircle2 size={18} color="#c48b30" strokeWidth={2.5} />}
-                      </button>
+                      <li key={c.titulo} className="flex items-start gap-3">
+                        <span
+                          className="shrink-0 mt-0.5 flex items-center justify-center"
+                          style={{
+                            width: 28, height: 28, borderRadius: "50%",
+                            background: isDone ? "#005a54" : isActive ? "rgba(196,139,48,0.18)" : "rgba(244,241,236,0.08)",
+                            border: `1px solid ${isActive ? "#c48b30" : isDone ? "#005a54" : "rgba(244,241,236,0.18)"}`,
+                            color: isDone ? "#f4f1ec" : isActive ? "#c48b30" : "#cec9b8",
+                            fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 11, fontWeight: 700,
+                          }}
+                        >
+                          {isDone ? "✓" : `0${ci + 1}`}
+                        </span>
+                        <div className="flex-1">
+                          <div style={{ fontFamily: "Inter", fontSize: 14, fontWeight: 700, color: isActive ? "#c48b30" : "#f4f1ec" }}>
+                            {c.titulo}
+                          </div>
+                          <div style={{ fontFamily: "Inter", fontSize: 12, color: "#cec9b8", lineHeight: 1.4 }}>
+                            {c.desc}
+                          </div>
+                          <div className="mt-1.5 flex gap-1">
+                            {Array.from({ length: cp.total }).map((_, i) => (
+                              <span
+                                key={i}
+                                className="h-1 flex-1 rounded-full"
+                                style={{ background: i < cp.done ? "#c48b30" : "rgba(244,241,236,0.12)" }}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      </li>
                     );
                   })}
+                </ul>
+
+                <div className="mt-7 pt-5 border-t" style={{ borderColor: "rgba(244,241,236,0.1)" }}>
+                  <div className="flex items-center gap-2" style={{ fontFamily: "Inter", fontSize: 12, color: "#cec9b8" }}>
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#c48b30] animate-pulse" />
+                    Análise gerada na hora · sem cadastro
+                  </div>
                 </div>
-                <div className="flex items-center justify-between pt-8">
+              </div>
+            </aside>
+
+            {/* Pergunta atual */}
+            <div className="lg:col-span-8">
+              <div
+                className="rounded-2xl bg-white border border-[#e8e4db] p-7 lg:p-10"
+                style={{ boxShadow: "0 24px 60px rgba(31,61,46,0.10)" }}
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <span className="label-mono" style={{ color: "#c48b30" }}>
+                    · {DIAG_CATEGORIAS[currentQ!.categoria].titulo}
+                  </span>
+                  <span style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 11, color: "#6e7b7c" }}>
+                    PERGUNTA {step + 1} / {total}
+                  </span>
+                </div>
+
+                <div key={step} className="animate-fade-in">
+                  <h3 className="font-display text-[24px] lg:text-[30px] leading-[1.15]" style={{ color: "#1F3D2E" }}>
+                    {currentQ!.q}
+                  </h3>
+                  <div className="mt-7 grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {currentQ!.opts.map((opt, oi) => {
+                      const selected = answers[step] === oi;
+                      return (
+                        <button
+                          key={oi}
+                          onClick={() => set(oi)}
+                          className="text-left transition-all flex items-center justify-between gap-3 group hover:border-[#005a54]"
+                          style={{
+                            padding: "18px 20px", borderRadius: 12,
+                            border: selected ? "2px solid #005a54" : "2px solid #e8e4db",
+                            background: selected ? "#005a54" : "#ffffff",
+                            color: selected ? "#f4f1ec" : "#1A1A1A",
+                            fontFamily: "Inter", fontSize: 14, fontWeight: 500,
+                            cursor: "pointer", minHeight: 64,
+                          }}
+                        >
+                          <span className="flex items-center gap-3">
+                            <span
+                              className="shrink-0 flex items-center justify-center"
+                              style={{
+                                width: 22, height: 22, borderRadius: "50%",
+                                border: `2px solid ${selected ? "#c48b30" : "#cec9b8"}`,
+                                background: selected ? "#c48b30" : "transparent",
+                              }}
+                            >
+                              {selected && <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#1F3D2E" }} />}
+                            </span>
+                            <span>{opt.label}</span>
+                          </span>
+                          {selected && <CheckCircle2 size={18} color="#c48b30" strokeWidth={2.5} />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between pt-8 mt-2 border-t border-[#e8e4db]">
                   <button
                     onClick={() => setStep(Math.max(0, step - 1))}
                     disabled={step === 0}
@@ -1764,61 +1918,116 @@ export function Diagnostico() {
                   >
                     ← Voltar
                   </button>
-                  <span style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 11, color: "#6e7b7c" }}>
-                    {step + 1} / {total}
-                  </span>
+                  <button
+                    onClick={() => answers[step] !== null && setStep(Math.min(total, step + 1))}
+                    disabled={answers[step] === null}
+                    className="transition-all"
+                    style={{
+                      background: answers[step] !== null ? "#005a54" : "transparent",
+                      color: answers[step] !== null ? "#f4f1ec" : "#cec9b8",
+                      padding: "10px 22px", borderRadius: 999,
+                      fontFamily: "Inter", fontSize: 13, fontWeight: 700, border: 0,
+                      cursor: answers[step] !== null ? "pointer" : "default",
+                    }}
+                  >
+                    {step === total - 1 ? "Ver resultado →" : "Avançar →"}
+                  </button>
                 </div>
               </div>
-            ) : (
-              <div className="text-center py-2">
+            </div>
+          </div>
+        ) : (
+          // RESULTADO
+          <div
+            className="mx-auto rounded-2xl bg-white border border-[#e8e4db] overflow-hidden animate-fade-in"
+            style={{ maxWidth: 960, boxShadow: "0 24px 60px rgba(31,61,46,0.12)" }}
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-5">
+              {/* Lateral score */}
+              <div className="lg:col-span-2 p-8 lg:p-10" style={{ background: "#1F3D2E", color: "#f4f1ec" }}>
+                <span className="label-mono" style={{ color: "#c48b30" }}>· ANÁLISE GERADA</span>
+                <div className="mt-6">
+                  <div style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 64, lineHeight: 1, color: resultado.cor, fontWeight: 700 }}>
+                    {resultado.score}
+                    <span style={{ fontSize: 22, color: "#cec9b8", fontWeight: 500 }}> / {resultado.max}</span>
+                  </div>
+                  <div style={{ fontFamily: "Inter", fontSize: 12, color: "#cec9b8", marginTop: 6 }}>Pontuação de risco</div>
+                </div>
+                <div className="mt-8">
+                  <div className="label-mono" style={{ color: "#cec9b8" }}>POR DIMENSÃO</div>
+                  <ul className="mt-3 space-y-3">
+                    {DIAG_CATEGORIAS.map((c, ci) => {
+                      const idxs = DIAG12.map((q, i) => (q.categoria === ci ? i : -1)).filter((x) => x >= 0);
+                      const sc = idxs.reduce((s, i) => s + (answers[i] === null ? 0 : DIAG12[i].opts[answers[i]!].risco), 0);
+                      const m = idxs.length * 3;
+                      const p = (sc / m) * 100;
+                      return (
+                        <li key={c.titulo}>
+                          <div className="flex justify-between" style={{ fontFamily: "Inter", fontSize: 12 }}>
+                            <span style={{ color: "#f4f1ec", fontWeight: 600 }}>{c.titulo}</span>
+                            <span style={{ color: "#c48b30", fontFamily: "JetBrains Mono, ui-monospace, monospace" }}>{sc}/{m}</span>
+                          </div>
+                          <div className="mt-1 h-1 rounded-full overflow-hidden" style={{ background: "rgba(244,241,236,0.12)" }}>
+                            <div style={{ width: `${p}%`, height: "100%", background: "#c48b30" }} />
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              </div>
+
+              {/* Conteúdo principal do resultado */}
+              <div className="lg:col-span-3 p-8 lg:p-10">
                 <span
                   className="inline-block label-mono"
                   style={{
                     color: resultado.cor, background: `${resultado.cor}15`,
-                    padding: "6px 14px", borderRadius: 999, marginBottom: 18,
+                    padding: "6px 14px", borderRadius: 999,
                   }}
                 >
-                  · ANÁLISE GERADA
+                  · RESULTADO
                 </span>
-                <h3 className="font-display font-semibold text-[26px] lg:text-[34px] leading-tight" style={{ color: "#1F3D2E" }}>
+                <h3 className="font-display font-semibold text-[26px] lg:text-[34px] leading-tight mt-4" style={{ color: "#1F3D2E" }}>
                   {resultado.titulo}
                 </h3>
-                <ul className="mt-8 space-y-4 text-left max-w-[560px] mx-auto">
+                <ul className="mt-6 space-y-4">
                   {resultado.linhas.map((l, i) => (
                     <li key={i} className="flex gap-3">
-                      <span style={{ color: resultado.cor, fontWeight: 700, fontFamily: "JetBrains Mono, ui-monospace, monospace" }}>
+                      <span style={{ color: resultado.cor, fontWeight: 700, fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 14 }}>
                         0{i + 1}
                       </span>
                       <span style={{ fontFamily: "Inter", fontSize: 15, color: "#1A1A1A", lineHeight: 1.6 }}>{l}</span>
                     </li>
                   ))}
                 </ul>
-                <div className="mt-10 flex flex-col items-center gap-4">
+                <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-4">
                   <a
                     href="#cadastro"
                     className="inline-flex items-center gap-2 transition-all hover:opacity-90"
                     style={{
                       background: "#005a54", color: "#f4f1ec",
-                      padding: "16px 32px", borderRadius: 12,
+                      padding: "16px 26px", borderRadius: 12,
                       fontFamily: "Inter", fontWeight: 700, fontSize: 14, minHeight: 56,
                     }}
                   >
-                    Agendar meu diagnóstico completo e gratuito →
+                    Agendar diagnóstico completo →
                   </a>
-                  <p className="text-[12px]" style={{ color: "#6e7b7c", fontFamily: "Inter" }}>
-                    Sem compromisso. Diagnóstico de 30 minutos por videochamada.
-                  </p>
                   <a href="#metodo" style={{ color: "#005a54", fontSize: 13, fontWeight: 600, textDecoration: "underline", textUnderlineOffset: 4 }}>
-                    Ver como o Método Cluny funciona
+                    Ver o Método Cluny
                   </a>
-                  <button onClick={reset} style={{ color: "#6e7b7c", fontSize: 12, background: "transparent", border: 0, cursor: "pointer", marginTop: 4 }}>
-                    ↺ Refazer diagnóstico
-                  </button>
                 </div>
+                <button
+                  onClick={reset}
+                  className="mt-6"
+                  style={{ color: "#6e7b7c", fontSize: 12, background: "transparent", border: 0, cursor: "pointer" }}
+                >
+                  ↺ Refazer diagnóstico
+                </button>
               </div>
-            )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );
