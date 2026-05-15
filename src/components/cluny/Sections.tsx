@@ -1909,7 +1909,7 @@ export function Diagnostico() {
           // RESULTADO
           <div
             className="mx-auto rounded-2xl bg-white border border-[#e8e4db] overflow-hidden animate-fade-in"
-            style={{ maxWidth: 960, boxShadow: "0 24px 60px rgba(31,61,46,0.12)" }}
+            style={{ maxWidth: 780, boxShadow: "0 24px 60px rgba(31,61,46,0.12)" }}
           >
             <div className="grid grid-cols-1 lg:grid-cols-5">
               {/* Lateral score */}
