@@ -1787,155 +1787,121 @@ export function Diagnostico() {
         </div>
 
         {!isResult ? (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
-            {/* Painel lateral · categorias */}
-            <aside className="lg:col-span-4 lg:sticky lg:top-24">
-              <div
-                className="rounded-2xl p-6 lg:p-7"
-                style={{ background: "#1F3D2E", color: "#f4f1ec", boxShadow: "0 24px 60px rgba(31,61,46,0.18)" }}
-              >
-                <span className="label-mono" style={{ color: "#c48b30" }}>· PROGRESSO</span>
-                <div className="mt-3 flex items-baseline gap-2">
-                  <span style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 36, fontWeight: 700, color: "#f4f1ec" }}>
-                    {Math.round(progress)}%
-                  </span>
-                  <span style={{ fontFamily: "Inter", fontSize: 13, color: "#cec9b8" }}>
-                    {step + 1} de {total}
-                  </span>
-                </div>
-                <div className="mt-3 h-1 rounded-full overflow-hidden" style={{ background: "rgba(244,241,236,0.12)" }}>
-                  <div style={{ width: `${progress}%`, height: "100%", background: "linear-gradient(to right, #005a54, #c48b30)", transition: "width 400ms ease" }} />
-                </div>
+          <div style={{ maxWidth: 780, margin: "0 auto" }}>
+            {/* Progress bar */}
+            <div style={{ marginBottom: 32 }}>
+              <div className="flex items-center justify-between mb-2">
+                <span className="label-mono" style={{ color: "#c48b30" }}>
+                  · {DIAG_CATEGORIAS[currentQ!.categoria].titulo}
+                </span>
+                <span style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 11, color: "#6e7b7c" }}>
+                  PERGUNTA {step + 1} / {total} · {Math.round(progress)}%
+                </span>
+              </div>
+              <div style={{ width: "100%", height: 6, borderRadius: 999, background: "rgba(31,61,46,0.10)", overflow: "hidden" }}>
+                <div style={{ width: `${progress}%`, height: "100%", background: "linear-gradient(to right, #005a54, #c48b30)", transition: "width 400ms ease" }} />
+              </div>
+              <div className="mt-3 flex gap-2">
+                {DIAG_CATEGORIAS.map((c, ci) => {
+                  const cp = catProgress[ci];
+                  const isActive = ci === catAtual;
+                  const isDone = cp.done === cp.total;
+                  return (
+                    <div key={c.titulo} className="flex-1">
+                      <div className="flex gap-1">
+                        {Array.from({ length: cp.total }).map((_, i) => (
+                          <span
+                            key={i}
+                            className="h-1 flex-1 rounded-full"
+                            style={{ background: i < cp.done ? "#005a54" : isActive ? "rgba(196,139,48,0.25)" : "rgba(31,61,46,0.08)" }}
+                          />
+                        ))}
+                      </div>
+                      <div style={{ fontFamily: "Inter", fontSize: 10, fontWeight: 700, color: isDone ? "#005a54" : isActive ? "#c48b30" : "#6e7b7c", textTransform: "uppercase", letterSpacing: "0.06em", marginTop: 6 }}>
+                        {c.titulo}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
 
-                <ul className="mt-7 space-y-4">
-                  {DIAG_CATEGORIAS.map((c, ci) => {
-                    const cp = catProgress[ci];
-                    const isActive = ci === catAtual;
-                    const isDone = cp.done === cp.total;
+            {/* Card de pergunta */}
+            <div
+              style={{
+                background: "#ffffff",
+                borderRadius: 16,
+                padding: 32,
+                boxShadow: "0 4px 20px rgba(0,90,84,0.08)",
+                width: "100%",
+              }}
+            >
+              <div key={step} className="animate-fade-in">
+                <h3 className="font-display text-[22px] lg:text-[28px] leading-[1.2]" style={{ color: "#1F3D2E" }}>
+                  {currentQ!.q}
+                </h3>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: 12,
+                    marginTop: 24,
+                  }}
+                >
+                  {currentQ!.opts.map((opt, oi) => {
+                    const selected = answers[step] === oi;
                     return (
-                      <li key={c.titulo} className="flex items-start gap-3">
-                        <span
-                          className="shrink-0 mt-0.5 flex items-center justify-center"
-                          style={{
-                            width: 28, height: 28, borderRadius: "50%",
-                            background: isDone ? "#005a54" : isActive ? "rgba(196,139,48,0.18)" : "rgba(244,241,236,0.08)",
-                            border: `1px solid ${isActive ? "#c48b30" : isDone ? "#005a54" : "rgba(244,241,236,0.18)"}`,
-                            color: isDone ? "#f4f1ec" : isActive ? "#c48b30" : "#cec9b8",
-                            fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 11, fontWeight: 700,
-                          }}
-                        >
-                          {isDone ? "✓" : `0${ci + 1}`}
-                        </span>
-                        <div className="flex-1">
-                          <div style={{ fontFamily: "Inter", fontSize: 14, fontWeight: 700, color: isActive ? "#c48b30" : "#f4f1ec" }}>
-                            {c.titulo}
-                          </div>
-                          <div style={{ fontFamily: "Inter", fontSize: 12, color: "#cec9b8", lineHeight: 1.4 }}>
-                            {c.desc}
-                          </div>
-                          <div className="mt-1.5 flex gap-1">
-                            {Array.from({ length: cp.total }).map((_, i) => (
-                              <span
-                                key={i}
-                                className="h-1 flex-1 rounded-full"
-                                style={{ background: i < cp.done ? "#c48b30" : "rgba(244,241,236,0.12)" }}
-                              />
-                            ))}
-                          </div>
-                        </div>
-                      </li>
+                      <button
+                        key={oi}
+                        onClick={() => set(oi)}
+                        className="text-left transition-all"
+                        style={{
+                          padding: "14px 16px",
+                          borderRadius: 10,
+                          border: `1.5px solid ${selected ? "#005a54" : "#cec9b8"}`,
+                          background: selected ? "#f0faf9" : "#ffffff",
+                          color: selected ? "#005a54" : "#1A1A1A",
+                          fontFamily: "Inter", fontSize: 14, fontWeight: selected ? 600 : 500,
+                          cursor: "pointer",
+                          transition: "all 0.15s",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          gap: 12,
+                        }}
+                        onMouseEnter={(e) => { if (!selected) e.currentTarget.style.borderColor = "rgba(0,90,84,0.5)"; }}
+                        onMouseLeave={(e) => { if (!selected) e.currentTarget.style.borderColor = "#cec9b8"; }}
+                      >
+                        <span>{opt.label}</span>
+                        {selected && <CheckCircle2 size={18} color="#005a54" strokeWidth={2.5} />}
+                      </button>
                     );
                   })}
-                </ul>
-
-                <div className="mt-7 pt-5 border-t" style={{ borderColor: "rgba(244,241,236,0.1)" }}>
-                  <div className="flex items-center gap-2" style={{ fontFamily: "Inter", fontSize: 12, color: "#cec9b8" }}>
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#c48b30] animate-pulse" />
-                    Análise gerada na hora · sem cadastro
-                  </div>
                 </div>
               </div>
-            </aside>
 
-            {/* Pergunta atual */}
-            <div className="lg:col-span-8">
-              <div
-                className="rounded-2xl bg-white border border-[#e8e4db] p-7 lg:p-10"
-                style={{ boxShadow: "0 24px 60px rgba(31,61,46,0.10)" }}
-              >
-                <div className="flex items-center justify-between mb-3">
-                  <span className="label-mono" style={{ color: "#c48b30" }}>
-                    · {DIAG_CATEGORIAS[currentQ!.categoria].titulo}
-                  </span>
-                  <span style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 11, color: "#6e7b7c" }}>
-                    PERGUNTA {step + 1} / {total}
-                  </span>
-                </div>
-
-                <div key={step} className="animate-fade-in">
-                  <h3 className="font-display text-[24px] lg:text-[30px] leading-[1.15]" style={{ color: "#1F3D2E" }}>
-                    {currentQ!.q}
-                  </h3>
-                  <div className="mt-7 grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {currentQ!.opts.map((opt, oi) => {
-                      const selected = answers[step] === oi;
-                      return (
-                        <button
-                          key={oi}
-                          onClick={() => set(oi)}
-                          className="text-left transition-all flex items-center justify-between gap-3 group hover:border-[#005a54]"
-                          style={{
-                            padding: "18px 20px", borderRadius: 12,
-                            border: selected ? "2px solid #005a54" : "2px solid #e8e4db",
-                            background: selected ? "#005a54" : "#ffffff",
-                            color: selected ? "#f4f1ec" : "#1A1A1A",
-                            fontFamily: "Inter", fontSize: 14, fontWeight: 500,
-                            cursor: "pointer", minHeight: 64,
-                          }}
-                        >
-                          <span className="flex items-center gap-3">
-                            <span
-                              className="shrink-0 flex items-center justify-center"
-                              style={{
-                                width: 22, height: 22, borderRadius: "50%",
-                                border: `2px solid ${selected ? "#c48b30" : "#cec9b8"}`,
-                                background: selected ? "#c48b30" : "transparent",
-                              }}
-                            >
-                              {selected && <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#1F3D2E" }} />}
-                            </span>
-                            <span>{opt.label}</span>
-                          </span>
-                          {selected && <CheckCircle2 size={18} color="#c48b30" strokeWidth={2.5} />}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between pt-8 mt-2 border-t border-[#e8e4db]">
-                  <button
-                    onClick={() => setStep(Math.max(0, step - 1))}
-                    disabled={step === 0}
-                    style={{ color: "#6e7b7c", fontSize: 13, fontWeight: 700, opacity: step === 0 ? 0.3 : 1, background: "transparent", border: 0, cursor: step === 0 ? "default" : "pointer" }}
-                  >
-                    ← Voltar
-                  </button>
-                  <button
-                    onClick={() => answers[step] !== null && setStep(Math.min(total, step + 1))}
-                    disabled={answers[step] === null}
-                    className="transition-all"
-                    style={{
-                      background: answers[step] !== null ? "#005a54" : "transparent",
-                      color: answers[step] !== null ? "#f4f1ec" : "#cec9b8",
-                      padding: "10px 22px", borderRadius: 999,
-                      fontFamily: "Inter", fontSize: 13, fontWeight: 700, border: 0,
-                      cursor: answers[step] !== null ? "pointer" : "default",
-                    }}
-                  >
-                    {step === total - 1 ? "Ver resultado →" : "Avançar →"}
-                  </button>
-                </div>
+              <div className="flex items-center justify-between pt-7 mt-7 border-t border-[#e8e4db]">
+                <button
+                  onClick={() => setStep(Math.max(0, step - 1))}
+                  disabled={step === 0}
+                  style={{ color: "#6e7b7c", fontSize: 13, fontWeight: 700, opacity: step === 0 ? 0.3 : 1, background: "transparent", border: 0, cursor: step === 0 ? "default" : "pointer" }}
+                >
+                  ← Voltar
+                </button>
+                <button
+                  onClick={() => answers[step] !== null && setStep(Math.min(total, step + 1))}
+                  disabled={answers[step] === null}
+                  className="transition-all"
+                  style={{
+                    background: answers[step] !== null ? "#005a54" : "transparent",
+                    color: answers[step] !== null ? "#f4f1ec" : "#cec9b8",
+                    padding: "10px 22px", borderRadius: 999,
+                    fontFamily: "Inter", fontSize: 13, fontWeight: 700, border: 0,
+                    cursor: answers[step] !== null ? "pointer" : "default",
+                  }}
+                >
+                  {step === total - 1 ? "Ver resultado →" : "Avançar →"}
+                </button>
               </div>
             </div>
           </div>
