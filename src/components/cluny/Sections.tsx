@@ -1510,296 +1510,239 @@ export function Indicadores() {
   );
 }
 
-/* ================================================================
-   ============= DIAGNÓSTICO (REESCRITO — wizard 8q) =============
-   ================================================================ */
+/* ============= DIAGNÓSTICO INTERATIVO · 5 PERGUNTAS ============= */
+type DiagOpt = { label: string; risco: number };
+type DiagQ = { q: string; opts: DiagOpt[] };
 
-type DOpt = { label: string; pts: number };
-type DQ = { etapa: string; q: string; opts: DOpt[] };
-
-const DIAG_QUESTIONS: DQ[] = [
-  // Etapa 1 — Controle
-  { etapa: "Controle", q: "Você consegue saber hoje, com exatidão, quanto sua empresa lucrou no mês passado?", opts: [
-    { label: "Sim, sei exatamente", pts: 12 },
-    { label: "Tenho uma estimativa", pts: 7 },
-    { label: "Não sei ao certo", pts: 3 },
-    { label: "Nunca calculei", pts: 0 },
-  ]},
-  { etapa: "Controle", q: "Você tem um fluxo de caixa projetado para os próximos 30 dias?", opts: [
-    { label: "Sim, atualizado", pts: 12 },
-    { label: "Tenho, mas desatualizado", pts: 6 },
-    { label: "Não tenho", pts: 2 },
-    { label: "Não sei o que é isso", pts: 0 },
-  ]},
-  // Etapa 2 — Processo
-  { etapa: "Processo", q: "Como são aprovados os pagamentos na sua empresa?", opts: [
-    { label: "Processo formal com alçadas", pts: 12 },
-    { label: "Aprovo tudo pessoalmente", pts: 7 },
-    { label: "Qualquer um pode pagar", pts: 2 },
-    { label: "Sem processo definido", pts: 0 },
-  ]},
-  { etapa: "Processo", q: "Você tem separação total entre finanças pessoais e empresariais?", opts: [
-    { label: "Sim, totalmente separado", pts: 12 },
-    { label: "Às vezes misturo", pts: 6 },
-    { label: "Misturo com frequência", pts: 2 },
-    { label: "Nunca pensei nisso", pts: 0 },
-  ]},
-  // Etapa 3 — Relatórios
-  { etapa: "Relatórios", q: "Com que frequência você recebe um DRE (resultado da empresa)?", opts: [
-    { label: "Todo mês", pts: 12 },
-    { label: "A cada 3 meses", pts: 7 },
-    { label: "Uma vez por ano", pts: 3 },
-    { label: "Nunca tive um DRE", pts: 0 },
-  ]},
-  { etapa: "Relatórios", q: "Você toma decisões de investimento baseado em qual informação?", opts: [
-    { label: "Dashboard com dados reais", pts: 12 },
-    { label: "Extrato bancário", pts: 6 },
-    { label: "Sensação e experiência", pts: 2 },
-    { label: "Não tenho base para decidir", pts: 0 },
-  ]},
-  // Etapa 4 — Contexto
-  { etapa: "Contexto", q: "Qual o faturamento médio mensal da sua empresa?", opts: [
-    { label: "Até R$ 100K", pts: 4 },
-    { label: "R$ 100K a R$ 300K", pts: 6 },
-    { label: "R$ 300K a R$ 1M", pts: 8 },
-    { label: "Acima de R$ 1M", pts: 10 },
-  ]},
-  { etapa: "Contexto", q: "Qual é o seu maior desafio financeiro hoje?", opts: [
-    { label: "Falta de previsibilidade", pts: 6 },
-    { label: "Sangria de caixa", pts: 4 },
-    { label: "Decisões sem informação", pts: 6 },
-    { label: "Equipe financeira despreparada", pts: 8 },
-  ]},
+const DIAG5: DiagQ[] = [
+  {
+    q: "Qual é o faturamento mensal aproximado da sua empresa?",
+    opts: [
+      { label: "Até R$ 50 mil", risco: 1 },
+      { label: "R$ 50k – R$ 200k", risco: 2 },
+      { label: "R$ 200k – R$ 1M", risco: 2 },
+      { label: "Acima de R$ 1M", risco: 3 },
+    ],
+  },
+  {
+    q: "Você sabe qual é a sua margem de lucro real hoje?",
+    opts: [
+      { label: "Sim, com precisão", risco: 0 },
+      { label: "Tenho uma ideia aproximada", risco: 1 },
+      { label: "Não sei", risco: 3 },
+      { label: "Não acompanho", risco: 3 },
+    ],
+  },
+  {
+    q: "Como é o seu controle financeiro atual?",
+    opts: [
+      { label: "Planilha própria", risco: 2 },
+      { label: "Sistema (ERP/app)", risco: 1 },
+      { label: "Meu contador faz", risco: 2 },
+      { label: "Não tenho controle estruturado", risco: 3 },
+    ],
+  },
+  {
+    q: "Quantas pessoas da equipe administrativa você tem hoje?",
+    opts: [
+      { label: "Sou eu mesmo", risco: 3 },
+      { label: "1 pessoa", risco: 2 },
+      { label: "2 a 3 pessoas", risco: 1 },
+      { label: "4 ou mais", risco: 1 },
+    ],
+  },
+  {
+    q: "Qual dessas dores mais representa sua situação?",
+    opts: [
+      { label: "Faturei bem mas não sobrou dinheiro", risco: 3 },
+      { label: "Não sei se posso contratar ou investir", risco: 2 },
+      { label: "Meu contador só aparece no imposto de renda", risco: 2 },
+      { label: "Não tenho relatórios para tomar decisão", risco: 3 },
+    ],
+  },
 ];
 
-const DIAG_ETAPAS = ["Controle", "Processo", "Relatórios", "Contexto"];
-
-type Perfil = {
-  key: "A" | "B" | "C";
-  cor: string;
-  bg: string;
-  Icon: React.ComponentType<{ size?: number; color?: string }>;
-  titulo: string;
-  texto: string;
-  cta: string;
-};
-
-const PERFIS: Record<"A" | "B" | "C", Perfil> = {
-  A: {
-    key: "A",
-    cor: "#b94a3a",
-    bg: "rgba(185,74,58,0.08)",
-    Icon: AlertTriangle,
-    titulo: "Seu financeiro precisa de intervenção urgente.",
-    texto: "Identifiquei pontos críticos que expõem sua empresa a riscos sérios. O próximo passo é um diagnóstico completo — presencial ou online — para mapear o que precisa ser corrigido primeiro.",
-    cta: "Agendar diagnóstico gratuito agora",
-  },
-  B: {
-    key: "B",
-    cor: "#c48b30",
-    bg: "rgba(196,139,48,0.10)",
-    Icon: Construction,
-    titulo: "Você tem base, mas falta estrutura para crescer com segurança.",
-    texto: "Sua empresa tem alguns controles, mas ainda opera sem a visão estratégica que permite tomar decisões com confiança. Posso mostrar o que está faltando em 30 minutos.",
-    cta: "Quero ver o que está faltando",
-  },
-  C: {
-    key: "C",
+function diagResultado(answers: (number | null)[]) {
+  const total = answers.reduce<number>((s, a, i) => s + (a === null ? 0 : DIAG5[i].opts[a].risco), 0);
+  const margemNaoSabe = answers[1] === 2 || answers[1] === 3;
+  const semControle = answers[2] === 3;
+  if (margemNaoSabe && semControle) {
+    return {
+      titulo: "Diagnóstico: Alto risco financeiro",
+      cor: "#b94a3a",
+      linhas: [
+        "Sua empresa opera no escuro: sem visibilidade de margem nem controle estruturado.",
+        "Risco identificado: decisões baseadas em sensação podem comprometer o caixa nos próximos 90 dias.",
+        "Próximo passo: implantação imediata de BPO Financeiro para estruturar a base operacional.",
+      ],
+    };
+  }
+  if (total >= 11) {
+    return {
+      titulo: "Diagnóstico: Risco moderado a alto",
+      cor: "#c48b30",
+      linhas: [
+        "Sua empresa tem alguns controles, mas opera sem a base que sustenta crescimento seguro.",
+        "Risco identificado: passivos ocultos e decisões sem dados consistentes.",
+        "Próximo passo: revisão estruturada do seu financeiro com o Método Cluny.",
+      ],
+    };
+  }
+  if (total >= 6) {
+    return {
+      titulo: "Diagnóstico: Estágio em estruturação",
+      cor: "#c48b30",
+      linhas: [
+        "Sua empresa está saindo do caos, mas ainda falta o nível de controladoria que multiplica resultado.",
+        "Risco identificado: gargalos de informação que limitam o salto para o próximo patamar.",
+        "Próximo passo: Controladoria Cluny para transformar dados em decisão estratégica.",
+      ],
+    };
+  }
+  return {
+    titulo: "Diagnóstico: Base sólida — pronto para escalar",
     cor: "#005a54",
-    bg: "rgba(0,90,84,0.08)",
-    Icon: CheckCircle2,
-    titulo: "Seu financeiro está no caminho certo. Vamos otimizá-lo.",
-    texto: "Você já tem controles. O próximo nível é usar esses dados para decisões mais inteligentes e crescimento previsível. Posso mostrar como a Controladoria pode fazer isso.",
-    cta: "Conhecer a Controladoria Cluny",
-  },
-};
+    linhas: [
+      "Sua empresa tem controle e clareza. Agora é hora de usar isso como vantagem competitiva.",
+      "Oportunidade identificada: orçamento, cenários e expansão com previsibilidade.",
+      "Próximo passo: Controladoria estratégica para acelerar o crescimento.",
+    ],
+  };
+}
 
 export function Diagnostico() {
-  const [step, setStep] = useState(0); // 0..3 etapas; 4 = resultado
-  const [answers, setAnswers] = useState<(number | null)[]>(Array(8).fill(null));
+  const [step, setStep] = useState(0); // 0..4 perguntas; 5 = resultado
+  const [answers, setAnswers] = useState<(number | null)[]>(Array(5).fill(null));
+  const total = DIAG5.length;
+  const isResult = step === total;
+  const progress = isResult ? 100 : ((step + (answers[step] !== null ? 1 : 0)) / total) * 100;
 
-  const perStep = 2;
-  const isResult = step === 4;
-  const baseQ = step * perStep;
-  const stepAnswered = !isResult && answers[baseQ] !== null && answers[baseQ + 1] !== null;
-  const progress = isResult ? 100 : ((step) / 4) * 100 + (stepAnswered ? 25 / 4 : 0);
-
-  const setAns = (idx: number, optIdx: number) => {
+  const set = (i: number) => {
     const next = [...answers];
-    next[idx] = optIdx;
+    next[step] = i;
     setAnswers(next);
+    setTimeout(() => setStep((s) => Math.min(total, s + 1)), 220);
   };
 
-  const totalPts = useMemo(() => {
-    let s = 0;
-    answers.forEach((a, i) => { if (a !== null) s += DIAG_QUESTIONS[i].opts[a].pts; });
-    return s; // max ~96
-  }, [answers]);
-
-  const perfil: Perfil = useMemo(() => {
-    const pct = (totalPts / 96) * 100;
-    if (pct < 35) return PERFIS.A;
-    if (pct < 65) return PERFIS.B;
-    return PERFIS.C;
-  }, [totalPts]);
-
-  const reset = () => { setStep(0); setAnswers(Array(8).fill(null)); };
+  const reset = () => { setStep(0); setAnswers(Array(5).fill(null)); };
+  const resultado = useMemo(() => diagResultado(answers), [answers]);
 
   return (
     <section id="diagnostico" className="py-24 lg:py-32" style={{ background: "#f4f1ec" }}>
       <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
         <div className="text-center mb-12">
-          <span className="label-mono" style={{ color: "#c48b30" }}>· DIAGNÓSTICO RÁPIDO</span>
-          <h2 className="font-display font-semibold text-[36px] lg:text-[52px] mt-4 leading-tight" style={{ color: "#1F3D2E" }}>
-            Em 3 minutos, eu identifico<br />os maiores riscos do <em className="italic" style={{ color: "#005a54" }}>seu financeiro.</em>
+          <span className="label-mono" style={{ color: "#c48b30" }}>· DIAGNÓSTICO INTERATIVO</span>
+          <h2 className="font-display font-semibold text-[32px] lg:text-[44px] mt-4 leading-tight" style={{ color: "#1F3D2E" }}>
+            Diagnóstico Financeiro Gratuito — <span className="italic" style={{ color: "#005a54" }}>2 minutos</span>
           </h2>
           <p className="mt-5 text-[16px]" style={{ color: "#6e7b7c" }}>
-            Responda 8 perguntas. Veja onde sua empresa está exposta.
+            Responda 5 perguntas e descubra onde sua empresa está perdendo dinheiro agora.
           </p>
         </div>
 
         <div
           className="mx-auto"
           style={{
-            maxWidth: 760,
-            background: "#ffffff",
-            borderRadius: 20,
-            padding: 32,
-            boxShadow: "0 24px 60px rgba(31,61,46,0.10)",
+            maxWidth: 760, background: "#ffffff", borderRadius: 20,
+            padding: "32px 28px", boxShadow: "0 24px 60px rgba(31,61,46,0.10)",
           }}
         >
-          {/* Barra de progresso */}
-          <div className="flex items-center justify-between mb-6">
+          {/* progress bar */}
+          <div className="flex items-center justify-between mb-3">
             <span className="label-mono" style={{ color: "#6e7b7c" }}>
-              {isResult ? "RESULTADO" : `ETAPA ${step + 1} / 4 · ${DIAG_ETAPAS[step]}`}
+              {isResult ? "RESULTADO" : `PERGUNTA ${step + 1} DE ${total}`}
             </span>
-            <span className="label-mono" style={{ color: "#005a54" }}>
+            <span style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 12, fontWeight: 700, color: "#005a54" }}>
               {Math.round(progress)}%
             </span>
           </div>
-          <div style={{ height: 4, background: "#e8e4db", borderRadius: 4, overflow: "hidden" }}>
-            <div
-              style={{
-                width: `${progress}%`,
-                height: "100%",
-                background: "#005a54",
-                transition: "width 400ms ease",
-              }}
-            />
+          <div style={{ height: 2, background: "rgba(0,90,84,0.15)", borderRadius: 2, overflow: "hidden" }}>
+            <div style={{ width: `${progress}%`, height: "100%", background: "#005a54", transition: "width 400ms ease" }} />
           </div>
 
-          {/* Conteúdo */}
-          <div key={step} className="mt-8 animate-fade-in">
+          {/* conteúdo */}
+          <div key={step} className="mt-10 animate-fade-in">
             {!isResult ? (
-              <div className="space-y-10">
-                {[0, 1].map((qOffset) => {
-                  const qIdx = baseQ + qOffset;
-                  const q = DIAG_QUESTIONS[qIdx];
-                  return (
-                    <div key={qIdx}>
-                      <div className="label-mono mb-3" style={{ color: "#c48b30" }}>
-                        Pergunta {qIdx + 1} de 8
-                      </div>
-                      <h3 className="font-display text-[20px] lg:text-[22px] mb-5" style={{ color: "#1F3D2E" }}>
-                        {q.q}
-                      </h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        {q.opts.map((opt, oi) => {
-                          const selected = answers[qIdx] === oi;
-                          return (
-                            <button
-                              key={oi}
-                              onClick={() => setAns(qIdx, oi)}
-                              className="text-left transition-all"
-                              style={{
-                                padding: 14,
-                                borderRadius: 12,
-                                border: selected ? "2px solid #005a54" : "2px solid #e8e4db",
-                                background: selected ? "#e8f3f2" : "#ffffff",
-                                fontFamily: "Inter, system-ui, sans-serif",
-                                fontSize: 14,
-                                color: "#1A1A1A",
-                                cursor: "pointer",
-                              }}
-                            >
-                              {opt.label}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  );
-                })}
-
-                <div className="flex items-center justify-between pt-4">
+              <div>
+                <h3 className="font-display text-[22px] lg:text-[26px] leading-snug" style={{ color: "#1F3D2E" }}>
+                  {DIAG5[step].q}
+                </h3>
+                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {DIAG5[step].opts.map((opt, oi) => {
+                    const selected = answers[step] === oi;
+                    return (
+                      <button
+                        key={oi}
+                        onClick={() => set(oi)}
+                        className="text-left transition-all flex items-center justify-between gap-3"
+                        style={{
+                          padding: "16px 18px", borderRadius: 12,
+                          border: selected ? "2px solid #005a54" : "2px solid #e8e4db",
+                          background: selected ? "#005a54" : "#ffffff",
+                          color: selected ? "#f4f1ec" : "#1A1A1A",
+                          fontFamily: "Inter", fontSize: 14, fontWeight: 500,
+                          cursor: "pointer", minHeight: 56,
+                        }}
+                      >
+                        <span>{opt.label}</span>
+                        {selected && <CheckCircle2 size={18} color="#c48b30" strokeWidth={2.5} />}
+                      </button>
+                    );
+                  })}
+                </div>
+                <div className="flex items-center justify-between pt-8">
                   <button
                     onClick={() => setStep(Math.max(0, step - 1))}
                     disabled={step === 0}
-                    className="text-[13px] font-bold transition-opacity"
-                    style={{ color: "#6e7b7c", opacity: step === 0 ? 0.3 : 1 }}
+                    style={{ color: "#6e7b7c", fontSize: 13, fontWeight: 700, opacity: step === 0 ? 0.3 : 1, background: "transparent", border: 0, cursor: step === 0 ? "default" : "pointer" }}
                   >
                     ← Voltar
                   </button>
-                  <button
-                    onClick={() => setStep(step + 1)}
-                    disabled={!stepAnswered}
-                    className="inline-flex items-center gap-2 transition-all"
-                    style={{
-                      background: stepAnswered ? "#005a54" : "#cec9b8",
-                      color: "#f4f1ec",
-                      padding: "12px 24px",
-                      borderRadius: 8,
-                      fontFamily: "Inter, system-ui, sans-serif",
-                      fontWeight: 700,
-                      fontSize: 13,
-                      cursor: stepAnswered ? "pointer" : "not-allowed",
-                    }}
-                  >
-                    {step === 3 ? "Ver resultado" : "Continuar"} →
-                  </button>
+                  <span style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 11, color: "#6e7b7c" }}>
+                    {step + 1} / {total}
+                  </span>
                 </div>
               </div>
             ) : (
-              <div className="text-center py-4">
-                <div
-                  className="inline-flex items-center justify-center mb-5"
+              <div className="text-center py-2">
+                <span
+                  className="inline-block label-mono"
                   style={{
-                    width: 72, height: 72, borderRadius: "50%",
-                    background: perfil.bg,
+                    color: resultado.cor, background: `${resultado.cor}15`,
+                    padding: "6px 14px", borderRadius: 999, marginBottom: 18,
                   }}
                 >
-                  <perfil.Icon size={36} color={perfil.cor} />
-                </div>
-                <div className="label-mono mb-3" style={{ color: perfil.cor }}>
-                  PERFIL {perfil.key}
-                </div>
-                <h3 className="font-display font-semibold text-[26px] lg:text-[30px] leading-tight" style={{ color: "#1F3D2E" }}>
-                  {perfil.titulo}
+                  · ANÁLISE GERADA
+                </span>
+                <h3 className="font-display font-semibold text-[26px] lg:text-[34px] leading-tight" style={{ color: "#1F3D2E" }}>
+                  {resultado.titulo}
                 </h3>
-                <p className="mt-5 mx-auto max-w-[560px] text-[15px] leading-relaxed" style={{ color: "#1A1A1A" }}>
-                  {perfil.texto}
-                </p>
-                <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+                <ul className="mt-8 space-y-4 text-left max-w-[560px] mx-auto">
+                  {resultado.linhas.map((l, i) => (
+                    <li key={i} className="flex gap-3">
+                      <span style={{ color: resultado.cor, fontWeight: 700, fontFamily: "JetBrains Mono, ui-monospace, monospace" }}>
+                        0{i + 1}
+                      </span>
+                      <span style={{ fontFamily: "Inter", fontSize: 15, color: "#1A1A1A", lineHeight: 1.6 }}>{l}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-10 flex flex-col items-center gap-4">
                   <a
                     href="#cadastro"
-                    className="inline-flex items-center gap-2"
+                    className="inline-flex items-center gap-2 transition-all hover:opacity-90"
                     style={{
-                      background: "#005a54",
-                      color: "#f4f1ec",
-                      padding: "14px 28px",
-                      borderRadius: 8,
-                      fontFamily: "Inter, system-ui, sans-serif",
-                      fontWeight: 700,
-                      fontSize: 14,
+                      background: "#005a54", color: "#f4f1ec",
+                      padding: "16px 32px", borderRadius: 12,
+                      fontFamily: "Inter", fontWeight: 700, fontSize: 14, minHeight: 56,
                     }}
                   >
-                    {perfil.cta} →
+                    Agendar meu diagnóstico completo e gratuito →
                   </a>
-                  <button
-                    onClick={reset}
-                    className="text-[13px] font-bold"
-                    style={{ color: "#6e7b7c" }}
-                  >
+                  <a href="#metodo" style={{ color: "#005a54", fontSize: 13, fontWeight: 600, textDecoration: "underline", textUnderlineOffset: 4 }}>
+                    Ver como o Método Cluny funciona
+                  </a>
+                  <button onClick={reset} style={{ color: "#6e7b7c", fontSize: 12, background: "transparent", border: 0, cursor: "pointer", marginTop: 4 }}>
                     ↺ Refazer diagnóstico
                   </button>
                 </div>
@@ -1807,6 +1750,236 @@ export function Diagnostico() {
             )}
           </div>
         </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============= CALCULADORA · CLT vs BPO CLUNY ============= */
+const BPO_PRECO = 3500;
+
+export function CalculadoraCLT() {
+  const [salario, setSalario] = useState(5000);
+  const [pericul, setPericul] = useState(false);
+  const [horasExtras, setHorasExtras] = useState(false);
+  const [tempo, setTempo] = useState(2);
+  const [shown, setShown] = useState(false);
+
+  const calc = useMemo(() => {
+    const base = salario * (1 + (pericul ? 0.30 : 0) + (horasExtras ? 0.15 : 0));
+    const fgts = base * 0.08;
+    const inss = base * 0.20;
+    const rat = base * 0.05;
+    const decimo = base / 12 * (1 + 0.28);
+    const ferias = (base * (4 / 3)) / 12 * 1.28;
+    const aviso = base / 12;
+    const total = base + fgts + inss + rat + decimo + ferias + aviso;
+    const passivoRescisorio = fgts * 12 * tempo * 0.4;
+    return { base, fgts, inss, rat, decimo, ferias, aviso, total, passivoRescisorio,
+      pct: ((total / salario) - 1) * 100 };
+  }, [salario, pericul, horasExtras, tempo]);
+
+  const fmt = (v: number) => v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+  const linhas = [
+    { label: "Salário bruto", visivel: salario, real: calc.base },
+    { label: "FGTS (8%)", visivel: null, real: calc.fgts },
+    { label: "INSS patronal (20%)", visivel: null, real: calc.inss },
+    { label: "RAT + terceiros (~5%)", visivel: null, real: calc.rat },
+    { label: "13º salário (mensal)", visivel: null, real: calc.decimo },
+    { label: "Férias + 1/3 (mensal)", visivel: null, real: calc.ferias },
+    { label: "Aviso prévio provisionado", visivel: null, real: calc.aviso },
+  ];
+
+  return (
+    <section id="calculadora-clt" className="py-24 lg:py-32" style={{ background: "#1A1A1A" }}>
+      <div className="max-w-[1320px] mx-auto px-6 lg:px-10">
+        <div className="max-w-3xl">
+          <span className="label-mono" style={{ color: "#c48b30" }}>· CALCULADORA · CLT vs BPO</span>
+          <h2 className="font-display font-semibold mt-4 leading-tight" style={{ color: "#f4f1ec", fontSize: "clamp(28px, 4vw, 44px)" }}>
+            Quanto você está pagando por um funcionário CLT que <span className="italic" style={{ color: "#c48b30" }}>você pensa que custa R$ {salario.toLocaleString("pt-BR")}?</span>
+          </h2>
+          <p className="mt-5 text-[18px]" style={{ color: "#cec9b8" }}>
+            Coloque o salário bruto e veja o custo real — e os riscos que você está corrando.
+          </p>
+        </div>
+
+        <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+          {/* INPUTS */}
+          <div style={{ background: "#0e0e0e", border: "1px solid rgba(244,241,236,0.08)", borderRadius: 16, padding: 28 }}>
+            <label className="label-mono block mb-2" style={{ color: "#c48b30" }}>Salário bruto do funcionário</label>
+            <div className="flex items-center" style={{ background: "#1A1A1A", border: "1px solid rgba(244,241,236,0.12)", borderRadius: 10, padding: "0 16px" }}>
+              <span style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 18, color: "#6e7b7c" }}>R$</span>
+              <input
+                type="number"
+                value={salario}
+                onChange={(e) => setSalario(Math.max(0, Number(e.target.value) || 0))}
+                className="flex-1 bg-transparent outline-none"
+                style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 22, color: "#f4f1ec", padding: "16px 12px", border: 0, fontWeight: 700 }}
+              />
+            </div>
+
+            {/* toggles */}
+            {[
+              { label: "Tem adicional de periculosidade/insalubridade?", value: pericul, set: setPericul },
+              { label: "Tem horas extras frequentes?", value: horasExtras, set: setHorasExtras },
+            ].map((t) => (
+              <div key={t.label} className="mt-5 flex items-center justify-between gap-4">
+                <span style={{ color: "#cec9b8", fontFamily: "Inter", fontSize: 14 }}>{t.label}</span>
+                <div className="flex" style={{ background: "#1A1A1A", border: "1px solid rgba(244,241,236,0.12)", borderRadius: 999, padding: 3 }}>
+                  {[
+                    { v: false, l: "Não" }, { v: true, l: "Sim" },
+                  ].map((o) => (
+                    <button
+                      key={o.l}
+                      onClick={() => t.set(o.v)}
+                      style={{
+                        background: t.value === o.v ? "#005a54" : "transparent",
+                        color: t.value === o.v ? "#f4f1ec" : "#6e7b7c",
+                        padding: "6px 18px", borderRadius: 999, border: 0,
+                        fontFamily: "Inter", fontSize: 12, fontWeight: 700, cursor: "pointer",
+                      }}
+                    >{o.l}</button>
+                  ))}
+                </div>
+              </div>
+            ))}
+
+            {/* slider */}
+            <div className="mt-7">
+              <div className="flex items-center justify-between mb-2">
+                <span style={{ color: "#cec9b8", fontFamily: "Inter", fontSize: 14 }}>Há quanto tempo está contratado?</span>
+                <span style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", color: "#c48b30", fontSize: 14, fontWeight: 700 }}>
+                  {tempo} {tempo === 1 ? "ano" : "anos"}
+                </span>
+              </div>
+              <input
+                type="range" min={0} max={10} step={1}
+                value={tempo}
+                onChange={(e) => setTempo(Number(e.target.value))}
+                className="w-full"
+                style={{ accentColor: "#005a54" }}
+              />
+            </div>
+
+            <button
+              onClick={() => setShown(true)}
+              className="mt-8 w-full inline-flex items-center justify-center gap-2 transition-all hover:opacity-90"
+              style={{
+                background: "#005a54", color: "#f4f1ec",
+                minHeight: 52, borderRadius: 10, border: 0,
+                fontFamily: "Inter", fontWeight: 700, fontSize: 14, letterSpacing: "0.02em", cursor: "pointer",
+              }}
+            >
+              Calcular custo real →
+            </button>
+          </div>
+
+          {/* RESULTADO */}
+          <div>
+            {!shown ? (
+              <div style={{ background: "rgba(244,241,236,0.04)", border: "1px dashed rgba(244,241,236,0.18)", borderRadius: 16, padding: 40, textAlign: "center", color: "#6e7b7c", fontFamily: "Inter", fontSize: 14 }}>
+                Preencha os dados ao lado e clique em <strong style={{ color: "#c48b30" }}>Calcular custo real</strong> para ver o comparativo.
+              </div>
+            ) : (
+              <div className="animate-fade-in" style={{ background: "#0e0e0e", border: "1px solid rgba(244,241,236,0.08)", borderRadius: 16, overflow: "hidden" }}>
+                <div className="grid grid-cols-[1.4fr_1fr_1fr] gap-2" style={{ padding: "16px 20px", background: "#1A1A1A", borderBottom: "1px solid rgba(244,241,236,0.08)" }}>
+                  <span className="label-mono" style={{ color: "#6e7b7c" }}>Item</span>
+                  <span className="label-mono text-right" style={{ color: "#6e7b7c" }}>O que você vê</span>
+                  <span className="label-mono text-right" style={{ color: "#c48b30" }}>O que você paga</span>
+                </div>
+                {linhas.map((l, i) => (
+                  <div key={i} className="grid grid-cols-[1.4fr_1fr_1fr] gap-2 items-center" style={{ padding: "12px 20px", borderBottom: "1px solid rgba(244,241,236,0.05)" }}>
+                    <span style={{ color: "#cec9b8", fontFamily: "Inter", fontSize: 13 }}>{l.label}</span>
+                    <span className="text-right" style={{ color: "#6e7b7c", fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 13 }}>
+                      {l.visivel === null ? "—" : `R$ ${fmt(l.visivel)}`}
+                    </span>
+                    <span className="text-right" style={{ color: "#f4f1ec", fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 13, fontWeight: 600 }}>
+                      R$ {fmt(l.real)}
+                    </span>
+                  </div>
+                ))}
+                <div className="grid grid-cols-[1.4fr_1fr_1fr] gap-2 items-center" style={{ padding: "18px 20px", background: "rgba(196,139,48,0.08)" }}>
+                  <span style={{ color: "#f4f1ec", fontFamily: "Inter", fontSize: 14, fontWeight: 700, letterSpacing: "0.04em", textTransform: "uppercase" }}>Total real</span>
+                  <span className="text-right" style={{ color: "#6e7b7c", fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 14 }}>R$ {fmt(salario)}</span>
+                  <span className="text-right" style={{ color: "#c48b30", fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 18, fontWeight: 700 }}>
+                    R$ {fmt(calc.total)} <span style={{ fontSize: 11, fontWeight: 500 }}>(+{calc.pct.toFixed(0)}%)</span>
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* RISCOS */}
+        {shown && (
+          <div className="mt-10 animate-fade-in" style={{ background: "#1F3D2E", border: "2px solid #c48b30", borderRadius: 16, padding: "32px 28px" }}>
+            <h3 className="font-display font-semibold text-[22px] lg:text-[26px]" style={{ color: "#c48b30" }}>
+              ⚠ Riscos que essa conta não mostra
+            </h3>
+            <ul className="mt-5 space-y-3">
+              {[
+                "Processos trabalhistas: custo médio de R$ 15.000 por ação",
+                "Multa rescisória: 40% do FGTS acumulado",
+                "Passivo oculto de horas extras e banco de horas mal gerido",
+                "Dependência operacional: e se esse funcionário sair amanhã?",
+                "Inconsistência: férias coletivas, afastamentos, médicos do trabalho",
+              ].map((r) => (
+                <li key={r} className="flex gap-3" style={{ color: "#f4f1ec", fontFamily: "Inter", fontSize: 14, lineHeight: 1.6 }}>
+                  <span style={{ color: "#c48b30" }}>·</span>{r}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* COMPARATIVO */}
+        {shown && (
+          <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-in">
+            <div style={{ background: "#0e0e0e", border: "1px solid rgba(192,57,43,0.5)", borderRadius: 16, padding: 28 }}>
+              <span className="label-mono" style={{ color: "#c0392b" }}>· CLT</span>
+              <div className="mt-3" style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 28, fontWeight: 700, color: "#f4f1ec" }}>
+                R$ {fmt(calc.total)}
+              </div>
+              <div className="text-[12px]" style={{ color: "#6e7b7c", fontFamily: "Inter" }}>custo real por mês</div>
+              <ul className="mt-5 space-y-2 text-[13px]" style={{ color: "#cec9b8", fontFamily: "Inter" }}>
+                <li>+ riscos trabalhistas</li>
+                <li>+ tempo de gestão de RH</li>
+                <li>+ incerteza jurídica</li>
+                <li>+ passivo rescisório acumulado: <strong style={{ color: "#c0392b" }}>R$ {fmt(calc.passivoRescisorio)}</strong></li>
+              </ul>
+            </div>
+
+            <div style={{ background: "#0e0e0e", border: "2px solid #005a54", borderRadius: 16, padding: 28, position: "relative" }}>
+              <span className="absolute label-mono" style={{ top: -10, right: 18, background: "#c48b30", color: "#1A1A1A", padding: "4px 10px", borderRadius: 999 }}>RECOMENDADO</span>
+              <span className="label-mono" style={{ color: "#005a54" }}>· BPO FINANCEIRO CLUNY</span>
+              <div className="mt-3" style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 28, fontWeight: 700, color: "#f4f1ec" }}>
+                a partir de R$ {fmt(BPO_PRECO)}
+              </div>
+              <div className="text-[12px]" style={{ color: "#6e7b7c", fontFamily: "Inter" }}>por mês — fixo</div>
+              <ul className="mt-5 space-y-2 text-[13px]" style={{ color: "#cec9b8", fontFamily: "Inter" }}>
+                <li>· Sem encargos. Sem passivo. Sem processo.</li>
+                <li>· Equipe especializada</li>
+                <li>· Relatórios semanais</li>
+                <li>· Resultado garantido</li>
+              </ul>
+              <a
+                href="#cadastro"
+                className="mt-6 inline-flex items-center justify-center gap-2 w-full transition-all hover:opacity-90"
+                style={{
+                  background: "#005a54", color: "#f4f1ec", minHeight: 48,
+                  borderRadius: 10, fontFamily: "Inter", fontWeight: 700, fontSize: 13, letterSpacing: "0.02em",
+                }}
+              >
+                Quero substituir meu CLT pelo BPO Cluny →
+              </a>
+            </div>
+          </div>
+        )}
+
+        <p className="mt-8 italic" style={{ color: "#6e7b7c", fontFamily: "Inter", fontSize: 12 }}>
+          * Os valores são estimativas baseadas na CLT vigente. Consulte um especialista para análise individualizada.
+        </p>
       </div>
     </section>
   );
