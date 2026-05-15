@@ -2107,7 +2107,7 @@ export function Diagnostico() {
         {!isResult ? (
           <div style={{ maxWidth: 1180, margin: "0 auto" }}>
             {/* Progress bar */}
-            <div style={{ marginBottom: 32 }}>
+            <div style={{ marginBottom: 32, maxWidth: 780 }}>
               <div className="flex items-center justify-between mb-2">
                 <span className="label-mono" style={{ color: "#c48b30" }}>
                   · {DIAG_CATEGORIAS[currentQ!.categoria].titulo}
