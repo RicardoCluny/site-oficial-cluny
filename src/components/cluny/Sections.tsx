@@ -2733,6 +2733,27 @@ export function Metodo() {
                 <FaseBadge fase={etapaAtual.fase} />
               </div>
 
+              <div className="relative -mx-8 lg:-mx-10 mb-7 overflow-hidden">
+                <img
+                  src={METODO_IMAGES[active]}
+                  alt={`Etapa ${etapaAtual.n} — ${etapaAtual.titulo}`}
+                  width={800}
+                  height={600}
+                  loading="lazy"
+                  className="w-full h-[220px] lg:h-[260px] object-cover"
+                />
+                <div
+                  aria-hidden
+                  className="absolute inset-0 pointer-events-none"
+                  style={{ background: "linear-gradient(180deg, rgba(31,61,46,0.05) 0%, rgba(31,61,46,0.0) 40%, rgba(255,255,255,0.0) 80%, rgba(255,255,255,0.6) 100%)" }}
+                />
+                <span
+                  className="absolute top-4 left-8 lg:left-10 font-mono-tech text-[10px] uppercase tracking-widest text-[#f4f1ec] bg-[#1F3D2E]/80 px-2.5 py-1 rounded-sm"
+                >
+                  Ordem · {etapaAtual.n} de 05
+                </span>
+              </div>
+
               <p className="text-[16px] leading-relaxed text-[#1A1A1A]/85">
                 {etapaAtual.desc}
               </p>
