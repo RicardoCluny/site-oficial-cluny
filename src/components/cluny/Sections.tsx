@@ -427,233 +427,304 @@ function HeroCard() {
 /* ================================================================
    ============== HERO (REESCRITO — V.2026.05) ===================
    ================================================================ */
+/* ============= HERO CARROSSEL ============= */
+type HeroSlide = {
+  id: string;
+  bg: string;
+  eyebrow: string;
+  eyebrowColor: string;
+  title: React.ReactNode;
+  subtitle: string;
+  cta: { label: string; href: string; bg: string; color: string };
+  visual: React.ReactNode;
+};
+
+function FloatBars() {
+  return (
+    <svg width="220" height="140" viewBox="0 0 220 140" fill="none" aria-hidden>
+      {[20, 38, 30, 56, 72, 92, 108].map((h, i) => (
+        <rect
+          key={i}
+          x={10 + i * 28}
+          y={130 - h}
+          width="18"
+          height={h}
+          rx="2"
+          stroke="#9bc4bf"
+          strokeWidth="1.5"
+          fill="none"
+        />
+      ))}
+      <path
+        d="M19 110 L47 92 L75 100 L103 74 L131 58 L159 38 L187 22"
+        stroke="#c48b30"
+        strokeWidth="1.8"
+        fill="none"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function FloatGauge({ pct, label, color }: { pct: number; label: string; color: string }) {
+  const r = 34;
+  const c = 2 * Math.PI * r;
+  return (
+    <div className="flex flex-col items-center gap-1">
+      <svg width="86" height="86" viewBox="0 0 86 86">
+        <circle cx="43" cy="43" r={r} stroke="rgba(244,241,236,0.15)" strokeWidth="6" fill="none" />
+        <circle
+          cx="43" cy="43" r={r} stroke={color} strokeWidth="6" fill="none"
+          strokeDasharray={c} strokeDashoffset={c - (c * pct) / 100}
+          strokeLinecap="round" transform="rotate(-90 43 43)"
+        />
+        <text x="43" y="48" textAnchor="middle"
+          style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 14, fontWeight: 700, fill: "#f4f1ec" }}>
+          {pct}%
+        </text>
+      </svg>
+      <span style={{ fontFamily: "Inter", fontSize: 10, color: "rgba(244,241,236,0.7)", letterSpacing: "0.08em", textTransform: "uppercase" }}>{label}</span>
+    </div>
+  );
+}
+
+const HERO_SLIDES: HeroSlide[] = [
+  {
+    id: "financeiro",
+    bg: "#1F3D2E",
+    eyebrow: "BPO Financeiro",
+    eyebrowColor: "#c48b30",
+    title: (
+      <>
+        Sua empresa cresce.<br />
+        <span className="italic font-normal" style={{ color: "#c48b30" }}>Suas finanças acompanham?</span>
+      </>
+    ),
+    subtitle: "Estruturamos BPO Financeiro e Controladoria para PMEs que faturam entre R$ 2M e R$ 30M — sem abrir mão do controle.",
+    cta: { label: "Agendar diagnóstico gratuito", href: "#diagnostico", bg: "#f4f1ec", color: "#1F3D2E" },
+    visual: (
+      <div className="relative w-full h-full flex items-center justify-center">
+        <div className="float-card-1 absolute" style={{ top: "8%", left: "6%" }}>
+          <FloatBars />
+        </div>
+        <div className="float-card-2 absolute hidden md:block" style={{ top: "14%", right: "4%", background: "rgba(244,241,236,0.06)", border: "1px solid rgba(196,139,48,0.4)", borderRadius: 10, padding: "10px 14px", backdropFilter: "blur(6px)" }}>
+          <div style={{ fontFamily: "Inter", fontSize: 9, color: "rgba(244,241,236,0.65)", letterSpacing: "0.12em", textTransform: "uppercase" }}>Receita líquida</div>
+          <div style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 22, fontWeight: 700, color: "#c48b30", marginTop: 2 }}>R$ 1.284.500</div>
+          <div style={{ fontFamily: "Inter", fontSize: 10, color: "#9bc4bf", marginTop: 2 }}>↗ +12,4% MoM</div>
+        </div>
+        <div className="float-card-3 absolute hidden md:block" style={{ bottom: "12%", left: "10%", background: "rgba(244,241,236,0.06)", border: "1px solid rgba(155,196,191,0.4)", borderRadius: 10, padding: "10px 14px", backdropFilter: "blur(6px)" }}>
+          <div style={{ fontFamily: "Inter", fontSize: 9, color: "rgba(244,241,236,0.65)", letterSpacing: "0.12em", textTransform: "uppercase" }}>EBITDA</div>
+          <div style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 18, fontWeight: 700, color: "#f4f1ec", marginTop: 2 }}>R$ 312K · 24,3%</div>
+        </div>
+        <div className="float-card-1 absolute hidden lg:flex items-center gap-2" style={{ bottom: "22%", right: "8%", background: "#005a54", borderRadius: 999, padding: "8px 14px" }}>
+          <span style={{ width: 6, height: 6, borderRadius: 999, background: "#c48b30" }} />
+          <span style={{ fontFamily: "Inter", fontSize: 11, color: "#f4f1ec", fontWeight: 600 }}>DRE fechado em D+5</span>
+        </div>
+      </div>
+    ),
+  },
+  {
+    id: "controladoria",
+    bg: "#1A1A1A",
+    eyebrow: "Controladoria Cluny",
+    eyebrowColor: "#c48b30",
+    title: (
+      <>
+        Você sabe para onde<br />
+        seu dinheiro está indo —<br />
+        <span className="italic font-normal" style={{ color: "#c48b30" }}>agora.</span>
+      </>
+    ),
+    subtitle: "Controladoria que transforma dados brutos em decisões estratégicas. Em tempo real, com clareza.",
+    cta: { label: "Conhecer a Controladoria Cluny", href: "/planos/controladoria", bg: "#005a54", color: "#f4f1ec" },
+    visual: (
+      <div className="relative w-full h-full flex items-center justify-center">
+        <div className="float-card-1 grid grid-cols-3 gap-4" style={{ background: "rgba(244,241,236,0.04)", border: "1px solid rgba(244,241,236,0.12)", borderRadius: 16, padding: 24, backdropFilter: "blur(8px)" }}>
+          <FloatGauge pct={28} label="Margem" color="#005a54" />
+          <FloatGauge pct={64} label="EBITDA" color="#c48b30" />
+          <FloatGauge pct={82} label="Liquidez" color="#9bc4bf" />
+        </div>
+        <div className="float-card-2 absolute hidden md:block" style={{ top: "8%", right: "0%", background: "rgba(0,90,84,0.18)", border: "1px solid rgba(0,90,84,0.6)", borderRadius: 10, padding: "10px 14px" }}>
+          <div style={{ fontFamily: "Inter", fontSize: 9, color: "rgba(244,241,236,0.65)", letterSpacing: "0.12em", textTransform: "uppercase" }}>Tendência 12m</div>
+          <div style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 18, fontWeight: 700, color: "#005a54", marginTop: 2 }}>+34,7%</div>
+        </div>
+        <div className="float-card-3 absolute hidden md:block" style={{ bottom: "8%", left: "-2%", background: "rgba(196,139,48,0.12)", border: "1px solid rgba(196,139,48,0.5)", borderRadius: 10, padding: "10px 14px" }}>
+          <div style={{ fontFamily: "Inter", fontSize: 9, color: "rgba(244,241,236,0.65)", letterSpacing: "0.12em", textTransform: "uppercase" }}>Custos fixos</div>
+          <div style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 18, fontWeight: 700, color: "#c48b30", marginTop: 2 }}>R$ 184.200</div>
+        </div>
+      </div>
+    ),
+  },
+  {
+    id: "video",
+    bg: "#005a54",
+    eyebrow: "Vídeo · 3 minutos",
+    eyebrowColor: "#c48b30",
+    title: (
+      <>
+        O que nenhum contador<br />
+        <span className="italic font-normal" style={{ color: "#c48b30" }}>vai te dizer.</span>
+      </>
+    ),
+    subtitle: "3 minutos que mudam a forma como você vê suas finanças.",
+    cta: { label: "Quero a Cluny no meu negócio", href: "#diagnostico", bg: "#f4f1ec", color: "#005a54" },
+    visual: <HeroVideo />,
+  },
+];
+
+function HeroVideo() {
+  const [playing, setPlaying] = useState(false);
+  return (
+    <div className="relative w-full max-w-[520px] mx-auto" style={{ aspectRatio: "16/9", borderRadius: 14, overflow: "hidden", boxShadow: "0 30px 80px rgba(0,0,0,0.45)", border: "1px solid rgba(244,241,236,0.18)" }}>
+      {playing ? (
+        <iframe
+          src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
+          title="Cluny — gestão financeira"
+          allow="autoplay; encrypted-media; picture-in-picture"
+          allowFullScreen
+          style={{ width: "100%", height: "100%", border: 0 }}
+        />
+      ) : (
+        <button
+          onClick={() => setPlaying(true)}
+          aria-label="Reproduzir vídeo"
+          className="absolute inset-0 group"
+          style={{ background: "linear-gradient(135deg, rgba(31,61,46,0.6), rgba(0,0,0,0.4))", cursor: "pointer", border: 0 }}
+        >
+          <span className="absolute inset-0 flex items-center justify-center">
+            <span className="flex items-center justify-center transition-transform group-hover:scale-110" style={{ width: 84, height: 84, borderRadius: 999, background: "#c48b30", boxShadow: "0 12px 36px rgba(0,0,0,0.4)" }}>
+              <PlayCircle size={44} color="#1F3D2E" strokeWidth={1.5} />
+            </span>
+          </span>
+        </button>
+      )}
+    </div>
+  );
+}
+
 export function Hero() {
+  const [i, setI] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const total = HERO_SLIDES.length;
+
+  useEffect(() => {
+    if (paused) return;
+    const t = setInterval(() => setI((p) => (p + 1) % total), 5000);
+    return () => clearInterval(t);
+  }, [paused, total]);
+
+  const go = (n: number) => setI((n + total) % total);
+
   return (
     <section
       id="home"
       className="relative overflow-hidden"
-      style={{ background: "#1F3D2E", minHeight: "92vh" }}
+      style={{ height: "90vh", minHeight: 600 }}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      aria-roledescription="carousel"
+      aria-label="Apresentação Cluny"
     >
-      {/* glow decorativo */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(900px 500px at 80% 20%, rgba(0,90,84,0.35), transparent 60%), radial-gradient(700px 500px at 10% 90%, rgba(196,139,48,0.10), transparent 60%)",
-        }}
-      />
-      <div className="relative max-w-[1320px] mx-auto px-6 lg:px-10 py-16 lg:py-0 lg:min-h-[92vh] grid grid-cols-1 lg:grid-cols-[60fr_40fr] gap-12 lg:gap-16 items-center">
-        {/* Coluna esquerda — texto */}
-        <div className="animate-fade-in">
-          <span
-            className="inline-block"
-            style={{
-              fontFamily: "Inter, system-ui, sans-serif",
-              fontSize: 12,
-              fontWeight: 600,
-              letterSpacing: "0.16em",
-              textTransform: "uppercase",
-              color: "#c48b30",
-            }}
-          >
-            BPO Financeiro &amp; Controladoria
-          </span>
+      {HERO_SLIDES.map((s, idx) => (
+        <div
+          key={s.id}
+          className="absolute inset-0 transition-opacity duration-700 ease-in-out"
+          style={{ background: s.bg, opacity: i === idx ? 1 : 0, pointerEvents: i === idx ? "auto" : "none" }}
+          aria-hidden={i !== idx}
+          role="group"
+          aria-roledescription="slide"
+          aria-label={`${idx + 1} de ${total}`}
+        >
+          {/* glow */}
+          <div aria-hidden className="pointer-events-none absolute inset-0" style={{
+            background: "radial-gradient(900px 500px at 80% 20%, rgba(255,255,255,0.06), transparent 60%), radial-gradient(700px 500px at 10% 90%, rgba(196,139,48,0.10), transparent 60%)",
+          }} />
+          {/* formas decorativas slide vídeo */}
+          {s.id === "video" && (
+            <>
+              <div aria-hidden className="absolute hidden md:block float-card-1" style={{ top: "12%", left: "6%", width: 140, height: 140, border: "1px solid rgba(244,241,236,0.10)", borderRadius: "50%" }} />
+              <div aria-hidden className="absolute hidden md:block float-card-3" style={{ bottom: "10%", right: "8%", width: 180, height: 180, border: "1px solid rgba(244,241,236,0.10)" }} />
+            </>
+          )}
 
-          <h1
-            className="font-display font-semibold mt-6 leading-[1] text-[40px] sm:text-[56px] lg:text-[72px]"
-            style={{ color: "#f4f1ec" }}
-          >
-            Você sabe, hoje,<br />
-            qual é o estado real<br />
-            <span className="italic font-normal" style={{ color: "#c48b30" }}>do seu financeiro.</span>
-          </h1>
-
-          <p
-            className="mt-8 max-w-[560px] leading-relaxed"
-            style={{ color: "rgba(244,241,236,0.78)", fontSize: 18 }}
-          >
-            Eu organizo, estruturo e opero o financeiro da sua empresa — para que você tome decisão baseada em dado, não em sensação.
-          </p>
-
-          <div className="mt-10 flex flex-wrap gap-4">
-            <a
-              href="#diagnostico"
-              className="group inline-flex items-center justify-center gap-2 transition-all hover:opacity-90"
-              style={{
-                background: "#005a54",
-                color: "#f4f1ec",
-                height: 56,
-                padding: "0 28px",
-                borderRadius: 12,
-                fontFamily: "Inter, system-ui, sans-serif",
-                fontWeight: 700,
-                fontSize: 14,
-                letterSpacing: "0.02em",
-              }}
-            >
-              Quero meu diagnóstico gratuito
-              <span className="transition-transform group-hover:translate-x-1">→</span>
-            </a>
+          <div className="relative max-w-[1320px] mx-auto px-6 lg:px-10 h-full grid grid-cols-1 lg:grid-cols-[55fr_45fr] gap-10 lg:gap-16 items-center py-20 lg:py-0">
+            <div className={i === idx ? "animate-fade-in" : ""}>
+              <span style={{
+                fontFamily: "Inter", fontSize: 12, fontWeight: 600,
+                letterSpacing: "0.16em", textTransform: "uppercase", color: s.eyebrowColor,
+              }}>
+                {s.eyebrow}
+              </span>
+              <h1
+                className="font-display font-semibold mt-6 leading-[1.05] text-[36px] sm:text-[48px] lg:text-[56px]"
+                style={{ color: "#f4f1ec" }}
+              >
+                {s.title}
+              </h1>
+              <p className="mt-6 max-w-[560px] leading-relaxed text-base lg:text-[20px]" style={{ color: "rgba(244,241,236,0.82)" }}>
+                {s.subtitle}
+              </p>
+              <div className="mt-8 lg:mt-10">
+                <a
+                  href={s.cta.href}
+                  className="group inline-flex items-center justify-center gap-2 transition-all hover:opacity-90"
+                  style={{
+                    background: s.cta.bg, color: s.cta.color, minHeight: 48,
+                    padding: "0 28px", borderRadius: 12,
+                    fontFamily: "Inter", fontWeight: 700, fontSize: 14, letterSpacing: "0.02em",
+                  }}
+                >
+                  {s.cta.label}
+                  <span className="transition-transform group-hover:translate-x-1">→</span>
+                </a>
+              </div>
+            </div>
+            <div className="hidden lg:block relative w-full h-[460px]">
+              {s.visual}
+            </div>
           </div>
-
-          <p
-            className="mt-6"
-            style={{ color: "rgba(244,241,236,0.55)", fontSize: 12, fontFamily: "Inter, system-ui, sans-serif" }}
-          >
-            +350 empresas organizadas · 12 anos de operação · Método proprietário
-          </p>
         </div>
+      ))}
 
-        {/* Coluna direita — visual com badges flutuantes */}
-        <HeroVisual />
+      {/* setas */}
+      <button
+        onClick={() => go(i - 1)}
+        aria-label="Slide anterior"
+        className="absolute left-4 lg:left-6 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center transition hover:scale-110"
+        style={{ width: 44, height: 44, borderRadius: 999, background: "rgba(244,241,236,0.12)", border: "1px solid rgba(244,241,236,0.25)", color: "#f4f1ec", backdropFilter: "blur(6px)" }}
+      >
+        ←
+      </button>
+      <button
+        onClick={() => go(i + 1)}
+        aria-label="Próximo slide"
+        className="absolute right-4 lg:right-6 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center transition hover:scale-110"
+        style={{ width: 44, height: 44, borderRadius: 999, background: "rgba(244,241,236,0.12)", border: "1px solid rgba(244,241,236,0.25)", color: "#f4f1ec", backdropFilter: "blur(6px)" }}
+      >
+        →
+      </button>
+
+      {/* dots */}
+      <div className="absolute bottom-6 lg:bottom-8 left-1/2 -translate-x-1/2 z-10 flex items-center gap-3">
+        {HERO_SLIDES.map((s, idx) => (
+          <button
+            key={s.id}
+            onClick={() => go(idx)}
+            aria-label={`Ir para slide ${idx + 1}`}
+            aria-current={i === idx}
+            style={{
+              width: i === idx ? 28 : 10,
+              height: 10,
+              borderRadius: 999,
+              background: i === idx ? "#c48b30" : "rgba(244,241,236,0.4)",
+              border: 0,
+              transition: "all 300ms ease",
+              cursor: "pointer",
+            }}
+          />
+        ))}
       </div>
     </section>
-  );
-}
-
-function HeroVisual() {
-  return (
-    <div className="relative w-full" style={{ minHeight: 480 }}>
-      {/* card base */}
-      <div
-        className="relative mx-auto"
-        style={{
-          background: "#f4f1ec",
-          borderRadius: 24,
-          padding: 28,
-          boxShadow: "0 32px 80px rgba(0,0,0,0.35)",
-          maxWidth: 460,
-          minHeight: 360,
-        }}
-      >
-        {/* dashboard mini centro */}
-        <div
-          className="float-card-1"
-          style={{
-            background: "#ffffff",
-            borderRadius: 16,
-            padding: 24,
-            boxShadow: "0 12px 28px rgba(0,0,0,0.06)",
-          }}
-        >
-          <div style={{ fontFamily: "Inter, system-ui, sans-serif", fontSize: 11, color: "#6e7b7c", fontWeight: 500 }}>
-            Resultado Mensal
-          </div>
-          <div
-            style={{
-              fontFamily: "JetBrains Mono, ui-monospace, monospace",
-              fontSize: 30,
-              fontWeight: 700,
-              color: "#005a54",
-              marginTop: 6,
-              lineHeight: 1.1,
-            }}
-          >
-            R$ 284.500
-          </div>
-          <div
-            style={{
-              fontFamily: "Inter, system-ui, sans-serif",
-              fontSize: 11,
-              color: "#005a54",
-              marginTop: 4,
-              fontWeight: 500,
-            }}
-          >
-            ▲ 12,4% vs mês anterior
-          </div>
-          {/* mini gráfico de barras */}
-          <div className="flex items-end gap-2 mt-5" style={{ height: 56 }}>
-            {[24, 32, 28, 38, 50, 56].map((h, i) => (
-              <div
-                key={i}
-                style={{
-                  flex: 1,
-                  height: h,
-                  background: i >= 4 ? "#005a54" : "#cec9b8",
-                  borderRadius: 3,
-                }}
-              />
-            ))}
-          </div>
-          <div className="flex items-center gap-2 mt-4">
-            <span className="pulse-dot" />
-            <span style={{ fontFamily: "Inter, system-ui, sans-serif", fontSize: 10, color: "#6e7b7c" }}>
-              Operação ativa
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* badge flutuante superior direito — DRE D+5 */}
-      <div
-        className="absolute hidden md:flex items-center gap-2 float-card-2"
-        style={{
-          top: -10,
-          right: -10,
-          background: "#ffffff",
-          border: "1px solid #cec9b8",
-          borderRadius: 12,
-          padding: "8px 12px",
-          boxShadow: "0 8px 20px rgba(0,0,0,0.10)",
-        }}
-      >
-        <CheckCircle2 size={14} color="#005a54" strokeWidth={2.5} />
-        <span style={{ fontFamily: "Inter, system-ui, sans-serif", fontSize: 11, color: "#1A1A1A", fontWeight: 600 }}>
-          DRE fechado em D+5
-        </span>
-      </div>
-
-      {/* badge flutuante inferior esquerdo — caixa projetado */}
-      <div
-        className="absolute hidden md:block float-card-3"
-        style={{
-          bottom: -8,
-          left: -8,
-          background: "#005a54",
-          borderRadius: 12,
-          padding: "10px 14px",
-          boxShadow: "0 12px 24px rgba(0,0,0,0.18)",
-        }}
-      >
-        <span
-          style={{
-            fontFamily: "Inter, system-ui, sans-serif",
-            fontSize: 11,
-            color: "#f4f1ec",
-            fontWeight: 700,
-            letterSpacing: "0.02em",
-          }}
-        >
-          Caixa projetado: R$ 127K
-        </span>
-      </div>
-
-      {/* mini card flutuante superior esquerdo — inadimplência */}
-      <div
-        className="absolute hidden md:block float-card-1"
-        style={{
-          top: 28,
-          left: -28,
-          background: "#ffffff",
-          borderRadius: 12,
-          padding: "10px 14px",
-          boxShadow: "0 10px 24px rgba(0,0,0,0.12)",
-          animationDelay: "0.8s",
-        }}
-      >
-        <div style={{ fontFamily: "Inter, system-ui, sans-serif", fontSize: 10, color: "#6e7b7c", fontWeight: 500 }}>
-          Inadimplência
-        </div>
-        <div className="flex items-center gap-1 mt-1">
-          <span style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 18, fontWeight: 700, color: "#1A1A1A" }}>
-            2,1%
-          </span>
-          <span style={{ color: "#005a54", fontSize: 12 }}>▼</span>
-        </div>
-      </div>
-    </div>
   );
 }
 
