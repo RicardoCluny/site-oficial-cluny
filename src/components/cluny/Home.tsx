@@ -194,10 +194,10 @@ export function Hero() {
         {/* Botões */}
         <div className="hero-buttons" style={{ display: "flex", gap: 14, marginTop: 26 }}>
           <a href="#diagnostico" className="btn-diag">
-            Fazer diagnóstico gratuito
+            <span>Fazer diagnóstico gratuito</span>
           </a>
           <a href="#proposta" className="btn-prop">
-            Solicitar proposta <span style={{ marginLeft: 4 }}>→</span>
+            <span>Solicitar proposta →</span>
           </a>
         </div>
 
@@ -235,7 +235,7 @@ export function Hero() {
           background: "#fff",
           borderRadius: 14,
           padding: "14px 16px",
-          width: 180,
+          width: 205,
           border: "1px solid rgba(0,90,84,0.07)",
           boxShadow: "0 8px 28px rgba(0,90,84,0.11)",
           animation: "float-dre 4.5s ease-in-out infinite",
@@ -253,12 +253,12 @@ export function Hero() {
         >
           DRE — JUN/2025
         </div>
-        {[
-          ["Receita", "184,2k"],
-          ["Custos", "−92,1k"],
-          ["Desp. fixas", "−31,5k"],
-          ["Impostos", "−17,4k"],
-        ].map(([k, v]) => (
+        {([
+          ["Receita Bruta", "R$ 520k", C.escuro, 9, 400],
+          ["Receita Líquida", "R$ 482k", C.escuro, 9, 400],
+          ["Margem de Contribuição", "R$ 214k", C.verde, 9, 400],
+          ["EBITDA", "R$ 126k", C.verde, 9, 400],
+        ] as const).map(([k, v, col, fs]) => (
           <div
             key={k}
             style={{
@@ -269,12 +269,12 @@ export function Hero() {
             }}
           >
             <span style={{ fontFamily: "Inter", fontSize: 8, color: "#4a5c5c" }}>{k}</span>
-            <span style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 9, color: C.escuro }}>{v}</span>
+            <span style={{ fontFamily: "JetBrains Mono, monospace", fontSize: fs, color: col }}>{v}</span>
           </div>
         ))}
-        <div style={{ display: "flex", justifyContent: "space-between", paddingTop: 4 }}>
-          <span style={{ fontFamily: "Inter", fontSize: 8, color: "#4a5c5c" }}>Lucro líquido</span>
-          <span style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 11, color: C.laton, fontWeight: 700 }}>43,2k</span>
+        <div style={{ display: "flex", justifyContent: "space-between", paddingTop: 5 }}>
+          <span style={{ fontFamily: "Inter", fontSize: 8, color: "#4a5c5c" }}>Lucro Líquido</span>
+          <span style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 11, color: C.laton, fontWeight: 700 }}>R$ 98k</span>
         </div>
       </div>
 
@@ -411,38 +411,30 @@ export function Hero() {
         @keyframes float-pill { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
         @keyframes float-badge { 0%,100% { transform: translateY(0) translateX(0); } 50% { transform: translateY(-8px) translateX(3px); } }
 
-        .btn-diag {
+        .btn-diag, .btn-prop {
           position: relative; overflow: hidden;
-          background: ${C.verde}; color: ${C.papel}; border: none;
           padding: 14px 28px; border-radius: 50px;
           font-family: Inter, system-ui, sans-serif; font-weight: 600; font-size: 13px;
-          box-shadow: 0 4px 18px rgba(0,90,84,0.32);
-          transition: transform .25s, box-shadow .25s, background .2s;
+          letter-spacing: 0.06em; text-transform: uppercase;
           display: inline-flex; align-items: center; cursor: pointer;
+          transition: transform .28s ease, box-shadow .28s ease;
+          text-decoration: none;
         }
-        .btn-diag::before {
+        .btn-diag { background: ${C.verde}; border: 1.5px solid ${C.verde}; color: ${C.papel}; box-shadow: 0 4px 18px rgba(0,90,84,.28); }
+        .btn-prop { background: transparent; border: 1.5px solid ${C.verde}; color: ${C.verde}; }
+        .btn-diag > span, .btn-prop > span { position: relative; z-index: 2; transition: color .35s ease; }
+        .btn-diag::after, .btn-prop::after {
           content: ""; position: absolute; inset: 0;
-          background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.14) 50%, transparent 70%);
-          transform: translateX(-100%); transition: transform .6s ease;
-        }
-        .btn-diag:hover { background: #004a44; transform: translateY(-3px); box-shadow: 0 8px 26px rgba(0,90,84,0.4); }
-        .btn-diag:hover::before { transform: translateX(100%); }
-
-        .btn-prop {
-          position: relative; overflow: hidden;
-          border: 1.5px solid ${C.verde}; background: transparent; color: ${C.verde};
-          padding: 13px 26px; border-radius: 50px;
-          font-family: Inter, system-ui, sans-serif; font-weight: 500; font-size: 13px;
-          transition: color .25s, transform .25s;
-          display: inline-flex; align-items: center; cursor: pointer;
-          z-index: 1;
-        }
-        .btn-prop::after {
-          content: ""; position: absolute; inset: 0; background: ${C.verde};
           transform: scaleX(0); transform-origin: left center;
-          transition: transform .35s ease; z-index: -1;
+          transition: transform .4s ease; z-index: 1;
         }
-        .btn-prop:hover { color: ${C.papel}; transform: translateY(-2px); }
+        .btn-diag::after { background: ${C.papel}; }
+        .btn-prop::after { background: ${C.verde}; }
+        .btn-diag:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,90,84,.36); }
+        .btn-diag:hover > span { color: ${C.verde}; }
+        .btn-diag:hover::after { transform: scaleX(1); }
+        .btn-prop:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(0,90,84,.22); }
+        .btn-prop:hover > span { color: ${C.papel}; }
         .btn-prop:hover::after { transform: scaleX(1); }
 
         @media (max-width: 767px) {
@@ -510,12 +502,71 @@ export function BUsStrip() {
    ======================================================================== */
 export function Metodo() {
   const ETAPAS = [
-    { n: "01", nome: "Diagnóstico", desc: "Raio-x completo: receitas, custos, caixa e obrigações.", badge: "7 dias úteis" },
-    { n: "02", nome: "Estruturação", desc: "BPO implantado, contas separadas, modelo de relatórios.", badge: "30 a 60 dias" },
-    { n: "03", nome: "Controle", desc: "Relatórios semanais, KPIs, fechamento mensal.", badge: "Contínuo" },
-    { n: "04", nome: "Decisão", desc: "Reunião mensal com dados reais para cada decisão.", badge: "Mensal" },
-    { n: "05", nome: "Crescimento", desc: "Orçamento, cenários e suporte para escalar.", badge: "Estratégico" },
+    {
+      n: "01", nome: "Diagnóstico", prog: 0,
+      desc: "Mapeamos receitas, custos, fluxo de caixa, estrutura societária e obrigações fiscais. Raio-x completo do seu negócio — não relatório genérico.",
+      badge: "Entregável: Relatório de Diagnóstico — 7 dias úteis",
+      checks: [
+        "Mapeamento completo de entradas e saídas reais",
+        "Identificação de vazamentos financeiros ocultos",
+        "Análise de obrigações fiscais e societárias",
+      ],
+    },
+    {
+      n: "02", nome: "Estruturação", prog: 25,
+      desc: "BPO Financeiro implantado, contas PJ/PF separadas, centros de custo e modelo de relatórios que você vai receber toda semana.",
+      badge: "Entregável: Plano de Contas + DRE Gerencial — 30 a 60 dias",
+      checks: [
+        "Separação PJ/PF e centros de custo",
+        "DRE Gerencial configurado para seu modelo",
+        "Dashboard de indicadores semanais implantado",
+      ],
+    },
+    {
+      n: "03", nome: "Controle", prog: 50,
+      desc: "Relatórios semanais, fechamento mensal, conciliação bancária e KPIs que revelam onde o dinheiro está indo antes que vire problema.",
+      badge: "Entregável: Relatórios Semanais + KPIs — Contínuo",
+      checks: [
+        "Relatório semanal entregue toda segunda-feira",
+        "Conciliação bancária e controle de inadimplência",
+        "KPIs de performance ajustados ao seu setor",
+      ],
+    },
+    {
+      n: "04", nome: "Decisão", prog: 75,
+      desc: "Reunião mensal de resultado com dados reais. Você decide sobre contratações, investimentos e estratégia com base em números.",
+      badge: "Entregável: Reunião Mensal + Plano de Ação — Mensal",
+      checks: [
+        "Reunião mensal estruturada com agenda e ata",
+        "Análise de desvios e plano de correção imediata",
+        "Suporte a decisões de investimento e expansão",
+      ],
+    },
+    {
+      n: "05", nome: "Crescimento", prog: 100,
+      desc: "Planejamento orçamentário, modelagem de cenários e suporte estratégico para escalar com segurança e intencionalidade.",
+      badge: "Entregável: Orçamento Anual + Cenários — Contínuo",
+      checks: [
+        "Orçamento anual com metas e KPIs de desempenho",
+        "Modelagem de cenários: otimista, realista e conservador",
+        "Suporte estratégico contínuo para decisões de escala",
+      ],
+    },
   ];
+
+  const [active, setActive] = useState<number | null>(null);
+
+  useEffect(() => {
+    const t = setTimeout(() => setActive(0), 400);
+    return () => clearTimeout(t);
+  }, []);
+
+  function toggle(i: number) {
+    setActive((curr) => (curr === i ? null : i));
+  }
+
+  const current = active !== null ? ETAPAS[active] : null;
+  const prog = current ? current.prog : 0;
 
   return (
     <section style={{ background: C.escuro, paddingTop: 80 }}>
@@ -617,71 +668,212 @@ export function Metodo() {
         </div>
       </div>
 
-      {/* Etapas */}
+      {/* Infográfico interativo */}
       <div
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5"
-        style={{ borderTop: "1px solid rgba(255,255,255,0.07)" }}
+        className="metodo-info"
+        style={{
+          position: "relative",
+          borderTop: "1px solid rgba(255,255,255,0.07)",
+          ["--prog" as any]: `${prog}%`,
+        }}
       >
-        {ETAPAS.map((e, i) => (
-          <div
-            key={e.n}
-            className="transition-colors"
-            style={{
-              padding: "28px 24px",
-              borderLeft: i > 0 ? "1px solid rgba(255,255,255,0.07)" : "none",
-            }}
-            onMouseEnter={(ev) => (ev.currentTarget.style.background = "rgba(255,255,255,0.03)")}
-            onMouseLeave={(ev) => (ev.currentTarget.style.background = "transparent")}
-          >
+        {/* Trilha de nós */}
+        <div className="metodo-trilha" style={{ display: "flex", position: "relative" }}>
+          {ETAPAS.map((e, i) => {
+            const isActive = active === i;
+            return (
+              <button
+                key={e.n}
+                onClick={() => toggle(i)}
+                className="etapa-node"
+                style={{
+                  flex: 1,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  padding: "28px 8px 24px",
+                  background: isActive ? "rgba(196,139,48,0.06)" : "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                  position: "relative",
+                  transition: "background 0.25s ease",
+                }}
+                onMouseEnter={(ev) => {
+                  if (!isActive) ev.currentTarget.style.background = "rgba(255,255,255,0.03)";
+                }}
+                onMouseLeave={(ev) => {
+                  if (!isActive) ev.currentTarget.style.background = "transparent";
+                }}
+              >
+                <span
+                  style={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: "50%",
+                    border: `2px solid ${isActive ? C.laton : "rgba(255,255,255,0.12)"}`,
+                    background: isActive ? "rgba(196,139,48,0.15)" : "rgba(255,255,255,0.05)",
+                    boxShadow: isActive ? "0 0 0 6px rgba(196,139,48,0.08)" : "none",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontFamily: "JetBrains Mono, monospace",
+                    fontSize: 16,
+                    color: isActive ? C.laton : "rgba(255,255,255,0.35)",
+                    zIndex: 2,
+                    position: "relative",
+                    transition: "all 0.3s ease",
+                  }}
+                >
+                  {e.n}
+                </span>
+                <span
+                  style={{
+                    marginTop: 14,
+                    fontFamily: "Fraunces, Georgia, serif",
+                    fontWeight: 600,
+                    fontSize: 13,
+                    color: isActive ? C.papel : "rgba(255,255,255,0.45)",
+                    transition: "color 0.3s ease",
+                  }}
+                >
+                  {e.nome}
+                </span>
+                <span
+                  style={{
+                    marginTop: 10,
+                    width: 0,
+                    height: 0,
+                    borderLeft: "8px solid transparent",
+                    borderRight: "8px solid transparent",
+                    borderTop: `8px solid ${C.laton}`,
+                    opacity: isActive ? 1 : 0,
+                    transition: "opacity 0.3s ease",
+                  }}
+                />
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Painel */}
+        <div
+          style={{
+            maxHeight: active !== null ? 320 : 0,
+            overflow: "hidden",
+            transition: "max-height 0.5s ease",
+            borderTop: active !== null ? "1px solid rgba(255,255,255,0.06)" : "none",
+          }}
+        >
+          {current && (
             <div
-              style={{
-                fontFamily: "JetBrains Mono, monospace",
-                fontSize: 11,
-                color: C.laton,
-                letterSpacing: "0.1em",
-              }}
+              key={active}
+              className="grid grid-cols-1 md:grid-cols-2"
+              style={{ animation: "metodo-fade 0.35s ease both" }}
             >
-              {e.n}
+              <div style={{ padding: "36px 48px", borderRight: "1px solid rgba(255,255,255,0.06)" }}>
+                <div
+                  style={{
+                    fontFamily: "JetBrains Mono, monospace",
+                    fontSize: 11,
+                    color: C.laton,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.12em",
+                  }}
+                >
+                  Etapa {current.n}
+                </div>
+                <div
+                  style={{
+                    fontFamily: "Fraunces, Georgia, serif",
+                    fontWeight: 600,
+                    fontSize: 22,
+                    color: C.papel,
+                    marginTop: 6,
+                    marginBottom: 10,
+                  }}
+                >
+                  {current.nome}
+                </div>
+                <p style={{ fontFamily: "Inter", fontSize: 13, color: "#9fb8b5", lineHeight: 1.7, margin: 0 }}>
+                  {current.desc}
+                </p>
+                <div
+                  style={{
+                    display: "inline-block",
+                    marginTop: 14,
+                    fontFamily: "JetBrains Mono, monospace",
+                    fontSize: 9.5,
+                    color: C.laton,
+                    background: "rgba(196,139,48,0.1)",
+                    border: "1px solid rgba(196,139,48,0.25)",
+                    borderRadius: 4,
+                    padding: "4px 10px",
+                  }}
+                >
+                  {current.badge}
+                </div>
+              </div>
+              <div
+                style={{
+                  padding: "36px 40px",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 12,
+                  justifyContent: "center",
+                }}
+              >
+                {current.checks.map((c) => (
+                  <div key={c} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+                    <span
+                      style={{
+                        width: 20,
+                        height: 20,
+                        flexShrink: 0,
+                        borderRadius: "50%",
+                        background: "rgba(0,90,84,0.35)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "#7ecdc4",
+                        fontSize: 11,
+                        marginTop: 1,
+                      }}
+                    >
+                      ✓
+                    </span>
+                    <span style={{ fontFamily: "Inter", fontSize: 12, color: C.areia, lineHeight: 1.55 }}>
+                      {c}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div
-              style={{
-                fontFamily: "Fraunces, Georgia, serif",
-                fontSize: 15,
-                fontWeight: 600,
-                color: C.papel,
-                marginTop: 10,
-                marginBottom: 8,
-              }}
-            >
-              {e.nome}
-            </div>
-            <div
-              style={{
-                fontFamily: "Inter",
-                fontSize: 11.5,
-                color: "#9fb8b5",
-                lineHeight: 1.6,
-              }}
-            >
-              {e.desc}
-            </div>
-            <div
-              style={{
-                display: "inline-block",
-                marginTop: 10,
-                fontFamily: "JetBrains Mono, monospace",
-                fontSize: 9.5,
-                color: C.laton,
-                background: "rgba(196,139,48,0.1)",
-                border: "1px solid rgba(196,139,48,0.25)",
-                borderRadius: 4,
-                padding: "3px 8px",
-              }}
-            >
-              {e.badge}
-            </div>
-          </div>
-        ))}
+          )}
+        </div>
+
+        <style>{`
+          .metodo-trilha::before {
+            content: "";
+            position: absolute;
+            top: 52px; left: 10%; right: 10%;
+            height: 2px; background: rgba(255,255,255,0.10);
+            z-index: 0;
+          }
+          .metodo-trilha::after {
+            content: "";
+            position: absolute;
+            top: 52px; left: 10%;
+            height: 2px;
+            width: calc((100% - 20%) * var(--prog) / 100%);
+            background: linear-gradient(to right, ${C.laton}, rgba(196,139,48,0.4));
+            z-index: 1;
+            transition: width 0.6s ease;
+          }
+          @keyframes metodo-fade {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        `}</style>
       </div>
     </section>
   );
@@ -741,53 +933,85 @@ export function Diagnostico() {
             className="absolute inset-0"
             style={{
               background: `
-                linear-gradient(to right, transparent 60%, ${C.papel} 100%),
-                linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 45%)
+                linear-gradient(to bottom, rgba(31,61,46,0.75) 0%, rgba(31,61,46,0.2) 45%, transparent 65%),
+                linear-gradient(to right, transparent 55%, ${C.papel} 100%),
+                linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 35%)
               `,
             }}
           />
           <div
             className="absolute"
-            style={{ bottom: 40, left: 36, right: 36, zIndex: 5 }}
+            style={{ top: 36, left: 36, right: 36, zIndex: 5 }}
           >
             <div
               style={{
                 fontFamily: "JetBrains Mono, monospace",
                 fontSize: 9,
-                color: C.laton,
+                color: "rgba(196,139,48,0.95)",
                 textTransform: "uppercase",
-                letterSpacing: "0.12em",
-                marginBottom: 10,
+                letterSpacing: "0.14em",
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
               }}
             >
+              <span style={{ display: "inline-block", width: 16, height: 1, background: "rgba(196,139,48,0.95)" }} />
               Por dentro do diagnóstico
             </div>
             <h3
               style={{
                 fontFamily: "Fraunces, Georgia, serif",
-                fontSize: 24,
+                fontSize: 26,
                 fontWeight: 600,
                 color: "#fff",
-                lineHeight: 1.2,
+                lineHeight: 1.15,
                 margin: 0,
+                marginTop: 10,
               }}
             >
               2 minutos para entender<br />
               onde está o{" "}
-              <span style={{ color: C.laton, fontStyle: "italic" }}>problema</span>
+              <em style={{ color: C.laton, fontStyle: "italic" }}>problema</em>
             </h3>
             <p
               style={{
                 fontFamily: "Inter",
                 fontSize: 12,
-                color: "rgba(244,241,236,0.75)",
-                lineHeight: 1.6,
-                marginTop: 12,
+                color: "rgba(255,255,255,0.78)",
+                lineHeight: 1.65,
+                marginTop: 8,
+                marginBottom: 0,
               }}
             >
               Respondendo 5 perguntas, identificamos o estágio financeiro
               da sua empresa e o próximo passo mais importante.
             </p>
+            <div
+              style={{
+                marginTop: 14,
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+                background: "rgba(196,139,48,0.18)",
+                border: "1px solid rgba(196,139,48,0.40)",
+                borderRadius: 20,
+                padding: "6px 14px",
+              }}
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={C.laton} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+              <span
+                style={{
+                  fontFamily: "JetBrains Mono, monospace",
+                  fontSize: 10,
+                  color: C.laton,
+                }}
+              >
+                Diagnóstico em 2 minutos · Gratuito · Sem compromisso
+              </span>
+            </div>
           </div>
         </div>
 
