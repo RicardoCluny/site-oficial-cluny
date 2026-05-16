@@ -100,9 +100,10 @@ export function Hero() {
         className="absolute inset-0"
         style={{
           zIndex: 1,
-          backgroundImage: `url('${heroTeam}')`,
+          backgroundImage:
+            "url('https://images.unsplash.com/photo-1560250097-0b93528c311a?w=1600&q=90&fit=crop&crop=center')",
           backgroundSize: "cover",
-          backgroundPosition: "center 25%",
+          backgroundPosition: "85% 20%",
         }}
       />
       {/* Overlay */}
