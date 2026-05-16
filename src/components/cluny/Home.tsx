@@ -27,39 +27,45 @@ export function Header() {
   const NAV = ["Finanças", "Contabilidade", "Legalização", "Educação", "Blog", "Materiais"];
   return (
     <header
-      className="absolute top-0 left-0 right-0 z-50 flex items-center justify-between"
+      className="flex items-center justify-between"
       style={{
-        height: 62,
+        position: "fixed",
+        top: 0, left: 0, right: 0,
+        zIndex: 100,
+        height: 64,
         padding: "0 52px",
-        background: "linear-gradient(to bottom, rgba(244,241,236,0.97) 0%, transparent 100%)",
+        background: C.escuro,
+        borderBottom: "1px solid rgba(255,255,255,0.06)",
+        boxShadow: "0 2px 24px rgba(0,0,0,0.18)",
       }}
     >
-      <Link
-        to="/"
-        className="font-display"
-        style={{ fontSize: 21, color: C.verde, fontWeight: 600, letterSpacing: "-0.01em" }}
-      >
-        Cluny
+      <Link to="/" aria-label="Cluny - página inicial" style={{ display: "inline-flex", alignItems: "center" }}>
+        <Logo variant="branco" height={32} />
       </Link>
 
-      <nav className="hidden lg:flex items-center" style={{ gap: 28 }}>
-        {NAV.map((label) => (
-          <a
-            key={label}
-            href="#"
-            className="transition-opacity"
-            style={{
-              fontFamily: "Inter, system-ui, sans-serif",
-              fontWeight: 500,
-              fontSize: "11.5px",
-              color: C.escuro,
-              opacity: 0.72,
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.opacity = "1")}
-            onMouseLeave={(e) => (e.currentTarget.style.opacity = "0.72")}
-          >
-            {label}
-          </a>
+      <nav className="hidden lg:flex items-center" style={{ gap: 6 }}>
+        {NAV.map((label, idx) => (
+          <React.Fragment key={label}>
+            {idx === 5 && (
+              <span style={{ width: 1, height: 16, background: "rgba(255,255,255,0.12)", margin: "0 6px" }} />
+            )}
+            <a
+              href="#"
+              className="cluny-nav-link"
+              style={{
+                fontFamily: "Inter, system-ui, sans-serif",
+                fontWeight: 500,
+                fontSize: "11.5px",
+                color: "rgba(255,255,255,0.72)",
+                padding: "6px 12px",
+                borderRadius: 4,
+                textDecoration: "none",
+                transition: "color .2s ease, background .2s ease",
+              }}
+            >
+              {label}
+            </a>
+          </React.Fragment>
         ))}
       </nav>
 
@@ -69,35 +75,36 @@ export function Header() {
       </a>
 
       <style>{`
+        .cluny-nav-link:hover { color: #fff !important; background: rgba(255,255,255,0.07); }
         .cluny-area-btn {
           position: relative;
           display: inline-flex;
           align-items: center;
           gap: 6px;
-          border: 1.5px solid ${C.verde};
+          border: 1.5px solid rgba(255,255,255,0.35);
           border-radius: 6px;
-          padding: 8px 18px;
+          padding: 9px 20px;
           background: transparent;
-          color: ${C.verde};
+          color: #fff;
           font-family: Inter, system-ui, sans-serif;
           font-weight: 700;
           font-size: 11px;
           text-transform: uppercase;
-          letter-spacing: 0.08em;
+          letter-spacing: 0.1em;
           text-decoration: none;
           overflow: hidden;
           isolation: isolate;
-          transition: transform .25s cubic-bezier(.2,.7,.2,1), color .25s ease;
+          transition: transform .25s cubic-bezier(.2,.7,.2,1), border-color .25s ease;
         }
         .cluny-area-btn::after {
           content: "";
           position: absolute; inset: 0;
-          background: ${C.verde};
+          background: rgba(255,255,255,0.1);
           transform: scaleX(0); transform-origin: left center;
           transition: transform .35s cubic-bezier(.2,.7,.2,1);
           z-index: -1;
         }
-        .cluny-area-btn:hover { color: #fff; transform: translateY(-1px); }
+        .cluny-area-btn:hover { border-color: rgba(255,255,255,0.7); transform: translateY(-1px); }
         .cluny-area-btn:hover::after { transform: scaleX(1); }
         .cluny-area-icon, .cluny-area-label { position: relative; z-index: 1; }
       `}</style>
