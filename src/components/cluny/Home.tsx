@@ -235,7 +235,7 @@ export function Hero() {
           background: "#fff",
           borderRadius: 14,
           padding: "14px 16px",
-          width: 180,
+          width: 205,
           border: "1px solid rgba(0,90,84,0.07)",
           boxShadow: "0 8px 28px rgba(0,90,84,0.11)",
           animation: "float-dre 4.5s ease-in-out infinite",
@@ -253,12 +253,12 @@ export function Hero() {
         >
           DRE — JUN/2025
         </div>
-        {[
-          ["Receita", "184,2k"],
-          ["Custos", "−92,1k"],
-          ["Desp. fixas", "−31,5k"],
-          ["Impostos", "−17,4k"],
-        ].map(([k, v]) => (
+        {([
+          ["Receita Bruta", "R$ 520k", C.escuro, 9, 400],
+          ["Receita Líquida", "R$ 482k", C.escuro, 9, 400],
+          ["Margem de Contribuição", "R$ 214k", C.verde, 9, 400],
+          ["EBITDA", "R$ 126k", C.verde, 9, 400],
+        ] as const).map(([k, v, col, fs]) => (
           <div
             key={k}
             style={{
@@ -269,12 +269,12 @@ export function Hero() {
             }}
           >
             <span style={{ fontFamily: "Inter", fontSize: 8, color: "#4a5c5c" }}>{k}</span>
-            <span style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 9, color: C.escuro }}>{v}</span>
+            <span style={{ fontFamily: "JetBrains Mono, monospace", fontSize: fs, color: col }}>{v}</span>
           </div>
         ))}
-        <div style={{ display: "flex", justifyContent: "space-between", paddingTop: 4 }}>
-          <span style={{ fontFamily: "Inter", fontSize: 8, color: "#4a5c5c" }}>Lucro líquido</span>
-          <span style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 11, color: C.laton, fontWeight: 700 }}>43,2k</span>
+        <div style={{ display: "flex", justifyContent: "space-between", paddingTop: 5 }}>
+          <span style={{ fontFamily: "Inter", fontSize: 8, color: "#4a5c5c" }}>Lucro Líquido</span>
+          <span style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 11, color: C.laton, fontWeight: 700 }}>R$ 98k</span>
         </div>
       </div>
 
