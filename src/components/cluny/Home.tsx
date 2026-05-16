@@ -129,8 +129,8 @@ export function Hero() {
         style={{
           zIndex: 2,
           background: `
-            linear-gradient(to right, ${C.papel} 0%, ${C.papel} 28%, rgba(244,241,236,0.85) 44%, rgba(244,241,236,0.4) 60%, transparent 80%),
-            linear-gradient(to top, rgba(244,241,236,0.65) 0%, transparent 38%)
+            linear-gradient(to right, ${C.papel} 0%, ${C.papel} 24%, rgba(244,241,236,0.88) 40%, rgba(244,241,236,0.50) 56%, rgba(244,241,236,0.10) 72%, transparent 86%),
+            linear-gradient(to top, rgba(244,241,236,0.55) 0%, transparent 30%)
           `,
         }}
       />
@@ -139,8 +139,8 @@ export function Hero() {
         className="absolute top-0 left-0 right-0"
         style={{
           zIndex: 3,
-          height: 72,
-          background: `linear-gradient(to bottom, ${C.papel}, transparent)`,
+          height: 80,
+          background: `linear-gradient(to bottom, rgba(244,241,236,0.9), transparent)`,
         }}
       />
 
