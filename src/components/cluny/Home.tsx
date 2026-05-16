@@ -509,14 +509,17 @@ export function BUsStrip() {
     { Icon: GraduationCap, nome: "Educação Corporativa", desc: "Cursos · Mentorias" },
   ];
   return (
-    <section style={{ background: C.escuro }} className="grid grid-cols-2 lg:grid-cols-4">
+    <section
+      style={{ background: C.escuro, borderTop: `3px solid ${C.laton}` }}
+      className="grid grid-cols-2 lg:grid-cols-4"
+    >
       {BUS.map(({ Icon, nome, desc }, i) => (
         <div
           key={nome}
-          className="flex items-center transition-colors"
+          className="flex items-start transition-colors"
           style={{
-            gap: 10,
-            padding: "13px 20px",
+            gap: 14,
+            padding: "18px 24px 16px",
             borderLeft: i > 0 ? "1px solid rgba(255,255,255,0.07)" : "none",
           }}
           onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.04)")}
@@ -524,21 +527,22 @@ export function BUsStrip() {
         >
           <div
             style={{
-              width: 28,
-              height: 28,
-              borderRadius: 7,
-              background: "rgba(196,139,48,0.15)",
+              width: 36,
+              height: 36,
+              borderRadius: 8,
+              background: "rgba(196,139,48,0.12)",
+              border: "1px solid rgba(196,139,48,0.2)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               flexShrink: 0,
             }}
           >
-            <Icon size={13} color={C.laton} />
+            <Icon size={16} color={C.laton} />
           </div>
           <div className="min-w-0">
             <div style={{ fontFamily: "Inter", fontWeight: 500, fontSize: 10.5, color: C.papel }}>{nome}</div>
-            <div style={{ fontFamily: "Inter", fontSize: 9, color: "#9fb8b5" }}>{desc}</div>
+            <div style={{ fontFamily: "Inter", fontSize: 9, color: "#9fb8b5", marginTop: 2 }}>{desc}</div>
           </div>
         </div>
       ))}
