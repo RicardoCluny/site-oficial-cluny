@@ -502,12 +502,71 @@ export function BUsStrip() {
    ======================================================================== */
 export function Metodo() {
   const ETAPAS = [
-    { n: "01", nome: "Diagnóstico", desc: "Raio-x completo: receitas, custos, caixa e obrigações.", badge: "7 dias úteis" },
-    { n: "02", nome: "Estruturação", desc: "BPO implantado, contas separadas, modelo de relatórios.", badge: "30 a 60 dias" },
-    { n: "03", nome: "Controle", desc: "Relatórios semanais, KPIs, fechamento mensal.", badge: "Contínuo" },
-    { n: "04", nome: "Decisão", desc: "Reunião mensal com dados reais para cada decisão.", badge: "Mensal" },
-    { n: "05", nome: "Crescimento", desc: "Orçamento, cenários e suporte para escalar.", badge: "Estratégico" },
+    {
+      n: "01", nome: "Diagnóstico", prog: 0,
+      desc: "Mapeamos receitas, custos, fluxo de caixa, estrutura societária e obrigações fiscais. Raio-x completo do seu negócio — não relatório genérico.",
+      badge: "Entregável: Relatório de Diagnóstico — 7 dias úteis",
+      checks: [
+        "Mapeamento completo de entradas e saídas reais",
+        "Identificação de vazamentos financeiros ocultos",
+        "Análise de obrigações fiscais e societárias",
+      ],
+    },
+    {
+      n: "02", nome: "Estruturação", prog: 25,
+      desc: "BPO Financeiro implantado, contas PJ/PF separadas, centros de custo e modelo de relatórios que você vai receber toda semana.",
+      badge: "Entregável: Plano de Contas + DRE Gerencial — 30 a 60 dias",
+      checks: [
+        "Separação PJ/PF e centros de custo",
+        "DRE Gerencial configurado para seu modelo",
+        "Dashboard de indicadores semanais implantado",
+      ],
+    },
+    {
+      n: "03", nome: "Controle", prog: 50,
+      desc: "Relatórios semanais, fechamento mensal, conciliação bancária e KPIs que revelam onde o dinheiro está indo antes que vire problema.",
+      badge: "Entregável: Relatórios Semanais + KPIs — Contínuo",
+      checks: [
+        "Relatório semanal entregue toda segunda-feira",
+        "Conciliação bancária e controle de inadimplência",
+        "KPIs de performance ajustados ao seu setor",
+      ],
+    },
+    {
+      n: "04", nome: "Decisão", prog: 75,
+      desc: "Reunião mensal de resultado com dados reais. Você decide sobre contratações, investimentos e estratégia com base em números.",
+      badge: "Entregável: Reunião Mensal + Plano de Ação — Mensal",
+      checks: [
+        "Reunião mensal estruturada com agenda e ata",
+        "Análise de desvios e plano de correção imediata",
+        "Suporte a decisões de investimento e expansão",
+      ],
+    },
+    {
+      n: "05", nome: "Crescimento", prog: 100,
+      desc: "Planejamento orçamentário, modelagem de cenários e suporte estratégico para escalar com segurança e intencionalidade.",
+      badge: "Entregável: Orçamento Anual + Cenários — Contínuo",
+      checks: [
+        "Orçamento anual com metas e KPIs de desempenho",
+        "Modelagem de cenários: otimista, realista e conservador",
+        "Suporte estratégico contínuo para decisões de escala",
+      ],
+    },
   ];
+
+  const [active, setActive] = useState<number | null>(null);
+
+  useEffect(() => {
+    const t = setTimeout(() => setActive(0), 400);
+    return () => clearTimeout(t);
+  }, []);
+
+  function toggle(i: number) {
+    setActive((curr) => (curr === i ? null : i));
+  }
+
+  const current = active !== null ? ETAPAS[active] : null;
+  const prog = current ? current.prog : 0;
 
   return (
     <section style={{ background: C.escuro, paddingTop: 80 }}>
