@@ -652,7 +652,7 @@ export function Hero() {
         />
       </div>
 
-      <div className="relative max-w-[1440px] w-full mx-auto px-6 lg:px-12 pt-14 lg:pt-20 pb-20 lg:pb-28 min-h-[640px] lg:min-h-[760px] flex flex-col">
+      <div className="relative max-w-[1440px] w-full mx-auto px-6 lg:px-12 pt-[72px] pb-16 min-h-[480px] lg:min-h-[540px] flex flex-col">
         {/* Headline horizontal gigante — referência Reise */}
         <div className="relative z-10 flex-1 flex items-center">
           <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
@@ -724,7 +724,7 @@ export function Hero() {
           </div>
 
           {/* Bar chart — top right */}
-          <div className="pointer-events-auto absolute top-28 lg:top-36 right-4 lg:right-10 bg-[#f4f1ec] p-4 shadow-2xl w-[180px] hero-deco-mobile-hide float-card-3 border border-[#1F3D2E]/10">
+          <div className="pointer-events-auto absolute bottom-[18%] right-[7%] bg-[#f4f1ec] p-4 shadow-2xl w-[180px] hero-deco-mobile-hide float-card-3 border border-[#1F3D2E]/10">
             <div className="flex items-center justify-between mb-3">
               <span className="font-mono-tech text-[9px] uppercase tracking-widest text-[#1F3D2E]/60">Fluxo de caixa</span>
               <span className="w-1.5 h-1.5 rounded-full bg-[#005a54] animate-pulse" />
@@ -748,7 +748,7 @@ export function Hero() {
           </div>
 
           {/* Indicador circular — bottom right */}
-          <div className="pointer-events-auto absolute bottom-28 lg:bottom-36 right-6 lg:right-16 bg-[#f4f1ec] rounded-full p-4 shadow-2xl w-[120px] h-[120px] hero-deco-mobile-hide float-card-1 flex flex-col items-center justify-center border border-[#c48b30]/30">
+          <div className="pointer-events-auto absolute top-[22%] right-[6%] bg-[#f4f1ec] rounded-full p-4 shadow-2xl w-[120px] h-[120px] hero-deco-mobile-hide float-card-1 flex flex-col items-center justify-center border border-[#c48b30]/30">
             <svg viewBox="0 0 36 36" className="absolute inset-0 w-full h-full -rotate-90" aria-hidden>
               <circle cx="18" cy="18" r="15.5" fill="none" stroke="#cec9b8" strokeWidth="2" />
               <circle cx="18" cy="18" r="15.5" fill="none" stroke="#005a54" strokeWidth="2" strokeDasharray="97.4" strokeDashoffset="14" strokeLinecap="round" />
