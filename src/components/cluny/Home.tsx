@@ -23,29 +23,30 @@ const C = {
    SECTION 1 — HEADER
    ======================================================================== */
 export function Header() {
-  const NAV = ["Finanças", "Contabilidade", "Legalização", "Educação", "Sobre"];
+  const NAV = ["Finanças", "Contabilidade", "Legalização", "Educação", "Blog", "Materiais"];
   return (
     <header
-      className="absolute top-0 left-0 right-0 z-50 h-14 flex items-center justify-between"
+      className="absolute top-0 left-0 right-0 z-50 flex items-center justify-between"
       style={{
-        padding: "0 56px",
-        background: "linear-gradient(to bottom, rgba(244,241,236,0.98) 0%, transparent 100%)",
+        height: 62,
+        padding: "0 52px",
+        background: "linear-gradient(to bottom, rgba(244,241,236,0.97) 0%, transparent 100%)",
       }}
     >
       <Link
         to="/"
-        className="font-display font-semibold"
-        style={{ fontSize: 20, color: C.verde, letterSpacing: "-0.01em" }}
+        className="font-display"
+        style={{ fontSize: 21, color: C.verde, fontWeight: 600, letterSpacing: "-0.01em" }}
       >
         Cluny
       </Link>
 
-      <nav className="hidden lg:flex items-center" style={{ gap: 32 }}>
+      <nav className="hidden lg:flex items-center" style={{ gap: 28 }}>
         {NAV.map((label) => (
           <a
             key={label}
             href="#"
-            className="transition-opacity hover:opacity-100"
+            className="transition-opacity"
             style={{
               fontFamily: "Inter, system-ui, sans-serif",
               fontWeight: 500,
@@ -53,35 +54,52 @@ export function Header() {
               color: C.escuro,
               opacity: 0.72,
             }}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = "1")}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = "0.72")}
           >
             {label}
           </a>
         ))}
       </nav>
 
-      <a
-        href="#"
-        className="transition-colors"
-        style={{
-          border: `1.5px solid ${C.verde}`,
-          color: C.verde,
-          padding: "6px 16px",
-          borderRadius: 20,
-          fontFamily: "Inter, system-ui, sans-serif",
-          fontSize: 12,
-          fontWeight: 500,
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.background = C.verde;
-          e.currentTarget.style.color = C.papel;
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.background = "transparent";
-          e.currentTarget.style.color = C.verde;
-        }}
-      >
-        Entrar
+      <a href="#" className="cluny-area-btn" aria-label="Área do Cliente">
+        <User size={12} strokeWidth={2.2} className="cluny-area-icon" />
+        <span className="cluny-area-label">Área do Cliente</span>
       </a>
+
+      <style>{`
+        .cluny-area-btn {
+          position: relative;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          border: 1.5px solid ${C.verde};
+          border-radius: 6px;
+          padding: 8px 18px;
+          background: transparent;
+          color: ${C.verde};
+          font-family: Inter, system-ui, sans-serif;
+          font-weight: 700;
+          font-size: 11px;
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+          text-decoration: none;
+          overflow: hidden;
+          isolation: isolate;
+          transition: transform .25s cubic-bezier(.2,.7,.2,1), color .25s ease;
+        }
+        .cluny-area-btn::after {
+          content: "";
+          position: absolute; inset: 0;
+          background: ${C.verde};
+          transform: scaleX(0); transform-origin: left center;
+          transition: transform .35s cubic-bezier(.2,.7,.2,1);
+          z-index: -1;
+        }
+        .cluny-area-btn:hover { color: #fff; transform: translateY(-1px); }
+        .cluny-area-btn:hover::after { transform: scaleX(1); }
+        .cluny-area-icon, .cluny-area-label { position: relative; z-index: 1; }
+      `}</style>
     </header>
   );
 }
