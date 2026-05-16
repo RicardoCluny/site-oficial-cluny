@@ -724,7 +724,7 @@ export function Hero() {
           </div>
 
           {/* Bar chart — top right */}
-          <div className="pointer-events-auto absolute top-28 lg:top-36 right-4 lg:right-10 bg-[#f4f1ec] p-4 shadow-2xl w-[180px] hero-deco-mobile-hide float-card-3 border border-[#1F3D2E]/10">
+          <div className="pointer-events-auto absolute bottom-[18%] right-[7%] bg-[#f4f1ec] p-4 shadow-2xl w-[180px] hero-deco-mobile-hide float-card-3 border border-[#1F3D2E]/10">
             <div className="flex items-center justify-between mb-3">
               <span className="font-mono-tech text-[9px] uppercase tracking-widest text-[#1F3D2E]/60">Fluxo de caixa</span>
               <span className="w-1.5 h-1.5 rounded-full bg-[#005a54] animate-pulse" />
