@@ -748,7 +748,7 @@ export function Hero() {
           </div>
 
           {/* Indicador circular — bottom right */}
-          <div className="pointer-events-auto absolute bottom-28 lg:bottom-36 right-6 lg:right-16 bg-[#f4f1ec] rounded-full p-4 shadow-2xl w-[120px] h-[120px] hero-deco-mobile-hide float-card-1 flex flex-col items-center justify-center border border-[#c48b30]/30">
+          <div className="pointer-events-auto absolute top-[22%] right-[6%] bg-[#f4f1ec] rounded-full p-4 shadow-2xl w-[120px] h-[120px] hero-deco-mobile-hide float-card-1 flex flex-col items-center justify-center border border-[#c48b30]/30">
             <svg viewBox="0 0 36 36" className="absolute inset-0 w-full h-full -rotate-90" aria-hidden>
               <circle cx="18" cy="18" r="15.5" fill="none" stroke="#cec9b8" strokeWidth="2" />
               <circle cx="18" cy="18" r="15.5" fill="none" stroke="#005a54" strokeWidth="2" strokeDasharray="97.4" strokeDashoffset="14" strokeLinecap="round" />
