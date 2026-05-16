@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   Receipt, Building2, GraduationCap, ChartLine, ArrowRight, User,
+  FileSearch, LayoutDashboard, BarChart3, Presentation, TrendingUp,
+  ChevronRight, ArrowLeft, Check, Package,
 } from "lucide-react";
 import heroTeam from "@/assets/hero-team.jpg";
 import { Logo } from "@/components/cluny/Logo";
