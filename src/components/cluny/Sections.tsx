@@ -652,7 +652,7 @@ export function Hero() {
         />
       </div>
 
-      <div className="relative max-w-[1440px] w-full mx-auto px-6 lg:px-12 pt-14 lg:pt-20 pb-20 lg:pb-28 min-h-[640px] lg:min-h-[760px] flex flex-col">
+      <div className="relative max-w-[1440px] w-full mx-auto px-6 lg:px-12 pt-[72px] pb-16 min-h-[480px] lg:min-h-[540px] flex flex-col">
         {/* Headline horizontal gigante — referência Reise */}
         <div className="relative z-10 flex-1 flex items-center">
           <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
