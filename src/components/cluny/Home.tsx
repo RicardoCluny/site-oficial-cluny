@@ -4,6 +4,7 @@ import { Link } from "@tanstack/react-router";
 import {
   TrendingUp, Receipt, Building2, GraduationCap, ChartLine, ArrowRight,
 } from "lucide-react";
+import heroTeam from "@/assets/hero-team.jpg";
 
 /* ========================================================================
    TOKENS
