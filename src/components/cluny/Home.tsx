@@ -375,53 +375,63 @@ export function BUsStrip() {
 export function Metodo() {
   const ETAPAS = [
     {
-      n: "01", nome: "Diagnóstico", prog: 0,
+      n: "01", nome: "Diagnóstico", Icon: FileSearch,
+      resumo: "Raio-x completo do negócio",
+      tempo: "7 dias úteis",
       desc: "Mapeamos receitas, custos, fluxo de caixa, estrutura societária e obrigações fiscais. Raio-x completo do seu negócio — não relatório genérico.",
-      badge: "Entregável: Relatório de Diagnóstico — 7 dias úteis",
+      entregavel: "Relatório de Diagnóstico financeiro e fiscal",
       checks: [
-        "Mapeamento completo de entradas e saídas reais",
-        "Identificação de vazamentos financeiros ocultos",
-        "Análise de obrigações fiscais e societárias",
+        ["Mapeamento", " de entradas e saídas reais"],
+        ["Identificação", " de vazamentos financeiros ocultos"],
+        ["Análise", " de obrigações fiscais e societárias"],
       ],
     },
     {
-      n: "02", nome: "Estruturação", prog: 25,
+      n: "02", nome: "Estruturação", Icon: LayoutDashboard,
+      resumo: "BPO + centros de custo + DRE",
+      tempo: "30 a 60 dias",
       desc: "BPO Financeiro implantado, contas PJ/PF separadas, centros de custo e modelo de relatórios que você vai receber toda semana.",
-      badge: "Entregável: Plano de Contas + DRE Gerencial — 30 a 60 dias",
+      entregavel: "Plano de Contas + DRE Gerencial estruturado",
       checks: [
-        "Separação PJ/PF e centros de custo",
-        "DRE Gerencial configurado para seu modelo",
-        "Dashboard de indicadores semanais implantado",
+        ["Separação PJ/PF", " e centros de custo definidos"],
+        ["DRE Gerencial", " configurado para seu modelo"],
+        ["Dashboard semanal", " de indicadores implantado"],
       ],
     },
     {
-      n: "03", nome: "Controle", prog: 50,
+      n: "03", nome: "Controle", Icon: BarChart3,
+      resumo: "Relatórios semanais + KPIs",
+      tempo: "Contínuo",
       desc: "Relatórios semanais, fechamento mensal, conciliação bancária e KPIs que revelam onde o dinheiro está indo antes que vire problema.",
-      badge: "Entregável: Relatórios Semanais + KPIs — Contínuo",
+      entregavel: "Relatórios semanais e KPIs em tempo real",
       checks: [
-        "Relatório semanal entregue toda segunda-feira",
-        "Conciliação bancária e controle de inadimplência",
-        "KPIs de performance ajustados ao seu setor",
+        ["Relatório semanal", " entregue toda segunda-feira"],
+        ["Conciliação bancária", " e controle de inadimplência"],
+        ["KPIs de performance", " ajustados ao seu setor"],
       ],
     },
     {
-      n: "04", nome: "Decisão", prog: 75,
+      n: "04", nome: "Decisão", Icon: Presentation,
+      resumo: "Reunião mensal de resultado",
+      tempo: "Mensal",
       desc: "Reunião mensal de resultado com dados reais. Você decide sobre contratações, investimentos e estratégia com base em números.",
-      badge: "Entregável: Reunião Mensal + Plano de Ação — Mensal",
+      entregavel: "Reunião Mensal de Resultado + Plano de Ação",
       checks: [
-        "Reunião mensal estruturada com agenda e ata",
-        "Análise de desvios e plano de correção imediata",
-        "Suporte a decisões de investimento e expansão",
+        ["Reunião mensal", " estruturada com agenda e ata"],
+        ["Análise de desvios", " e plano de correção imediata"],
+        ["Suporte estratégico", " a decisões de investimento"],
       ],
     },
     {
-      n: "05", nome: "Crescimento", prog: 100,
+      n: "05", nome: "Crescimento", Icon: TrendingUp,
+      resumo: "Orçamento + cenários + escala",
+      tempo: "Estratégico",
       desc: "Planejamento orçamentário, modelagem de cenários e suporte estratégico para escalar com segurança e intencionalidade.",
-      badge: "Entregável: Orçamento Anual + Cenários — Contínuo",
+      entregavel: "Orçamento Anual + Modelagem de Cenários",
       checks: [
-        "Orçamento anual com metas e KPIs de desempenho",
-        "Modelagem de cenários: otimista, realista e conservador",
-        "Suporte estratégico contínuo para decisões de escala",
+        ["Orçamento anual", " com metas e KPIs de desempenho"],
+        ["Modelagem de cenários", " — otimista, realista, conservador"],
+        ["Suporte estratégico", " contínuo para decisões de escala"],
       ],
     },
   ];
@@ -429,27 +439,30 @@ export function Metodo() {
   const [active, setActive] = useState<number | null>(null);
 
   useEffect(() => {
-    const t = setTimeout(() => setActive(0), 400);
+    const t = setTimeout(() => setActive(0), 300);
     return () => clearTimeout(t);
   }, []);
 
-  function toggle(i: number) {
-    setActive((curr) => (curr === i ? null : i));
-  }
-
+  const toggle = (i: number) => setActive((c) => (c === i ? null : i));
   const current = active !== null ? ETAPAS[active] : null;
-  const prog = current ? current.prog : 0;
 
   return (
-    <section style={{ background: C.escuro, paddingTop: 80 }}>
-      {/* Bloco superior */}
-      <div className="grid grid-cols-1 lg:grid-cols-2" style={{ minHeight: 420 }}>
-        {/* Coluna esquerda */}
-        <div style={{ padding: "0 56px 64px" }} className="lg:py-0">
+    <section>
+      {/* BLOCO 1 — TOPO ESCURO */}
+      <div
+        style={{
+          background: C.escuro,
+          padding: "64px 56px 56px",
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: 48,
+          alignItems: "center",
+        }}
+        className="metodo-top"
+      >
+        <div>
           <div
-            className="flex items-center"
             style={{
-              gap: 10,
               fontFamily: "JetBrains Mono, monospace",
               fontSize: 10,
               color: "rgba(196,139,48,0.85)",
@@ -458,263 +471,172 @@ export function Metodo() {
               marginBottom: 16,
             }}
           >
-            <span style={{ width: 22, height: 1, background: C.laton }} />
-            Nosso Método
+            ── Nosso Método
           </div>
-
           <h2
             style={{
               fontFamily: "Fraunces, Georgia, serif",
               fontWeight: 600,
               fontSize: 44,
-              letterSpacing: "-0.025em",
               lineHeight: 1.05,
+              letterSpacing: "-0.025em",
               color: C.papel,
               margin: 0,
             }}
           >
-            O{" "}
-            <span style={{ color: C.laton, fontStyle: "italic" }}>Método</span>{" "}
-            Cluny
+            O <span style={{ color: C.laton, fontStyle: "italic" }}>Método</span>
+            <br />Cluny
           </h2>
-
           <p
             style={{
               fontFamily: "Inter",
-              fontSize: 15,
+              fontSize: 14,
               color: "#9fb8b5",
-              marginTop: 6,
+              lineHeight: 1.72,
               maxWidth: 400,
-              lineHeight: 1.5,
-            }}
-          >
-            5 etapas que transformam caos financeiro em clareza estratégica.
-          </p>
-
-          <p
-            style={{
-              fontFamily: "Inter",
-              fontSize: 13.5,
-              color: C.areia,
-              lineHeight: 1.75,
-              maxWidth: 400,
-              marginTop: 16,
+              marginTop: 14,
             }}
           >
             Não entregamos relatório. Gerenciamos junto com você — do diagnóstico
             à decisão, com dados reais, frequência semanal e responsabilidade
             sobre o resultado.
           </p>
-
-          <div style={{ display: "flex", gap: 32, marginTop: 32, flexWrap: "wrap" }}>
+          <div style={{ display: "flex", gap: 32, marginTop: 28, flexWrap: "wrap" }}>
             {[
               ["30d", "Implantação inicial"],
               ["+500", "Empresas atendidas"],
               ["∞", "Ciclo contínuo"],
             ].map(([v, l]) => (
               <div key={l} style={{ borderLeft: `2px solid ${C.laton}`, paddingLeft: 14 }}>
-                <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 26, color: C.laton }}>{v}</div>
-                <div style={{ fontFamily: "Inter", fontSize: 10, color: "#9fb8b5", marginTop: 3 }}>{l}</div>
+                <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 24, color: C.laton }}>{v}</div>
+                <div style={{ fontFamily: "Inter", fontSize: 9.5, color: "#9fb8b5", marginTop: 3 }}>{l}</div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Coluna direita - imagem */}
-        <div className="relative overflow-hidden" style={{ minHeight: 320 }}>
+        <div
+          style={{
+            position: "relative",
+            borderRadius: 12,
+            overflow: "hidden",
+            height: 240,
+            boxShadow: "0 24px 56px rgba(0,0,0,0.35)",
+          }}
+        >
           <div
-            className="absolute inset-0"
             style={{
+              position: "absolute",
+              inset: 0,
               backgroundImage:
-                "url('https://images.unsplash.com/photo-1551836022-4c4c79ecde51?w=900&q=85&fit=crop')",
+                "url('https://images.unsplash.com/photo-1551836022-4c4c79ecde51?w=1000&q=85&fit=crop')",
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
           />
           <div
-            className="absolute inset-0"
             style={{
-              background: `linear-gradient(to right, ${C.escuro} 0%, rgba(31,61,46,0.2) 35%, transparent 60%)`,
+              position: "absolute",
+              inset: 0,
+              background: "linear-gradient(135deg, rgba(0,90,84,0.15), transparent)",
             }}
           />
         </div>
       </div>
 
-      {/* Infográfico interativo */}
+      {/* BLOCO 2 — CORPO CLARO */}
       <div
-        className="metodo-info"
+        className="metodo-body"
         style={{
-          position: "relative",
-          borderTop: "1px solid rgba(255,255,255,0.07)",
-          ["--prog" as any]: `${prog}%`,
+          background: C.papel,
+          display: "grid",
+          gridTemplateColumns: "340px 1fr",
+          minHeight: 480,
         }}
       >
-        {/* Trilha de nós */}
-        <div className="metodo-trilha" style={{ display: "flex", position: "relative" }}>
+        {/* COLUNA ESQUERDA — LISTA */}
+        <div className="metodo-list">
           {ETAPAS.map((e, i) => {
             const isActive = active === i;
+            const isDone = active !== null && i < active;
             return (
               <button
                 key={e.n}
                 onClick={() => toggle(i)}
-                className="etapa-node"
-                style={{
-                  flex: 1,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  padding: "28px 8px 24px",
-                  background: isActive ? "rgba(196,139,48,0.06)" : "transparent",
-                  border: "none",
-                  cursor: "pointer",
-                  position: "relative",
-                  transition: "background 0.25s ease",
-                }}
-                onMouseEnter={(ev) => {
-                  if (!isActive) ev.currentTarget.style.background = "rgba(255,255,255,0.03)";
-                }}
-                onMouseLeave={(ev) => {
-                  if (!isActive) ev.currentTarget.style.background = "transparent";
-                }}
+                className={`etapa-item ${isActive ? "is-active" : ""} ${isDone ? "is-done" : ""}`}
+                type="button"
               >
-                <span
-                  style={{
-                    width: 48,
-                    height: 48,
-                    borderRadius: "50%",
-                    border: `2px solid ${isActive ? C.laton : "rgba(255,255,255,0.12)"}`,
-                    background: isActive ? "rgba(196,139,48,0.15)" : "rgba(255,255,255,0.05)",
-                    boxShadow: isActive ? "0 0 0 6px rgba(196,139,48,0.08)" : "none",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontFamily: "JetBrains Mono, monospace",
-                    fontSize: 16,
-                    color: isActive ? C.laton : "rgba(255,255,255,0.35)",
-                    zIndex: 2,
-                    position: "relative",
-                    transition: "all 0.3s ease",
-                  }}
-                >
-                  {e.n}
+                <span className="e-circle">
+                  <span className="e-num">{e.n}</span>
                 </span>
-                <span
-                  style={{
-                    marginTop: 14,
-                    fontFamily: "Fraunces, Georgia, serif",
-                    fontWeight: 600,
-                    fontSize: 13,
-                    color: isActive ? C.papel : "rgba(255,255,255,0.45)",
-                    transition: "color 0.3s ease",
-                  }}
-                >
-                  {e.nome}
+                <span className="e-info">
+                  <span className="e-nome">{e.nome}</span>
+                  <span className="e-resumo">{e.resumo}</span>
+                  <span className="e-tempo">{e.tempo}</span>
                 </span>
-                <span
-                  style={{
-                    marginTop: 10,
-                    width: 0,
-                    height: 0,
-                    borderLeft: "8px solid transparent",
-                    borderRight: "8px solid transparent",
-                    borderTop: `8px solid ${C.laton}`,
-                    opacity: isActive ? 1 : 0,
-                    transition: "opacity 0.3s ease",
-                  }}
-                />
+                <ChevronRight size={16} className="e-arrow" />
               </button>
             );
           })}
         </div>
 
-        {/* Painel */}
-        <div
-          style={{
-            maxHeight: active !== null ? 320 : 0,
-            overflow: "hidden",
-            transition: "max-height 0.5s ease",
-            borderTop: active !== null ? "1px solid rgba(255,255,255,0.06)" : "none",
-          }}
-        >
-          {current && (
-            <div
-              key={active}
-              className="grid grid-cols-1 md:grid-cols-2"
-              style={{ animation: "metodo-fade 0.35s ease both" }}
-            >
-              <div style={{ padding: "36px 48px", borderRight: "1px solid rgba(255,255,255,0.06)" }}>
-                <div
-                  style={{
-                    fontFamily: "JetBrains Mono, monospace",
-                    fontSize: 11,
-                    color: C.laton,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.12em",
-                  }}
-                >
-                  Etapa {current.n}
-                </div>
-                <div
-                  style={{
-                    fontFamily: "Fraunces, Georgia, serif",
-                    fontWeight: 600,
-                    fontSize: 22,
-                    color: C.papel,
-                    marginTop: 6,
-                    marginBottom: 10,
-                  }}
-                >
-                  {current.nome}
-                </div>
-                <p style={{ fontFamily: "Inter", fontSize: 13, color: "#9fb8b5", lineHeight: 1.7, margin: 0 }}>
-                  {current.desc}
-                </p>
-                <div
-                  style={{
-                    display: "inline-block",
-                    marginTop: 14,
-                    fontFamily: "JetBrains Mono, monospace",
-                    fontSize: 9.5,
-                    color: C.laton,
-                    background: "rgba(196,139,48,0.1)",
-                    border: "1px solid rgba(196,139,48,0.25)",
-                    borderRadius: 4,
-                    padding: "4px 10px",
-                  }}
-                >
-                  {current.badge}
-                </div>
+        {/* COLUNA DIREITA — PAINEL */}
+        <div className="metodo-panel">
+          {!current && (
+            <div className="metodo-placeholder">
+              <ArrowLeft size={48} strokeWidth={1.5} style={{ color: "rgba(0,90,84,0.12)" }} />
+              <div
+                style={{
+                  fontFamily: "Fraunces, Georgia, serif",
+                  fontStyle: "italic",
+                  fontSize: 20,
+                  color: "rgba(0,90,84,0.25)",
+                  marginTop: 16,
+                }}
+              >
+                Selecione uma etapa
               </div>
               <div
                 style={{
-                  padding: "36px 40px",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 12,
-                  justifyContent: "center",
+                  fontFamily: "Inter",
+                  fontSize: 13,
+                  color: "rgba(0,90,84,0.2)",
+                  marginTop: 6,
                 }}
               >
-                {current.checks.map((c) => (
-                  <div key={c} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
-                    <span
-                      style={{
-                        width: 20,
-                        height: 20,
-                        flexShrink: 0,
-                        borderRadius: "50%",
-                        background: "rgba(0,90,84,0.35)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        color: "#7ecdc4",
-                        fontSize: 11,
-                        marginTop: 1,
-                      }}
-                    >
-                      ✓
+                Clique em qualquer etapa para ver os detalhes
+              </div>
+            </div>
+          )}
+          {current && (
+            <div key={active} className="metodo-content">
+              <div className="m-bignum">{current.n}</div>
+              <div className="m-tag">
+                <span className="m-tag-line" />
+                Etapa {current.n} · {current.nome}
+              </div>
+              <h3 className="m-nome">{current.nome}</h3>
+              <p className="m-desc">{current.desc}</p>
+
+              <div className="m-card">
+                <div className="m-card-icon">
+                  <Package size={16} color={C.verde} />
+                </div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div className="m-card-label">ENTREGÁVEL</div>
+                  <div className="m-card-valor">{current.entregavel}</div>
+                </div>
+                <div className="m-card-tempo">{current.tempo}</div>
+              </div>
+
+              <div className="m-checklist">
+                {current.checks.map(([strong, rest], idx) => (
+                  <div key={idx} className="m-check-item">
+                    <span className="m-check-icon">
+                      <Check size={11} strokeWidth={2.6} color={C.verde} />
                     </span>
-                    <span style={{ fontFamily: "Inter", fontSize: 12, color: C.areia, lineHeight: 1.55 }}>
-                      {c}
+                    <span className="m-check-text">
+                      <strong>{strong}</strong>{rest}
                     </span>
                   </div>
                 ))}
@@ -722,34 +644,310 @@ export function Metodo() {
             </div>
           )}
         </div>
-
-        <style>{`
-          .metodo-trilha::before {
-            content: "";
-            position: absolute;
-            top: 52px; left: 10%; right: 10%;
-            height: 2px; background: rgba(255,255,255,0.10);
-            z-index: 0;
-          }
-          .metodo-trilha::after {
-            content: "";
-            position: absolute;
-            top: 52px; left: 10%;
-            height: 2px;
-            width: calc((100% - 20%) * var(--prog) / 100%);
-            background: linear-gradient(to right, ${C.laton}, rgba(196,139,48,0.4));
-            z-index: 1;
-            transition: width 0.6s ease;
-          }
-          @keyframes metodo-fade {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-          }
-        `}</style>
       </div>
+
+      <style>{`
+        /* === LISTA ESQUERDA === */
+        .metodo-list {
+          position: relative;
+          background: #ffffff;
+          border-right: 1px solid rgba(0,90,84,0.08);
+          box-shadow: 4px 0 24px rgba(0,0,0,0.05);
+          z-index: 2;
+          padding: 8px 0;
+        }
+        .metodo-list::before {
+          content: "";
+          position: absolute;
+          left: 48px; top: 40px; bottom: 40px;
+          width: 2px;
+          background: rgba(0,90,84,0.08);
+          z-index: 0;
+        }
+        .etapa-item {
+          position: relative;
+          z-index: 1;
+          display: flex;
+          align-items: flex-start;
+          gap: 16px;
+          padding: 20px 28px 20px 24px;
+          width: 100%;
+          background: transparent;
+          border: none;
+          border-left: 3px solid transparent;
+          cursor: pointer;
+          text-align: left;
+          transition: background .25s ease, border-color .25s ease;
+          overflow: hidden;
+        }
+        .etapa-item::after {
+          content: "";
+          position: absolute; inset: 0;
+          background: linear-gradient(to right, rgba(0,90,84,0.04), transparent);
+          opacity: 0;
+          transition: opacity .25s ease;
+          pointer-events: none;
+        }
+        .etapa-item:hover { background: rgba(0,90,84,0.03); }
+        .etapa-item:hover::after { opacity: 1; }
+        .etapa-item.is-active {
+          background: rgba(196,139,48,0.05);
+          border-left-color: ${C.laton};
+        }
+        .e-circle {
+          position: relative;
+          z-index: 1;
+          width: 48px; height: 48px;
+          border-radius: 50%;
+          border: 2px solid rgba(0,90,84,0.15);
+          background: #fff;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+          display: flex; align-items: center; justify-content: center;
+          flex-shrink: 0;
+          transition: all .3s ease;
+        }
+        .etapa-item:hover .e-circle {
+          border-color: rgba(0,90,84,0.35);
+          box-shadow: 0 4px 16px rgba(0,90,84,0.14);
+          transform: scale(1.05);
+        }
+        .etapa-item.is-active .e-circle {
+          border-color: ${C.laton};
+          background: linear-gradient(135deg, rgba(196,139,48,0.12), rgba(196,139,48,0.04));
+          box-shadow: 0 4px 20px rgba(196,139,48,0.25), 0 0 0 4px rgba(196,139,48,0.08);
+          transform: scale(1.05);
+        }
+        .etapa-item.is-done .e-circle {
+          border-color: rgba(0,90,84,0.3);
+          background: rgba(0,90,84,0.04);
+        }
+        .e-num {
+          font-family: "JetBrains Mono", monospace;
+          font-size: 14px; font-weight: 600;
+          color: rgba(0,90,84,0.35);
+          transition: color .25s ease;
+        }
+        .etapa-item:hover .e-num { color: ${C.verde}; }
+        .etapa-item.is-active .e-num { color: ${C.laton}; }
+        .etapa-item.is-done .e-num { color: rgba(0,90,84,0.55); }
+
+        .e-info { display: flex; flex-direction: column; flex: 1; padding-top: 4px; min-width: 0; }
+        .e-nome {
+          font-family: "Fraunces", Georgia, serif;
+          font-weight: 600; font-size: 16px;
+          color: #2a3a2a; margin-bottom: 4px;
+          transition: color .25s ease;
+        }
+        .etapa-item:hover .e-nome { color: ${C.verde}; }
+        .etapa-item.is-active .e-nome { color: ${C.escuro}; }
+        .e-resumo {
+          font-family: "Inter";
+          font-size: 11.5px; color: ${C.cinza};
+          line-height: 1.5;
+        }
+        .e-tempo {
+          align-self: flex-start;
+          margin-top: 8px;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 9px; color: ${C.laton};
+          background: rgba(196,139,48,0.1);
+          border: 1px solid rgba(196,139,48,0.2);
+          border-radius: 20px;
+          padding: 3px 10px;
+        }
+        .e-arrow {
+          align-self: center;
+          margin-left: auto;
+          color: rgba(0,90,84,0.18);
+          transition: color .25s ease, transform .25s ease;
+          flex-shrink: 0;
+        }
+        .etapa-item:hover .e-arrow { color: ${C.verde}; transform: translateX(3px); }
+        .etapa-item.is-active .e-arrow { color: ${C.laton}; transform: translateX(3px); }
+
+        /* === PAINEL DIREITA === */
+        .metodo-panel {
+          position: relative;
+          overflow: hidden;
+          background: linear-gradient(135deg, #fafaf7 0%, ${C.papel} 100%);
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+        .metodo-panel::before {
+          content: "";
+          position: absolute;
+          top: -100px; right: -100px;
+          width: 320px; height: 320px;
+          background: radial-gradient(circle, rgba(0,90,84,0.04), transparent 70%);
+          pointer-events: none;
+        }
+        .metodo-panel::after {
+          content: "";
+          position: absolute;
+          bottom: -80px; left: -80px;
+          width: 240px; height: 240px;
+          background: radial-gradient(circle, rgba(196,139,48,0.05), transparent 70%);
+          pointer-events: none;
+        }
+        .metodo-placeholder {
+          position: relative;
+          z-index: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          padding: 52px;
+        }
+        .metodo-content {
+          position: relative;
+          z-index: 1;
+          padding: 52px;
+          animation: m-in .4s cubic-bezier(.4,0,.2,1) both;
+        }
+        @keyframes m-in {
+          from { opacity: 0; transform: translateX(16px); }
+          to { opacity: 1; transform: translateX(0); }
+        }
+        .m-bignum {
+          font-family: "Fraunces", Georgia, serif;
+          font-weight: 600;
+          font-size: 96px;
+          line-height: 1;
+          color: rgba(0,90,84,0.05);
+          margin-bottom: -20px;
+          user-select: none;
+        }
+        .m-tag {
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 9.5px;
+          color: ${C.laton};
+          text-transform: uppercase;
+          letter-spacing: 0.12em;
+          margin-bottom: 10px;
+        }
+        .m-tag-line {
+          display: inline-block;
+          width: 16px; height: 1px;
+          background: ${C.laton};
+        }
+        .m-nome {
+          font-family: "Fraunces", Georgia, serif;
+          font-weight: 600;
+          font-size: 30px;
+          color: ${C.escuro};
+          line-height: 1.1;
+          letter-spacing: -0.02em;
+          margin: 0 0 12px 0;
+        }
+        .m-desc {
+          font-family: "Inter";
+          font-size: 14px;
+          color: #3a4a40;
+          line-height: 1.75;
+          max-width: 440px;
+          margin: 0 0 24px 0;
+        }
+        .m-card {
+          display: flex;
+          align-items: flex-start;
+          gap: 12px;
+          background: #fff;
+          border-radius: 10px;
+          padding: 16px 20px;
+          border: 1px solid rgba(0,90,84,0.1);
+          box-shadow: 0 4px 16px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
+          margin-bottom: 24px;
+        }
+        .m-card-icon {
+          width: 36px; height: 36px;
+          border-radius: 8px;
+          background: rgba(0,90,84,0.08);
+          display: flex; align-items: center; justify-content: center;
+          flex-shrink: 0;
+        }
+        .m-card-label {
+          font-family: "JetBrains Mono", monospace;
+          font-size: 9.5px;
+          color: ${C.cinza};
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          margin-bottom: 4px;
+        }
+        .m-card-valor {
+          font-family: "Inter";
+          font-size: 12.5px;
+          font-weight: 600;
+          color: ${C.escuro};
+          line-height: 1.4;
+        }
+        .m-card-tempo {
+          font-family: "JetBrains Mono", monospace;
+          font-size: 9px;
+          color: ${C.laton};
+          background: rgba(196,139,48,0.1);
+          border: 1px solid rgba(196,139,48,0.2);
+          border-radius: 20px;
+          padding: 4px 10px;
+          margin-left: auto;
+          white-space: nowrap;
+          align-self: center;
+        }
+        .m-checklist {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+        .m-check-item {
+          display: flex;
+          align-items: flex-start;
+          gap: 12px;
+          padding: 10px 14px;
+          border-radius: 8px;
+          background: rgba(255,255,255,0.7);
+          border: 1px solid rgba(0,90,84,0.06);
+          box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+          transition: box-shadow .2s ease, transform .2s ease;
+        }
+        .m-check-item:hover {
+          box-shadow: 0 4px 14px rgba(0,90,84,0.1);
+          transform: translateX(3px);
+        }
+        .m-check-icon {
+          width: 22px; height: 22px;
+          border-radius: 50%;
+          background: rgba(0,90,84,0.1);
+          display: flex; align-items: center; justify-content: center;
+          flex-shrink: 0;
+          margin-top: 1px;
+          transition: background .2s ease;
+        }
+        .m-check-item:hover .m-check-icon { background: rgba(0,90,84,0.18); }
+        .m-check-text {
+          font-family: "Inter";
+          font-size: 12.5px;
+          color: #3a4a40;
+          line-height: 1.5;
+        }
+        .m-check-text strong {
+          color: ${C.escuro};
+          font-weight: 600;
+        }
+
+        @media (max-width: 900px) {
+          .metodo-top { grid-template-columns: 1fr !important; padding: 48px 24px !important; }
+          .metodo-body { grid-template-columns: 1fr !important; }
+          .metodo-list { border-right: none; box-shadow: none; border-bottom: 1px solid rgba(0,90,84,0.08); }
+        }
+      `}</style>
     </section>
   );
 }
+
 
 /* ========================================================================
    SECTION 5 — DIAGNÓSTICO FINANCEIRO
