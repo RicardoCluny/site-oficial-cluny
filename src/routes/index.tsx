@@ -10,7 +10,7 @@ function Index() {
   return (
     <div className="min-h-screen" style={{ background: "#f4f1ec" }}>
       <Header />
-      <main>
+      <main style={{ marginTop: 64 }}>
         <Hero />
         <BUsStrip />
         <Metodo />

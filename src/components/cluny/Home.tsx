@@ -2,9 +2,10 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { Link } from "@tanstack/react-router";
 import {
-  TrendingUp, Receipt, Building2, GraduationCap, ChartLine, ArrowRight, User,
+  Receipt, Building2, GraduationCap, ChartLine, ArrowRight, User,
 } from "lucide-react";
 import heroTeam from "@/assets/hero-team.jpg";
+import { Logo } from "@/components/cluny/Logo";
 
 /* ========================================================================
    TOKENS
@@ -26,39 +27,45 @@ export function Header() {
   const NAV = ["Finanças", "Contabilidade", "Legalização", "Educação", "Blog", "Materiais"];
   return (
     <header
-      className="absolute top-0 left-0 right-0 z-50 flex items-center justify-between"
+      className="flex items-center justify-between"
       style={{
-        height: 62,
+        position: "fixed",
+        top: 0, left: 0, right: 0,
+        zIndex: 100,
+        height: 64,
         padding: "0 52px",
-        background: "linear-gradient(to bottom, rgba(244,241,236,0.97) 0%, transparent 100%)",
+        background: C.escuro,
+        borderBottom: "1px solid rgba(255,255,255,0.06)",
+        boxShadow: "0 2px 24px rgba(0,0,0,0.18)",
       }}
     >
-      <Link
-        to="/"
-        className="font-display"
-        style={{ fontSize: 21, color: C.verde, fontWeight: 600, letterSpacing: "-0.01em" }}
-      >
-        Cluny
+      <Link to="/" aria-label="Cluny - página inicial" style={{ display: "inline-flex", alignItems: "center" }}>
+        <Logo variant="branco" height={32} />
       </Link>
 
-      <nav className="hidden lg:flex items-center" style={{ gap: 28 }}>
-        {NAV.map((label) => (
-          <a
-            key={label}
-            href="#"
-            className="transition-opacity"
-            style={{
-              fontFamily: "Inter, system-ui, sans-serif",
-              fontWeight: 500,
-              fontSize: "11.5px",
-              color: C.escuro,
-              opacity: 0.72,
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.opacity = "1")}
-            onMouseLeave={(e) => (e.currentTarget.style.opacity = "0.72")}
-          >
-            {label}
-          </a>
+      <nav className="hidden lg:flex items-center" style={{ gap: 6 }}>
+        {NAV.map((label, idx) => (
+          <React.Fragment key={label}>
+            {idx === 5 && (
+              <span style={{ width: 1, height: 16, background: "rgba(255,255,255,0.12)", margin: "0 6px" }} />
+            )}
+            <a
+              href="#"
+              className="cluny-nav-link"
+              style={{
+                fontFamily: "Inter, system-ui, sans-serif",
+                fontWeight: 500,
+                fontSize: "11.5px",
+                color: "rgba(255,255,255,0.72)",
+                padding: "6px 12px",
+                borderRadius: 4,
+                textDecoration: "none",
+                transition: "color .2s ease, background .2s ease",
+              }}
+            >
+              {label}
+            </a>
+          </React.Fragment>
         ))}
       </nav>
 
@@ -68,35 +75,36 @@ export function Header() {
       </a>
 
       <style>{`
+        .cluny-nav-link:hover { color: #fff !important; background: rgba(255,255,255,0.07); }
         .cluny-area-btn {
           position: relative;
           display: inline-flex;
           align-items: center;
           gap: 6px;
-          border: 1.5px solid ${C.verde};
+          border: 1.5px solid rgba(255,255,255,0.35);
           border-radius: 6px;
-          padding: 8px 18px;
+          padding: 9px 20px;
           background: transparent;
-          color: ${C.verde};
+          color: #fff;
           font-family: Inter, system-ui, sans-serif;
           font-weight: 700;
           font-size: 11px;
           text-transform: uppercase;
-          letter-spacing: 0.08em;
+          letter-spacing: 0.1em;
           text-decoration: none;
           overflow: hidden;
           isolation: isolate;
-          transition: transform .25s cubic-bezier(.2,.7,.2,1), color .25s ease;
+          transition: transform .25s cubic-bezier(.2,.7,.2,1), border-color .25s ease;
         }
         .cluny-area-btn::after {
           content: "";
           position: absolute; inset: 0;
-          background: ${C.verde};
+          background: rgba(255,255,255,0.1);
           transform: scaleX(0); transform-origin: left center;
           transition: transform .35s cubic-bezier(.2,.7,.2,1);
           z-index: -1;
         }
-        .cluny-area-btn:hover { color: #fff; transform: translateY(-1px); }
+        .cluny-area-btn:hover { border-color: rgba(255,255,255,0.7); transform: translateY(-1px); }
         .cluny-area-btn:hover::after { transform: scaleX(1); }
         .cluny-area-icon, .cluny-area-label { position: relative; z-index: 1; }
       `}</style>
@@ -246,199 +254,8 @@ export function Hero() {
         </div>
       </div>
 
-      {/* === Floating elements === */}
-      {/* Card DRE */}
-      <div
-        className="hero-float hero-deco-mobile-hide"
-        style={{
-          position: "absolute",
-          right: "5%",
-          top: "12%",
-          zIndex: 15,
-          background: "#fff",
-          borderRadius: 14,
-          padding: "14px 16px",
-          width: 205,
-          border: "1px solid rgba(0,90,84,0.07)",
-          boxShadow: "0 8px 28px rgba(0,90,84,0.11)",
-          animation: "float-dre 4.5s ease-in-out infinite",
-        }}
-      >
-        <div
-          style={{
-            fontFamily: "JetBrains Mono, monospace",
-            fontSize: 8,
-            textTransform: "uppercase",
-            color: C.cinza,
-            letterSpacing: "0.1em",
-            marginBottom: 8,
-          }}
-        >
-          DRE — JUN/2025
-        </div>
-        {([
-          ["Receita Bruta", "R$ 520k", C.escuro, 9, 400],
-          ["Receita Líquida", "R$ 482k", C.escuro, 9, 400],
-          ["Margem de Contribuição", "R$ 214k", C.verde, 9, 400],
-          ["EBITDA", "R$ 126k", C.verde, 9, 400],
-        ] as const).map(([k, v, col, fs]) => (
-          <div
-            key={k}
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              padding: "3px 0",
-              borderBottom: "0.5px solid rgba(0,90,84,0.07)",
-            }}
-          >
-            <span style={{ fontFamily: "Inter", fontSize: 8, color: "#4a5c5c" }}>{k}</span>
-            <span style={{ fontFamily: "JetBrains Mono, monospace", fontSize: fs, color: col }}>{v}</span>
-          </div>
-        ))}
-        <div style={{ display: "flex", justifyContent: "space-between", paddingTop: 5 }}>
-          <span style={{ fontFamily: "Inter", fontSize: 8, color: "#4a5c5c" }}>Lucro Líquido</span>
-          <span style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 11, color: C.laton, fontWeight: 700 }}>R$ 98k</span>
-        </div>
-      </div>
-
-      {/* Card Fluxo */}
-      <div
-        className="hero-float hero-deco-mobile-hide"
-        style={{
-          position: "absolute",
-          right: "27%",
-          top: "10%",
-          zIndex: 15,
-          background: C.verde,
-          borderRadius: 12,
-          padding: "11px 13px",
-          boxShadow: "0 8px 24px rgba(0,90,84,0.28)",
-          animation: "float-fluxo 3.8s ease-in-out infinite 0.5s",
-        }}
-      >
-        <div style={{ fontSize: 8, color: "rgba(244,241,236,0.65)", fontFamily: "JetBrains Mono", textTransform: "uppercase", letterSpacing: "0.08em" }}>
-          Fluxo de caixa
-        </div>
-        <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 18, color: C.papel, marginTop: 2 }}>
-          R$ 184k
-        </div>
-        <div style={{ display: "flex", gap: 3, marginTop: 6, alignItems: "flex-end", height: 24 }}>
-          {[10, 14, 9, 16, 12, 20, 22].map((h, i) => (
-            <div
-              key={i}
-              style={{
-                width: 5,
-                height: h,
-                background: i >= 5 ? C.laton : "rgba(244,241,236,0.22)",
-                borderRadius: 1,
-              }}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Card Margem */}
-      <div
-        className="hero-float hero-deco-mobile-hide"
-        style={{
-          position: "absolute",
-          right: "4%",
-          bottom: "20%",
-          zIndex: 15,
-          background: C.escuro,
-          borderRadius: 12,
-          padding: "10px 14px",
-          animation: "float-margem 4.2s ease-in-out infinite 0.8s",
-        }}
-      >
-        <div style={{ fontSize: 8, color: C.areia, fontFamily: "JetBrains Mono", textTransform: "uppercase", letterSpacing: "0.08em" }}>
-          Margem líquida
-        </div>
-        <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 22, color: C.laton, marginTop: 2 }}>
-          23,4%
-        </div>
-        <div style={{ fontSize: 8, color: "#9fb8b5", marginTop: 2 }}>Média do setor: 11%</div>
-      </div>
-
-      {/* Pill Status */}
-      <div
-        className="hero-float hero-deco-mobile-hide"
-        style={{
-          position: "absolute",
-          right: "29%",
-          bottom: "16%",
-          zIndex: 15,
-          background: "#fff",
-          borderRadius: 24,
-          padding: "7px 13px",
-          border: "1px solid rgba(0,90,84,0.07)",
-          boxShadow: "0 4px 14px rgba(0,90,84,0.09)",
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-          animation: "float-pill 3.5s ease-in-out infinite 1.2s",
-        }}
-      >
-        <span style={{ width: 7, height: 7, borderRadius: "50%", background: C.verde, display: "inline-block" }} />
-        <span style={{ fontFamily: "Inter", fontWeight: 500, fontSize: 9.5, color: C.escuro }}>
-          Relatório semanal entregue
-        </span>
-      </div>
-
-      {/* Badge Caixa */}
-      <div
-        className="hero-float hero-deco-mobile-hide"
-        style={{
-          position: "absolute",
-          right: "6%",
-          bottom: "36%",
-          zIndex: 15,
-          background: C.laton,
-          borderRadius: 24,
-          padding: "7px 13px",
-          display: "flex",
-          alignItems: "center",
-          gap: 6,
-          boxShadow: "0 6px 18px rgba(196,139,48,0.28)",
-          animation: "float-badge 5s ease-in-out infinite 0.3s",
-        }}
-      >
-        <TrendingUp size={12} color="#fff" />
-        <span style={{ fontFamily: "Inter", fontWeight: 600, fontSize: 9.5, color: "#fff" }}>
-          Caixa +18% este mês
-        </span>
-      </div>
-
-      {/* Dots carrossel */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: 20,
-          left: "50%",
-          transform: "translateX(-50%)",
-          zIndex: 15,
-          display: "flex",
-          gap: 8,
-          alignItems: "center",
-        }}
-      >
-        <span style={{ width: 8, height: 8, borderRadius: "50%", background: "rgba(31,61,46,0.2)" }} />
-        <span style={{ width: 24, height: 8, borderRadius: 4, background: C.laton }} />
-        <span style={{ width: 8, height: 8, borderRadius: "50%", background: "rgba(31,61,46,0.2)" }} />
-      </div>
-
       <style>{`
-        @keyframes float-dre { 0%,100% { transform: translateY(0) rotate(-0.4deg); } 50% { transform: translateY(-10px) rotate(0.4deg); } }
-        @keyframes float-fluxo { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
-        @keyframes float-margem { 0%,100% { transform: translateY(0) rotate(0.4deg); } 50% { transform: translateY(-9px) rotate(-0.4deg); } }
-        @keyframes float-pill { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
-        @keyframes float-badge { 0%,100% { transform: translateY(0) translateX(0); } 50% { transform: translateY(-8px) translateX(3px); } }
-
-        /* === Botões Hero — UX refinada ===
-           - Lift sutil + glow direcional ao hover
-           - Ícone (seta) que desliza para a direita revelando-se
-           - Press feedback (active)
-           - Focus-visible acessível */
+        /* === Botões Hero — UX refinada === */
         .btn-diag, .btn-prop {
           position: relative;
           padding: 13px 26px;
