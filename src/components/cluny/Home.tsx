@@ -668,71 +668,212 @@ export function Metodo() {
         </div>
       </div>
 
-      {/* Etapas */}
+      {/* Infográfico interativo */}
       <div
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5"
-        style={{ borderTop: "1px solid rgba(255,255,255,0.07)" }}
+        className="metodo-info"
+        style={{
+          position: "relative",
+          borderTop: "1px solid rgba(255,255,255,0.07)",
+          ["--prog" as any]: `${prog}%`,
+        }}
       >
-        {ETAPAS.map((e, i) => (
-          <div
-            key={e.n}
-            className="transition-colors"
-            style={{
-              padding: "28px 24px",
-              borderLeft: i > 0 ? "1px solid rgba(255,255,255,0.07)" : "none",
-            }}
-            onMouseEnter={(ev) => (ev.currentTarget.style.background = "rgba(255,255,255,0.03)")}
-            onMouseLeave={(ev) => (ev.currentTarget.style.background = "transparent")}
-          >
+        {/* Trilha de nós */}
+        <div className="metodo-trilha" style={{ display: "flex", position: "relative" }}>
+          {ETAPAS.map((e, i) => {
+            const isActive = active === i;
+            return (
+              <button
+                key={e.n}
+                onClick={() => toggle(i)}
+                className="etapa-node"
+                style={{
+                  flex: 1,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  padding: "28px 8px 24px",
+                  background: isActive ? "rgba(196,139,48,0.06)" : "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                  position: "relative",
+                  transition: "background 0.25s ease",
+                }}
+                onMouseEnter={(ev) => {
+                  if (!isActive) ev.currentTarget.style.background = "rgba(255,255,255,0.03)";
+                }}
+                onMouseLeave={(ev) => {
+                  if (!isActive) ev.currentTarget.style.background = "transparent";
+                }}
+              >
+                <span
+                  style={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: "50%",
+                    border: `2px solid ${isActive ? C.laton : "rgba(255,255,255,0.12)"}`,
+                    background: isActive ? "rgba(196,139,48,0.15)" : "rgba(255,255,255,0.05)",
+                    boxShadow: isActive ? "0 0 0 6px rgba(196,139,48,0.08)" : "none",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontFamily: "JetBrains Mono, monospace",
+                    fontSize: 16,
+                    color: isActive ? C.laton : "rgba(255,255,255,0.35)",
+                    zIndex: 2,
+                    position: "relative",
+                    transition: "all 0.3s ease",
+                  }}
+                >
+                  {e.n}
+                </span>
+                <span
+                  style={{
+                    marginTop: 14,
+                    fontFamily: "Fraunces, Georgia, serif",
+                    fontWeight: 600,
+                    fontSize: 13,
+                    color: isActive ? C.papel : "rgba(255,255,255,0.45)",
+                    transition: "color 0.3s ease",
+                  }}
+                >
+                  {e.nome}
+                </span>
+                <span
+                  style={{
+                    marginTop: 10,
+                    width: 0,
+                    height: 0,
+                    borderLeft: "8px solid transparent",
+                    borderRight: "8px solid transparent",
+                    borderTop: `8px solid ${C.laton}`,
+                    opacity: isActive ? 1 : 0,
+                    transition: "opacity 0.3s ease",
+                  }}
+                />
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Painel */}
+        <div
+          style={{
+            maxHeight: active !== null ? 320 : 0,
+            overflow: "hidden",
+            transition: "max-height 0.5s ease",
+            borderTop: active !== null ? "1px solid rgba(255,255,255,0.06)" : "none",
+          }}
+        >
+          {current && (
             <div
-              style={{
-                fontFamily: "JetBrains Mono, monospace",
-                fontSize: 11,
-                color: C.laton,
-                letterSpacing: "0.1em",
-              }}
+              key={active}
+              className="grid grid-cols-1 md:grid-cols-2"
+              style={{ animation: "metodo-fade 0.35s ease both" }}
             >
-              {e.n}
+              <div style={{ padding: "36px 48px", borderRight: "1px solid rgba(255,255,255,0.06)" }}>
+                <div
+                  style={{
+                    fontFamily: "JetBrains Mono, monospace",
+                    fontSize: 11,
+                    color: C.laton,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.12em",
+                  }}
+                >
+                  Etapa {current.n}
+                </div>
+                <div
+                  style={{
+                    fontFamily: "Fraunces, Georgia, serif",
+                    fontWeight: 600,
+                    fontSize: 22,
+                    color: C.papel,
+                    marginTop: 6,
+                    marginBottom: 10,
+                  }}
+                >
+                  {current.nome}
+                </div>
+                <p style={{ fontFamily: "Inter", fontSize: 13, color: "#9fb8b5", lineHeight: 1.7, margin: 0 }}>
+                  {current.desc}
+                </p>
+                <div
+                  style={{
+                    display: "inline-block",
+                    marginTop: 14,
+                    fontFamily: "JetBrains Mono, monospace",
+                    fontSize: 9.5,
+                    color: C.laton,
+                    background: "rgba(196,139,48,0.1)",
+                    border: "1px solid rgba(196,139,48,0.25)",
+                    borderRadius: 4,
+                    padding: "4px 10px",
+                  }}
+                >
+                  {current.badge}
+                </div>
+              </div>
+              <div
+                style={{
+                  padding: "36px 40px",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 12,
+                  justifyContent: "center",
+                }}
+              >
+                {current.checks.map((c) => (
+                  <div key={c} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+                    <span
+                      style={{
+                        width: 20,
+                        height: 20,
+                        flexShrink: 0,
+                        borderRadius: "50%",
+                        background: "rgba(0,90,84,0.35)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "#7ecdc4",
+                        fontSize: 11,
+                        marginTop: 1,
+                      }}
+                    >
+                      ✓
+                    </span>
+                    <span style={{ fontFamily: "Inter", fontSize: 12, color: C.areia, lineHeight: 1.55 }}>
+                      {c}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div
-              style={{
-                fontFamily: "Fraunces, Georgia, serif",
-                fontSize: 15,
-                fontWeight: 600,
-                color: C.papel,
-                marginTop: 10,
-                marginBottom: 8,
-              }}
-            >
-              {e.nome}
-            </div>
-            <div
-              style={{
-                fontFamily: "Inter",
-                fontSize: 11.5,
-                color: "#9fb8b5",
-                lineHeight: 1.6,
-              }}
-            >
-              {e.desc}
-            </div>
-            <div
-              style={{
-                display: "inline-block",
-                marginTop: 10,
-                fontFamily: "JetBrains Mono, monospace",
-                fontSize: 9.5,
-                color: C.laton,
-                background: "rgba(196,139,48,0.1)",
-                border: "1px solid rgba(196,139,48,0.25)",
-                borderRadius: 4,
-                padding: "3px 8px",
-              }}
-            >
-              {e.badge}
-            </div>
-          </div>
-        ))}
+          )}
+        </div>
+
+        <style>{`
+          .metodo-trilha::before {
+            content: "";
+            position: absolute;
+            top: 52px; left: 10%; right: 10%;
+            height: 2px; background: rgba(255,255,255,0.10);
+            z-index: 0;
+          }
+          .metodo-trilha::after {
+            content: "";
+            position: absolute;
+            top: 52px; left: 10%;
+            height: 2px;
+            width: calc((100% - 20%) * var(--prog) / 100%);
+            background: linear-gradient(to right, ${C.laton}, rgba(196,139,48,0.4));
+            z-index: 1;
+            transition: width 0.6s ease;
+          }
+          @keyframes metodo-fade {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        `}</style>
       </div>
     </section>
   );
