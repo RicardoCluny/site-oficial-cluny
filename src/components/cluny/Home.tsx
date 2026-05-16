@@ -194,10 +194,10 @@ export function Hero() {
         {/* Botões */}
         <div className="hero-buttons" style={{ display: "flex", gap: 14, marginTop: 26 }}>
           <a href="#diagnostico" className="btn-diag">
-            Fazer diagnóstico gratuito
+            <span>Fazer diagnóstico gratuito</span>
           </a>
           <a href="#proposta" className="btn-prop">
-            Solicitar proposta <span style={{ marginLeft: 4 }}>→</span>
+            <span>Solicitar proposta →</span>
           </a>
         </div>
 
