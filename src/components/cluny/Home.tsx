@@ -255,10 +255,7 @@ export function Hero() {
       </div>
 
       <style>{`
-           - Lift sutil + glow direcional ao hover
-           - Ícone (seta) que desliza para a direita revelando-se
-           - Press feedback (active)
-           - Focus-visible acessível */
+        /* === Botões Hero — UX refinada === */
         .btn-diag, .btn-prop {
           position: relative;
           padding: 13px 26px;
