@@ -416,31 +416,57 @@ export function Hero() {
         @keyframes float-pill { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
         @keyframes float-badge { 0%,100% { transform: translateY(0) translateX(0); } 50% { transform: translateY(-8px) translateX(3px); } }
 
+        /* === Botões Hero — UX refinada ===
+           - Lift sutil + glow direcional ao hover
+           - Ícone (seta) que desliza para a direita revelando-se
+           - Press feedback (active)
+           - Focus-visible acessível */
         .btn-diag, .btn-prop {
-          position: relative; overflow: hidden;
-          padding: 14px 28px; border-radius: 50px;
-          font-family: Inter, system-ui, sans-serif; font-weight: 600; font-size: 13px;
+          position: relative;
+          padding: 13px 26px;
+          border-radius: 999px;
+          font-family: Inter, system-ui, sans-serif;
+          font-weight: 600; font-size: 13px;
           letter-spacing: 0.06em; text-transform: uppercase;
-          display: inline-flex; align-items: center; cursor: pointer;
-          transition: transform .28s ease, box-shadow .28s ease;
-          text-decoration: none;
+          display: inline-flex; align-items: center; gap: 4px;
+          cursor: pointer; text-decoration: none;
+          transition: transform .25s cubic-bezier(.2,.7,.2,1),
+                      box-shadow .25s ease,
+                      background-color .35s ease,
+                      color .25s ease,
+                      border-color .25s ease,
+                      gap .3s cubic-bezier(.2,.7,.2,1);
+          will-change: transform;
         }
-        .btn-diag { background: ${C.verde}; border: 1.5px solid ${C.verde}; color: ${C.papel}; box-shadow: 0 4px 18px rgba(0,90,84,.28); }
+        .btn-diag { background: ${C.verde}; border: 1.5px solid ${C.verde}; color: ${C.papel};
+          box-shadow: 0 6px 18px -6px rgba(0,90,84,.45), 0 2px 6px -2px rgba(0,90,84,.25); }
         .btn-prop { background: transparent; border: 1.5px solid ${C.verde}; color: ${C.verde}; }
-        .btn-diag > span, .btn-prop > span { position: relative; z-index: 2; transition: color .35s ease; }
-        .btn-diag::after, .btn-prop::after {
-          content: ""; position: absolute; inset: 0;
-          transform: scaleX(0); transform-origin: left center;
-          transition: transform .4s ease; z-index: 1;
+
+        .btn-diag .btn-arrow, .btn-prop .btn-arrow {
+          display: inline-flex; align-items: center;
+          max-width: 0; opacity: 0; overflow: hidden;
+          transform: translateX(-4px);
+          transition: max-width .35s cubic-bezier(.2,.7,.2,1),
+                      opacity .25s ease,
+                      transform .35s cubic-bezier(.2,.7,.2,1);
         }
-        .btn-diag::after { background: ${C.papel}; }
-        .btn-prop::after { background: ${C.verde}; }
-        .btn-diag:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,90,84,.36); }
-        .btn-diag:hover > span { color: ${C.verde}; }
-        .btn-diag:hover::after { transform: scaleX(1); }
-        .btn-prop:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(0,90,84,.22); }
-        .btn-prop:hover > span { color: ${C.papel}; }
-        .btn-prop:hover::after { transform: scaleX(1); }
+        .btn-diag:hover, .btn-prop:hover { gap: 10px; transform: translateY(-2px); }
+        .btn-diag:hover .btn-arrow, .btn-prop:hover .btn-arrow,
+        .btn-diag:focus-visible .btn-arrow, .btn-prop:focus-visible .btn-arrow {
+          max-width: 22px; opacity: 1; transform: translateX(0);
+        }
+
+        .btn-diag:hover { background: #00736a;
+          box-shadow: 0 14px 28px -10px rgba(0,90,84,.5), 0 4px 10px -2px rgba(0,90,84,.3); }
+        .btn-prop:hover { background: ${C.verde}; color: ${C.papel};
+          box-shadow: 0 10px 22px -10px rgba(0,90,84,.4); }
+
+        .btn-diag:active, .btn-prop:active { transform: translateY(0) scale(.98); transition-duration: .12s; }
+
+        .btn-diag:focus-visible, .btn-prop:focus-visible {
+          outline: none;
+          box-shadow: 0 0 0 3px ${C.papel}, 0 0 0 5px ${C.laton};
+        }
 
         @media (max-width: 767px) {
           section.hero-mobile { height: 100dvh !important; }
