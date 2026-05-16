@@ -4,6 +4,7 @@ import { Link } from "@tanstack/react-router";
 import {
   TrendingUp, Receipt, Building2, GraduationCap, ChartLine, ArrowRight,
 } from "lucide-react";
+import heroTeam from "@/assets/hero-team.jpg";
 
 /* ========================================================================
    TOKENS
@@ -99,10 +100,9 @@ export function Hero() {
         className="absolute inset-0"
         style={{
           zIndex: 1,
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1560250097-0b93528c311a?w=1600&q=90&fit=crop&crop=center')",
+          backgroundImage: `url('${heroTeam}')`,
           backgroundSize: "cover",
-          backgroundPosition: "center 15%",
+          backgroundPosition: "center 25%",
         }}
       />
       {/* Overlay */}
