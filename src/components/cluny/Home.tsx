@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { Link } from "@tanstack/react-router";
 import {
-  TrendingUp, Receipt, Building2, GraduationCap, ChartLine, ArrowRight,
+  TrendingUp, Receipt, Building2, GraduationCap, ChartLine, ArrowRight, User,
 } from "lucide-react";
 import heroTeam from "@/assets/hero-team.jpg";
 
