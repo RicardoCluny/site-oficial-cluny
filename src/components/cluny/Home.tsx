@@ -422,9 +422,9 @@ export function Hero() {
           alignItems: "center",
         }}
       >
-        <span style={{ width: 8, height: 8, borderRadius: "50%", background: "rgba(31,61,46,0.18)" }} />
+        <span style={{ width: 8, height: 8, borderRadius: "50%", background: "rgba(31,61,46,0.2)" }} />
         <span style={{ width: 24, height: 8, borderRadius: 4, background: C.laton }} />
-        <span style={{ width: 8, height: 8, borderRadius: "50%", background: "rgba(31,61,46,0.18)" }} />
+        <span style={{ width: 8, height: 8, borderRadius: "50%", background: "rgba(31,61,46,0.2)" }} />
       </div>
 
       <style>{`
