@@ -933,53 +933,85 @@ export function Diagnostico() {
             className="absolute inset-0"
             style={{
               background: `
-                linear-gradient(to right, transparent 60%, ${C.papel} 100%),
-                linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 45%)
+                linear-gradient(to bottom, rgba(31,61,46,0.75) 0%, rgba(31,61,46,0.2) 45%, transparent 65%),
+                linear-gradient(to right, transparent 55%, ${C.papel} 100%),
+                linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 35%)
               `,
             }}
           />
           <div
             className="absolute"
-            style={{ bottom: 40, left: 36, right: 36, zIndex: 5 }}
+            style={{ top: 36, left: 36, right: 36, zIndex: 5 }}
           >
             <div
               style={{
                 fontFamily: "JetBrains Mono, monospace",
                 fontSize: 9,
-                color: C.laton,
+                color: "rgba(196,139,48,0.95)",
                 textTransform: "uppercase",
-                letterSpacing: "0.12em",
-                marginBottom: 10,
+                letterSpacing: "0.14em",
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
               }}
             >
+              <span style={{ display: "inline-block", width: 16, height: 1, background: "rgba(196,139,48,0.95)" }} />
               Por dentro do diagnóstico
             </div>
             <h3
               style={{
                 fontFamily: "Fraunces, Georgia, serif",
-                fontSize: 24,
+                fontSize: 26,
                 fontWeight: 600,
                 color: "#fff",
-                lineHeight: 1.2,
+                lineHeight: 1.15,
                 margin: 0,
+                marginTop: 10,
               }}
             >
               2 minutos para entender<br />
               onde está o{" "}
-              <span style={{ color: C.laton, fontStyle: "italic" }}>problema</span>
+              <em style={{ color: C.laton, fontStyle: "italic" }}>problema</em>
             </h3>
             <p
               style={{
                 fontFamily: "Inter",
                 fontSize: 12,
-                color: "rgba(244,241,236,0.75)",
-                lineHeight: 1.6,
-                marginTop: 12,
+                color: "rgba(255,255,255,0.78)",
+                lineHeight: 1.65,
+                marginTop: 8,
+                marginBottom: 0,
               }}
             >
               Respondendo 5 perguntas, identificamos o estágio financeiro
               da sua empresa e o próximo passo mais importante.
             </p>
+            <div
+              style={{
+                marginTop: 14,
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+                background: "rgba(196,139,48,0.18)",
+                border: "1px solid rgba(196,139,48,0.40)",
+                borderRadius: 20,
+                padding: "6px 14px",
+              }}
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={C.laton} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+              <span
+                style={{
+                  fontFamily: "JetBrains Mono, monospace",
+                  fontSize: 10,
+                  color: C.laton,
+                }}
+              >
+                Diagnóstico em 2 minutos · Gratuito · Sem compromisso
+              </span>
+            </div>
           </div>
         </div>
 
