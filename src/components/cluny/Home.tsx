@@ -411,38 +411,30 @@ export function Hero() {
         @keyframes float-pill { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
         @keyframes float-badge { 0%,100% { transform: translateY(0) translateX(0); } 50% { transform: translateY(-8px) translateX(3px); } }
 
-        .btn-diag {
+        .btn-diag, .btn-prop {
           position: relative; overflow: hidden;
-          background: ${C.verde}; color: ${C.papel}; border: none;
           padding: 14px 28px; border-radius: 50px;
           font-family: Inter, system-ui, sans-serif; font-weight: 600; font-size: 13px;
-          box-shadow: 0 4px 18px rgba(0,90,84,0.32);
-          transition: transform .25s, box-shadow .25s, background .2s;
+          letter-spacing: 0.06em; text-transform: uppercase;
           display: inline-flex; align-items: center; cursor: pointer;
+          transition: transform .28s ease, box-shadow .28s ease;
+          text-decoration: none;
         }
-        .btn-diag::before {
+        .btn-diag { background: ${C.verde}; border: 1.5px solid ${C.verde}; color: ${C.papel}; box-shadow: 0 4px 18px rgba(0,90,84,.28); }
+        .btn-prop { background: transparent; border: 1.5px solid ${C.verde}; color: ${C.verde}; }
+        .btn-diag > span, .btn-prop > span { position: relative; z-index: 2; transition: color .35s ease; }
+        .btn-diag::after, .btn-prop::after {
           content: ""; position: absolute; inset: 0;
-          background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.14) 50%, transparent 70%);
-          transform: translateX(-100%); transition: transform .6s ease;
-        }
-        .btn-diag:hover { background: #004a44; transform: translateY(-3px); box-shadow: 0 8px 26px rgba(0,90,84,0.4); }
-        .btn-diag:hover::before { transform: translateX(100%); }
-
-        .btn-prop {
-          position: relative; overflow: hidden;
-          border: 1.5px solid ${C.verde}; background: transparent; color: ${C.verde};
-          padding: 13px 26px; border-radius: 50px;
-          font-family: Inter, system-ui, sans-serif; font-weight: 500; font-size: 13px;
-          transition: color .25s, transform .25s;
-          display: inline-flex; align-items: center; cursor: pointer;
-          z-index: 1;
-        }
-        .btn-prop::after {
-          content: ""; position: absolute; inset: 0; background: ${C.verde};
           transform: scaleX(0); transform-origin: left center;
-          transition: transform .35s ease; z-index: -1;
+          transition: transform .4s ease; z-index: 1;
         }
-        .btn-prop:hover { color: ${C.papel}; transform: translateY(-2px); }
+        .btn-diag::after { background: ${C.papel}; }
+        .btn-prop::after { background: ${C.verde}; }
+        .btn-diag:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,90,84,.36); }
+        .btn-diag:hover > span { color: ${C.verde}; }
+        .btn-diag:hover::after { transform: scaleX(1); }
+        .btn-prop:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(0,90,84,.22); }
+        .btn-prop:hover > span { color: ${C.papel}; }
         .btn-prop:hover::after { transform: scaleX(1); }
 
         @media (max-width: 767px) {
